@@ -280,6 +280,195 @@
     min-height: 36px;
   }
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" onerror="this.onerror=null;var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';document.head.appendChild(s);">
+let map = null;
+let currentTileMode = 'road';
+let googleRoadLayer = null;
+let googleSatLayer = null;
+let markersByDay = {};
+let allMarkers = [];
+let currentActiveDay = '1';
+let isMapExpanded = false;
+
+const DAY_COLORS = {
+  '1': '#059669',
+  '2': '#d97706',
+  '3': '#0284c7',
+  '4': '#db2777'
+};
+
+function initMobileMap() {
+  if (typeof L === 'undefined') {
+    setTimeout(initMobileMap, 200);
+    return;
+  }
+  const mapEl = document.getElementById('mobile-map');
+  if (!mapEl || map) return;
+
+  googleRoadLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    attribution: '&copy; Google Maps',
+    maxZoom: 20
+  });
+
+  googleSatLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+    attribution: '&copy; Google Satellite',
+    maxZoom: 20
+  });
+
+  map = L.map('mobile-map', {
+    layers: [googleRoadLayer],
+    zoomControl: true,
+    scrollWheelZoom: false
+  });
+
+  ITINERARY_DATA.days.forEach(d => {
+    markersByDay[d.day] = [];
+    const color = DAY_COLORS[d.day] || '#0284c7';
+    d.stops.forEach(s => {
+      if (!s.lat || !s.lng) return;
+      const pin = createCustomPin(s.num, color, s.isTier1);
+      const marker = L.marker([s.lat, s.lng], { icon: pin });
+      
+      const popupHtml = `
+        <div style="direction:rtl;text-align:right;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-width:180px;font-size:12px;">
+          <strong style="color:${color};font-size:13px;">#${s.num}. ${s.name}</strong><br>
+          <span style="color:#64748b;">⏳ ${s.time}</span><br>
+          <span style="font-weight:700;">🎟️ ${s.cost_he || 'חינם'}</span><br>
+          <div style="margin-top:6px;">
+            <a href="#card-${s.id}" onclick="scrollToCard('${s.id}')" style="color:#0284c7;font-weight:700;text-decoration:none;">⬇️ גלול לפרטי התחנה</a>
+          </div>
+        </div>
+      `;
+      marker.bindPopup(popupHtml);
+      marker.stopId = s.id;
+      marker.dayNum = d.day;
+      marker.on('click', () => {
+        scrollToCard(s.id);
+      });
+
+      markersByDay[d.day].push(marker);
+      allMarkers.push(marker);
+    });
+  });
+
+  filterMapMarkers('1');
+}
+
+function createCustomPin(num, color, isTier1) {
+  const size = isTier1 ? 30 : 26;
+  const border = isTier1 ? '3px solid #fef08a' : '2px solid #ffffff';
+  const shadow = isTier1 ? '0 3px 8px rgba(0,0,0,0.5)' : '0 2px 5px rgba(0,0,0,0.35)';
+  const html = `<div style="
+    background:${color};
+    color:#ffffff;
+    width:${size}px;
+    height:${size}px;
+    border-radius:50%;
+    border:${border};
+    box-shadow:${shadow};
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:${isTier1 ? '13px' : '11px'};
+    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  ">${num}</div>`;
+  return L.divIcon({
+    html: html,
+    className: 'custom-map-pin',
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2]
+  });
+}
+
+function filterMapMarkers(dayNum) {
+  if (!map) return;
+  currentActiveDay = String(dayNum);
+  
+  const badge = document.getElementById('map-day-indicator');
+  if (badge) {
+    badge.textContent = 'יום ' + dayNum;
+    badge.style.color = DAY_COLORS[dayNum] || '#0284c7';
+  }
+
+  allMarkers.forEach(m => map.removeLayer(m));
+  const activeMarkers = markersByDay[currentActiveDay] || [];
+  activeMarkers.forEach(m => map.addLayer(m));
+  fitDayBounds();
+}
+
+function fitDayBounds() {
+  if (!map) return;
+  const activeMarkers = markersByDay[currentActiveDay] || [];
+  if (activeMarkers.length === 0) return;
+  const group = L.featureGroup(activeMarkers);
+  map.fitBounds(group.getBounds(), { padding: [35, 35], maxZoom: 14 });
+}
+
+function toggleMapTiles() {
+  if (!map) return;
+  const btn = document.getElementById('btn-toggle-tiles');
+  if (currentTileMode === 'road') {
+    map.removeLayer(googleRoadLayer);
+    map.addLayer(googleSatLayer);
+    currentTileMode = 'sat';
+    if (btn) btn.textContent = '🗺️ מפה רגילה';
+  } else {
+    map.removeLayer(googleSatLayer);
+    map.addLayer(googleRoadLayer);
+    currentTileMode = 'road';
+    if (btn) btn.textContent = '🛰️ לוויין';
+  }
+}
+
+function toggleMapHeight() {
+  const mapEl = document.getElementById('mobile-map');
+  const btn = document.getElementById('btn-toggle-map-size');
+  if (!mapEl) return;
+  isMapExpanded = !isMapExpanded;
+  mapEl.style.height = isMapExpanded ? '440px' : '280px';
+  if (btn) btn.textContent = isMapExpanded ? '📐 צמצם מפה' : '📐 הגדל מפה';
+  setTimeout(() => { if (map) map.invalidateSize(); }, 300);
+}
+
+function scrollToCard(stopId) {
+  const card = document.getElementById('card-' + stopId);
+  if (card) {
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.style.outline = '3px solid var(--primary)';
+    card.style.outlineOffset = '3px';
+    setTimeout(() => { card.style.outline = 'none'; }, 2000);
+  }
+}
+
+function focusStopOnMap(gmapsUrl, btnEl) {
+  if (!map) return;
+  const card = btnEl.closest('.stop-card');
+  if (!card) return;
+  const stopId = card.id.replace('card-', '');
+  const m = allMarkers.find(marker => marker.stopId === stopId);
+  if (m) {
+    const mapWrapper = document.querySelector('.map-card-wrapper');
+    if (mapWrapper) mapWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    map.setView(m.getLatLng(), 15, { animate: true });
+    m.openPopup();
+  }
+}
+
+const origSwitchTab = switchTab;
+switchTab = function(dayNum, btnEl) {
+  origSwitchTab(dayNum, btnEl);
+  filterMapMarkers(dayNum);
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  initMobileMap();
+});
+
+</script>
+
 </head>
 <body>
 
@@ -292,6 +481,22 @@
     <a href="desktop.html" class="btn btn-sec">🗺️ תצוגת מפה מלאה (Desktop)</a>
   </div>
 </header>
+
+
+<div class="map-card-wrapper" style="margin-bottom:14px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--card-bg);box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
+    <div style="font-weight:800;font-size:0.88rem;color:var(--primary);display:flex;align-items:center;gap:6px;">
+      <span>🗺️ מפת Google Maps חיה</span>
+      <span id="map-day-indicator" style="font-size:0.75rem;padding:2px 8px;border-radius:4px;background:rgba(2,132,199,0.12);color:var(--primary);font-weight:700;">יום 1</span>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <button type="button" class="btn" id="btn-toggle-tiles" onclick="toggleMapTiles()" style="padding:6px 10px;font-size:0.76rem;min-height:36px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);">🛰️ לוויין</button>
+      <button type="button" class="btn" id="btn-toggle-map-size" onclick="toggleMapHeight()" style="padding:6px 10px;font-size:0.76rem;min-height:36px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);">📐 הגדל מפה</button>
+      <button type="button" class="btn" id="btn-fit-day" onclick="fitDayBounds()" style="padding:6px 10px;font-size:0.76rem;min-height:36px;background:var(--primary);color:#fff;border:none;">🎯 מרכז יום</button>
+    </div>
+  </div>
+  <div id="mobile-map" style="height:280px;width:100%;transition:height 0.25s ease;z-index:1;"></div>
+</div>
 
 <nav class="day-tabs" aria-label="ניווט לפי ימים">
   <button type="button" class="tab-btn active" onclick="switchTab('1', this)">יום 1</button>
@@ -329,7 +534,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x מבין בסיסי העמודים העתיקים בצד הצפון-מערבי כלפי הצריח.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 15 דק׳ הליכה צפונה דרך סמטאות הסוק המקורות אל מדרסת בן יוסף</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Koutoubia+Mosque+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Koutoubia+Mosque+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Koutoubia+Mosque+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d1-s2">
@@ -349,7 +555,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x נמוכה מקצה בריכת המים לקבלת השתקפות סימטרית מלאה, ועוד תמונה מחלון העץ בקומה השנייה.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 3 דק׳ הליכה דרומה לתוך ציר חאנות הסוחרים וקרני האור של הסוק</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Ben+Youssef+Madrasa+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Ben+Youssef+Madrasa+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Ben+Youssef+Madrasa+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d1-s3">
@@ -369,7 +576,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x לאורך סמטת Souk Haddadine כשפסי האור האלכסוניים חוצים את החלל החשוך.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 5 דק׳ הליכה דרומה אל כיכר Jemaa el-Fna לשקיעה</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Fontaine+Mouassine+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Fontaine+Mouassine+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Fontaine+Mouassine+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d1-s4">
@@ -389,7 +597,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x ב-Night Mode ממרפסת גבוהה בצד המזרחי של הכיכר כשצריח ה-Koutoubia מצולם בצללית מול השקיעה.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> הליכה קצרה ללינה בריאד</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Jemaa+el-Fnaa+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Jemaa+el-Fnaa+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Jemaa+el-Fnaa+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
   </div>
@@ -423,7 +632,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x במרכז החצר הגדולה הריקה מאדם ב-08:15 בבוקר, ועוד זווית כלפי מעלה לתקרות ה-Zouak.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 4 דק׳ הליכה אל ארמון El Badi והמלאח</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Bahia+Palace+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Bahia+Palace+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Bahia+Palace+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d2-s2">
@@ -443,7 +653,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x מקצה הבריכה המרכזית של El Badi ועדשה 1x מהטרסה העליונה מעל הפרדסים השקועים.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 6 דק׳ הליכה אל שער האבן המלכותי Bab Agnaou וציר חומות הקסבה</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=El+Badi+Palace+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=El+Badi+Palace+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=El+Badi+Palace+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d2-s3">
@@ -463,7 +674,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x אלכסונית על הטבעות החצובות של Bab Agnaou.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> הליכה רציפה לאורך חומות Bab Jdid ושדרת הדקלים אל מאגר Menara (הגעה ב-15:45 לאור הזהב)</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Bab+Agnaou+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Bab+Agnaou+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Bab+Agnaou+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d2-s4">
@@ -483,7 +695,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 2x משפת הבריכה הצפונית שמכווצת את פסגות האטלס קרוב לגג הירוק של הביתן.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> חזרה למדינה לערב שני</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Menara+Gardens+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Menara+Gardens+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Menara+Gardens+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
   </div>
@@ -517,7 +730,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x מנקודת התצפית מעל Tahanaout שמראה את קוביות הבתים האדומות על המצוק.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 25 דק׳ עלייה אל סוף הכביש ב-Imlil (1,740m)</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Asni+High+Atlas+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Asni+High+Atlas+Morocco', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Asni+High+Atlas+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d3-s2">
@@ -537,7 +751,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x מהטרסה העליונה של כפר Armed שממסגרת את בתי האבן השטוחים יחד עם הפסגה המושלגת של Toubkal.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> חצייה מערבה ברכב על כביש הרכס הגבוה של Kik Plateau (13:30 - 15:30)</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Armed+Imlil+High+Atlas+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Armed+Imlil+High+Atlas+Morocco', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Armed+Imlil+High+Atlas+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d3-s3">
@@ -557,7 +772,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x משפת המצוק מעל האגם הכחול.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 20 דק׳ כניסה אל לב גבעות החרסית של מדבר Agafay לשקיעה</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Plateau+du+Kik+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Plateau+du+Kik+Morocco', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Plateau+du+Kik+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d3-s4">
@@ -577,7 +793,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 2x לאורך קווי הרכס החדים כשהחצי המואר של הגבעה בזהב והחצי המוצל בשחור-כחול.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 40 דק׳ נסיעה חזרה למרקש</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Agafay+Desert+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Agafay+Desert+Morocco', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Agafay+Desert+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
   </div>
@@ -611,7 +828,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x צמודה לקיר הלבנים המעוגל של Studio KO לתפיסת הטקסטורה הגיאומטרית.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 12 דק׳ הליכה דרומה לתוך שדרת האר-דקו של Gueliz</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Musee+Yves+Saint+Laurent+Marrakech" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Musee+Yves+Saint+Laurent+Marrakech', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Musee+Yves+Saint+Laurent+Marrakech" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d4-s2">
@@ -631,7 +849,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x סימטרית בתוך אולם הקשתות והזכוכית של תחנת הרכבת ועדשה 1x בין עמודי התיאטרון המלכותי.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> חזרה מזרחה לאורך Avenue Mohammed V אל ביצורי החומה המערבית (Bab Doukkala & Bab Nkob)</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Gare+de+Marrakech+ONCF" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Gare+de+Marrakech+ONCF', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Gare+de+Marrakech+ONCF" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d4-s3">
@@ -651,7 +870,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x לאורך קו החומות האדומות מ-Bab Nkob כשצריח הכותוביה מתנשא בקצה הציר.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> ערב אחרון במדינה -> שינה מוקדמת לקראת בוקר יום שני (06:35 יציאה לשדה)</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Bab+Doukkala+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Bab+Doukkala+Marrakesh', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Bab+Doukkala+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
     <article class="stop-card" id="card-d4-s4">
@@ -671,7 +891,8 @@
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x בכניסה החיצונית ובאולם ההמראות מתחת לתקרת המעוינים המוארת בשמש הבוקר.</div>
       <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> טיסה ישירה מ-RAK לדבלין (09:45 -> 13:35)</div>
       <div class="stop-links">
-        <a href="https://www.google.com/maps/search/?api=1&query=Marrakesh+Menara+Airport+RAK" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+        <button type="button" class="link-pill" onclick="focusStopOnMap('https://www.google.com/maps/search/?api=1&query=Marrakesh+Menara+Airport+RAK', this)" style="background:var(--card-bg);cursor:pointer;border:1px solid var(--primary);color:var(--primary);">🗺️ הצג במפה החיה</button>
+        <a href="https://www.google.com/maps/search/?api=1&query=Marrakesh+Menara+Airport+RAK" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
   </div>
