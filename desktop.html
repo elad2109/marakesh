@@ -1,0 +1,2796 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מרקש, הרי האטלס הגבוה (Imlil &amp; Armed) ומדבר אגפאי (26/11 11:30 - 30/11 09:45)</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" onerror="this.onerror=null;var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';document.head.appendChild(s);"></script>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --header-bg: #ffffff;
+    --card: #ffffff;
+    --card-hover: #f1f5f9;
+    --text: #0f172a;
+    --muted: #475569;
+    --border: #cbd5e1;
+    --primary: #1d4ed8;
+    --primary-text: #ffffff;
+    --accent: #0369a1;
+    --photo-bg: #f3e8ff;
+    --photo-text: #581c87;
+    --story-bg: #ecfdf5;
+    --story-text: #065f46;
+    --badge-t1-bg: #fef3c7;
+    --badge-t1-text: #92400e;
+    --badge-t2-bg: #e0f2fe;
+    --badge-t2-text: #075985;
+    --day1: #059669;
+    --day2: #d97706;
+    --day3: #0284c7;
+    --day4: #db2777;
+  }
+  body.night-mode, :root[data-theme="dark"] body {
+    --bg: #0f172a;
+    --surface: #111827;
+    --header-bg: #020617;
+    --card: #1e293b;
+    --card-hover: #334155;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: #334155;
+    --primary: #2563eb;
+    --primary-text: #ffffff;
+    --accent: #38bdf8;
+    --photo-bg: #2e1065;
+    --photo-text: #e9d5ff;
+    --story-bg: rgba(16, 185, 129, 0.16);
+    --story-text: #a7f3d0;
+    --badge-t1-bg: #78350f;
+    --badge-t1-text: #fef3c7;
+    --badge-t2-bg: #0c4a6e;
+    --badge-t2-text: #e0f2fe;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  header {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    z-index: 1000;
+  }
+  .header-title h1 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .header-title p {
+    font-size: 0.79rem;
+    color: var(--muted);
+  }
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn {
+    position: relative;
+    background: var(--primary);
+    color: var(--primary-text);
+    border: 1px solid transparent;
+    padding: 7px 12px;
+    min-height: 44px;
+    min-width: 44px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .btn:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .btn-secondary {
+    background: var(--card);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-secondary[aria-pressed="true"] {
+    background: var(--primary);
+    color: var(--primary-text);
+    border-color: var(--primary);
+  }
+  .lang-switch-group {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--card);
+  }
+  .lang-switch-group .btn {
+    border-radius: 0;
+    border: none;
+    padding: 6px 10px;
+  }
+  .main-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  .sidebar {
+    width: 58%;
+    max-width: 900px;
+    overflow-y: auto;
+    padding: 14px 16px;
+    border-inline-end: 1px solid var(--border);
+  }
+  .map-pane {
+    flex: 1;
+    position: relative;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+  }
+  .map-mode-bar {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+  }
+  #map {
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    flex: 1;
+  }
+  #svg-fallback {
+    display: none;
+    width: 100%;
+    flex: 1;
+    padding: 12px;
+    background: var(--bg);
+    overflow: auto;
+  }
+  .audio-studio-card {
+    background: var(--card);
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+  }
+  .audio-studio-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .audio-studio-top h2 {
+    font-size: 0.95rem;
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .audio-mode-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .audio-track-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .audio-track-box h3 {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .audio-track-box p {
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+  .audio-controls-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .caption-live-box {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text);
+    display: none;
+  }
+  .caption-live-box.visible {
+    display: block;
+  }
+  .day-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .day-tab {
+    position: relative;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 7px 11px;
+    min-height: 44px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .day-tab[aria-pressed="true"] {
+    background: var(--primary);
+    color: var(--primary-text);
+    border-color: var(--primary);
+  }
+  .logistics-banner {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+  }
+  .logistics-banner h2 {
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .story-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .story-mini-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 0.77rem;
+  }
+  .story-mini-card strong {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .day-section {
+    margin-bottom: 18px;
+  }
+  .day-header {
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .stop-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  }
+  .stop-card:hover {
+    background: var(--card-hover);
+  }
+  .stop-card.speaking-active {
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.55), 0 8px 24px rgba(245, 158, 11, 0.22);
+    background: rgba(245, 158, 11, 0.10) !important;
+    transform: translateY(-1px);
+    transition: all 0.25s ease;
+  }
+  .now-playing-pill {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    background: #f59e0b;
+    color: #0f172a;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .stop-card.speaking-active .now-playing-pill {
+    display: inline-flex;
+  }
+  @keyframes pulseSpeakingPin {
+    0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.9), 0 0 0 4px #ffffff; transform: scale(1.18); }
+    70% { box-shadow: 0 0 0 16px rgba(245, 158, 11, 0), 0 0 0 4px #ffffff; transform: scale(1.26); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0), 0 0 0 4px #ffffff; transform: scale(1.18); }
+  }
+  .pin-speaking-active {
+    animation: pulseSpeakingPin 1.4s infinite !important;
+    background: #f59e0b !important;
+    color: #0f172a !important;
+    border: 3px solid #ffffff !important;
+    z-index: 9999 !important;
+  }
+  .jump-stop-chip {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .jump-stop-chip:hover {
+    border-color: var(--accent);
+  }
+  .jump-stop-chip[aria-pressed="true"] {
+    background: #f59e0b;
+    color: #0f172a;
+    border-color: #f59e0b;
+    font-weight: 800;
+  }
+  .stop-card.tier-1 {
+    border-inline-start: 4px solid #f59e0b;
+  }
+  .stop-card.tier-2 {
+    border-inline-start: 4px solid #0284c7;
+  }
+  .stop-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .stop-title-btn {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-weight: 800;
+    font-size: 0.89rem;
+    cursor: pointer;
+    text-align: start;
+    padding: 4px 0;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stop-actions-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .btn-stop-speak {
+    position: relative;
+    background: var(--surface);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 0.73rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .btn-stop-speak[aria-pressed="true"] {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+  }
+  .badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .badge-t1 {
+    background: var(--badge-t1-bg);
+    color: var(--badge-t1-text);
+  }
+  .badge-t2 {
+    background: var(--badge-t2-bg);
+    color: var(--badge-t2-text);
+  }
+  .wow-line {
+    background: var(--story-bg);
+    color: var(--story-text);
+    font-size: 0.77rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+  .photo-line {
+    background: var(--photo-bg);
+    color: var(--photo-text);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+  .move-line {
+    font-size: 0.78rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ext-links {
+    display: inline-flex;
+    gap: 10px;
+  }
+  .ext-links a {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.76rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .graveyard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    margin-top: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+  .graveyard-table th, .graveyard-table td {
+    border: 1px solid var(--border);
+    padding: 7px 9px;
+    text-align: start;
+  }
+  .graveyard-table th {
+    background: var(--card-hover);
+    font-weight: 800;
+  }
+  audio {
+    width: 100%;
+    height: 36px;
+    margin-top: 4px;
+  }
+  @media (max-width: 900px) {
+    .main-container { flex-direction: column; }
+    .sidebar { width: 100%; max-width: 100%; height: 58%; border-inline-end: none; border-bottom: 1px solid var(--border); }
+    .map-pane { height: 42%; }
+  }
+</style>
+<!-- ELADB_UNIVERSAL_THEME_CSS_START -->
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0b1120 !important;
+    --background: #0b1120 !important;
+    --surface: #111827 !important;
+    --header-bg: #111827 !important;
+    --card: #111827 !important;
+    --card-hover: #1e293b !important;
+    --text: #f8fafc !important;
+    --muted: #cbd5e1 !important;
+    --border: #334155 !important;
+    --primary: #2563eb !important;
+    --accent: #60a5fa !important;
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --header-bg: #ffffff;
+    --card: #ffffff;
+    --card-hover: #f1f5f9;
+    --text: #0f172a;
+    --muted: #475569;
+    --border: #cbd5e1;
+    --primary: #1d4ed8;
+    --accent: #0369a1;
+    color-scheme: light;
+  }
+</style>
+<!-- ELADB_UNIVERSAL_THEME_CSS_END -->
+<!-- ELADB_AUTO_DARK_SURFACES_START -->
+<style>
+  :root[data-theme="dark"] [style*="background: #eff6ff"],
+  :root[data-theme="dark"] [style*="background:#eff6ff"],
+  :root[data-theme="dark"] [style*="background-color: #eff6ff"],
+  :root[data-theme="dark"] [style*="background-color:#eff6ff"],
+  :root[data-theme="dark"] [style*="background: #ecfdf5"],
+  :root[data-theme="dark"] [style*="background:#ecfdf5"],
+  :root[data-theme="dark"] [style*="background-color: #ecfdf5"],
+  :root[data-theme="dark"] [style*="background-color:#ecfdf5"] {
+    background: #111827 !important; color: #f8fafc !important; border-color: #334155 !important;
+  }
+  :root[data-theme="dark"] [style*="background: #f3e8ff"],
+  :root[data-theme="dark"] [style*="background:#f3e8ff"],
+  :root[data-theme="dark"] [style*="background-color: #f3e8ff"],
+  :root[data-theme="dark"] [style*="background-color:#f3e8ff"] {
+    background: rgba(168, 85, 247, 0.18) !important; color: #d8b4fe !important; border-color: rgba(192, 132, 252, 0.4) !important;
+  }
+  :root[data-theme="dark"] [style*="color: #137333"],
+  :root[data-theme="dark"] [style*="color:#137333"],
+  :root[data-theme="dark"] [style*="color: #065f46"] {
+    color: #86efac !important;
+  }
+  :root[data-theme="dark"] [style*="color: #6a1b9a"],
+  :root[data-theme="dark"] [style*="color:#6a1b9a"],
+  :root[data-theme="dark"] [style*="color: #6b21a8"] {
+    color: #d8b4fe !important;
+  }
+  :root[data-theme="dark"] [style*="color: #795548"],
+  :root[data-theme="dark"] [style*="color: #92400e"] {
+    color: #fcd34d !important;
+  }
+</style>
+<!-- ELADB_AUTO_DARK_SURFACES_END -->
+</head>
+<body class="night-mode">
+  <div class="eladb-golink-topbar" dir="ltr" style="max-width:1200px;margin:8px auto 0;padding:0 16px;display:flex;justify-content:flex-end;"><!-- ELADB_GOLINK_BADGE_START --><a href="http://go/rak-trip-he" target="_blank" rel="noopener" class="eladb-golink-badge" data-golink-badge="go/rak-trip-he" title="Shortlink: http://go/rak-trip-he (Click to copy or open)" onclick="if(navigator.clipboard){navigator.clipboard.writeText('http://go/rak-trip-he');}" style="display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:4px 11px;border-radius:999px;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-family:monospace;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap;box-sizing:border-box;">🔗 go/rak-trip-he</a><!-- ELADB_GOLINK_BADGE_END --></div>
+
+<body class="night-mode">
+<header>
+  <div class="header-title">
+    <h1 id="hdr-title" data-he="מרקש, הרי האטלס הגבוה (Imlil &amp; Armed) ומדבר אגפאי (26/11 11:30 - 30/11 09:45)" data-en="Marrakesh, High Atlas (Imlil &amp; Armed) &amp; Agafay Stone Desert (26/11 11:30 - 30/11 09:45)">מרקש, הרי האטלס הגבוה (Imlil &amp; Armed) ומדבר אגפאי (26/11 11:30 - 30/11 09:45)</h1>
+    <p id="hdr-sub" data-he="טיסות Ryanair מאומתות: הלוך חמישי 26/11 (07:55-&gt;11:30) | חזור שני 30/11 (09:45-&gt;13:35) | אדריכלות טרקוטה, ארמונות, טיפוס באטלס ושקיעה באגפאי" data-en="Verified Ryanair Flights: Out Thu 26/11 (07:55-&gt;11:30) | Back Mon 30/11 (09:45-&gt;13:35) | Terracotta Architecture, Palaces, Atlas Hike &amp; Agafay Sunset">טיסות Ryanair מאומתות: הלוך חמישי 26/11 (07:55-&gt;11:30) | חזור שני 30/11 (09:45-&gt;13:35) | אדריכלות טרקוטה, ארמונות, טיפוס באטלס ושקיעה באגפאי</p>
+  </div>
+  <div class="header-actions">
+    <a href="travel_and_offices_hub.html" class="btn btn-secondary" data-he="✈️ חזרה לפורטל הטיולים" data-en="✈️ Back to Travel Hub">✈️ חזרה לפורטל הטיולים</a>
+    <div class="lang-switch-group" role="group" aria-label="Language Switcher">
+      <button type="button" id="langBtnHe" class="btn btn-secondary" aria-pressed="true" onclick="setLanguage('he')">🇮🇱 עברית (L)</button>
+      <button type="button" id="langBtnEn" class="btn btn-secondary" aria-pressed="false" onclick="setLanguage('en')">🇬🇧 English (L)</button>
+    </div>
+    <button type="button" id="btn-theme" class="btn btn-secondary" aria-pressed="true" onclick="toggleTheme()">☀️ מצב יום (D)</button>
+    <button type="button" id="btn-map-leaflet" class="btn btn-secondary" aria-pressed="true" onclick="switchMapDisplay('leaflet')" data-he="🗺️ מפת Leaflet חיה" data-en="🗺️ Live Leaflet Map">🗺️ מפת Leaflet חיה</button>
+    <button type="button" id="btn-map-svg" class="btn btn-secondary" aria-pressed="false" onclick="switchMapDisplay('svg')" data-he="📐 מפת וקטור Offline" data-en="📐 Offline Vector Map">📐 מפת וקטור Offline</button>
+  </div>
+</header>
+
+<div class="main-container">
+  <main class="sidebar" id="itinerary-sidebar">
+
+    <!-- AUDIO NARRATOR & OFFLINE MP3 STUDIO -->
+    <section class="audio-studio-card" aria-label="מדריך קולי להאזנה ולהורדה לטיסה">
+      <div class="audio-studio-top">
+        <h2 data-he="🎧 אולפן קריינות דו-לשוני, שליטה במהירות והורדת MP3 למטוס (עברית / English)" data-en="🎧 Bilingual Audio Tour, Speed Control &amp; Offline In-Flight MP3 Downloads (EN / HE)">🎧 אולפן קריינות דו-לשוני, שליטה במהירות והורדת MP3 למטוס (עברית / English)</h2>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <button type="button" id="btn-tts-short" class="btn" aria-pressed="false" onclick="startLiveNarrator('short')" data-he="▶️ קריין חי: מדריך מעשי לכל 16 התחנות (21.6 דק׳)" data-en="▶️ Live Voice: Practical 16-Stop Guide (18.3m)">▶️ קריין חי: מדריך מעשי לכל 16 התחנות (21.6 דק׳)</button>
+          <button type="button" id="btn-tts-flight" class="btn btn-secondary" aria-pressed="false" onclick="startLiveNarrator('flight')" data-he="✈️ קריין חי: מהדורת טיסה וסיפורים (35.6 דק׳)" data-en="✈️ Live Voice: Full In-Flight Storytelling (29.6m)">✈️ קריין חי: מהדורת טיסה וסיפורים (35.6 דק׳)</button>
+          <button type="button" id="btn-tts-stop" class="btn btn-secondary" onclick="stopLiveNarrator()" data-he="⏹️ עצור" data-en="⏹️ Stop">⏹️ עצור</button>
+          <button type="button" id="btn-cc-toggle" class="btn btn-secondary" aria-pressed="true" onclick="toggleCaptions()" data-he="💬 כתוביות: פעיל" data-en="💬 CC: ON">💬 כתוביות: פעיל</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;" role="group" aria-label="Audio Playback Speed">
+        <strong style="font-size:0.78rem;color:var(--accent);" data-he="⏩ מהירות ניגון וקריינות (עברית + English):" data-en="⏩ Playback &amp; Voice Speed (EN + HE):">⏩ מהירות ניגון וקריינות (עברית + English):</strong>
+        <button type="button" class="btn btn-secondary speed-btn" data-speed="1" aria-pressed="true" onclick="setAudioSpeed(1)">1x</button>
+        <button type="button" class="btn btn-secondary speed-btn" data-speed="1.25" aria-pressed="false" onclick="setAudioSpeed(1.25)">1.25x</button>
+        <button type="button" class="btn btn-secondary speed-btn" data-speed="1.5" aria-pressed="false" onclick="setAudioSpeed(1.5)">1.5x</button>
+        <button type="button" class="btn btn-secondary speed-btn" data-speed="1.75" aria-pressed="false" onclick="setAudioSpeed(1.75)">1.75x</button>
+        <button type="button" class="btn btn-secondary speed-btn" data-speed="2" aria-pressed="false" onclick="setAudioSpeed(2)">2x 🚀</button>
+        <span id="speed-status-badge" style="font-size:0.75rem;color:var(--muted);margin-inline-start:auto;" data-he="חל על שני נגני ה-MP3 ועל הקריינות החיה בכל התחנות" data-en="Applies to both MP3 players &amp; live stop narration in both languages">חל על שני נגני ה-MP3 ועל הקריינות החיה בכל התחנות</span>
+      </div>
+
+      <div id="audio-stop-jump-bar" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:8px;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;" role="group" aria-label="סנכרון וקפיצה לתחנה באודיו ובמפה">
+        <strong style="font-size:0.75rem;color:var(--accent);margin-inline-end:4px;" data-he="📍 סנכרון חי למפה ולתחנה (לחץ לקפיצה באודיו):" data-en="📍 Live Audio-to-Map Sync (Click to jump to stop):">📍 סנכרון חי למפה ולתחנה (לחץ לקפיצה באודיו):</strong>
+        <button type="button" class="jump-stop-chip" id="jump-chip-intro" aria-pressed="false" onclick="jumpAudioToStop(0)" data-he="פתיחה" data-en="Intro">פתיחה</button>
+        <span id="jump-chips-container" style="display:inline-flex;flex-wrap:wrap;gap:4px;"></span>
+      </div>
+      <div id="live-caption-box" class="caption-live-box visible" aria-live="polite" aria-atomic="true">
+        <span id="live-caption-text" data-he="לחץ על 'קריין חי' למעלה, בחר מהירות (1x עד 2x), או לחץ על 🔊 בכל אחת מ-16 התחנות למטה להאזנה נקודתית, או הורד קובץ MP3 רגיל (1x) או מואץ מראש (2x) למטוס." data-en="Click 'Live Voice' above, choose speed (1x to 2x), click 🔊 on any of the 16 stops below, or download 1x or pre-accelerated 2x offline MP3s for your flight.">לחץ על 'קריין חי' למעלה, בחר מהירות (1x עד 2x), או לחץ על 🔊 בכל אחת מ-16 התחנות למטה להאזנה נקודתית, או הורד קובץ MP3 רגיל (1x) או מואץ מראש (2x) למטוס.</span>
+      </div>
+
+      <div class="audio-grid">
+        <div class="audio-track-box">
+          <h3 data-he="⚡ גרסה 1: מדריך מעשי ממוקד תחנה-תחנה (21.6 דק׳ ב-1x | 10.8 דק׳ ב-2x)" data-en="⚡ Track 1: Practical Stop-by-Stop Guide (18.3m at 1x | 9.1m at 2x)">⚡ גרסה 1: מדריך מעשי ממוקד תחנה-תחנה (21.6 דק׳ ב-1x | 10.8 דק׳ ב-2x)</h3>
+          <p data-he="עובר ברצף על כללי הזהב וכל 16 התחנות: עלות, פנים מול חוץ, כמה זמן להקדיש, על מה לדלג בבלת״ם, זוויות צילום והגעה." data-en="Covers all golden rules and all 16 stops: cost, Inside-vs-Outside verdict, recommended duration, skip-if-delayed priority, smartphone angles &amp; transit.">עובר ברצף על כללי הזהב וכל 16 התחנות: עלות, פנים מול חוץ, כמה זמן להקדיש, על מה לדלג בבלת״ם, זוויות צילום והגעה.</p>
+          <audio id="audio-player-short" controls preload="metadata" src="audio/rak_trip_short_he.mp3"></audio>
+          <div class="audio-controls-row">
+            <a id="dl-short-he" class="btn btn-secondary" href="audio/rak_trip_short_he.mp3" download="rak_trip_short_he.mp3">⬇️ MP3 מעשי עברית 1x (21.6m, 9.9MB)</a>
+            <a id="dl-short-he-2x" class="btn" href="audio/rak_trip_short_he_2x.mp3" download="rak_trip_short_he_2x.mp3">⚡ הורדה עברית x2 (10.8m, 2.5MB)</a>
+          </div>
+          <div class="audio-controls-row">
+            <a id="dl-short-en" class="btn btn-secondary" href="audio/rak_trip_short_en.mp3" download="rak_trip_short_en.mp3">⬇️ MP3 Practical EN 1x (18.3m, 8.4MB)</a>
+            <a id="dl-short-en-2x" class="btn" href="audio/rak_trip_short_en_2x.mp3" download="rak_trip_short_en_2x.mp3">⚡ Download EN x2 (9.1m, 2.1MB)</a>
+          </div>
+        </div>
+
+        <div class="audio-track-box">
+          <h3 data-he="✈️ גרסה 2: מהדורת טיסה וסיפורים פיקנטיים (35.6 דק׳ ב-1x | 17.8 דק׳ ב-2x)" data-en="✈️ Track 2: In-Flight Storytelling &amp; Deep-Dive (29.6m at 1x | 14.8m at 2x)">✈️ גרסה 2: מהדורת טיסה וסיפורים פיקנטיים (35.6 דק׳ ב-1x | 17.8 דק׳ ב-2x)</h3>
+          <p data-he="מותאם להאזנה בעיניים עצומות בטיסה: רקע היסטורי וסיפורים פיקנטיים, פירוט מה רואים על הדרך, ועבור כל 16 התחנות: עלות, פנים מול חוץ, משך שהייה, עדיפות בבלת״ם וזוויות צילום." data-en="Designed for listening on the plane with eyes closed: spicy historical stories, en-route sights, plus cost, Inside-vs-Outside verdict, duration, priority &amp; photo angles for all 16 stops.">מותאם להאזנה בעיניים עצומות בטיסה: רקע היסטורי וסיפורים פיקנטיים, פירוט מה רואים על הדרך, ועבור כל 16 התחנות: עלות, פנים מול חוץ, משך שהייה, עדיפות בבלת״ם וזוויות צילום.</p>
+          <audio id="audio-player-flight" controls preload="metadata" src="audio/rak_trip_flight_he.mp3"></audio>
+          <div class="audio-controls-row">
+            <a id="dl-flight-he" class="btn btn-secondary" href="audio/rak_trip_flight_he.mp3" download="rak_trip_flight_he.mp3">⬇️ MP3 טיסה עברית 1x (35.6m, 16.3MB)</a>
+            <a id="dl-flight-he-2x" class="btn" href="audio/rak_trip_flight_he_2x.mp3" download="rak_trip_flight_he_2x.mp3">⚡ הורדה טיסה עברית x2 (17.8m, 4.1MB)</a>
+          </div>
+          <div class="audio-controls-row">
+            <a id="dl-flight-en" class="btn btn-secondary" href="audio/rak_trip_flight_en.mp3" download="rak_trip_flight_en.mp3">⬇️ MP3 Flight EN 1x (29.6m, 13.5MB)</a>
+            <a id="dl-flight-en-2x" class="btn" href="audio/rak_trip_flight_en_2x.mp3" download="rak_trip_flight_en_2x.mp3">⚡ Download Flight EN x2 (14.8m, 3.4MB)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CITY BACKGROUND & SPICY STORIES -->
+    <section class="logistics-banner" aria-label="רקע היסטורי וסיפורים פיקנטיים">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+        <h2 data-he="🏛️ רקע על מרקש והאטלס ו-4 סיפורים פיקנטיים שמשנים את איך שמסתכלים על &quot;העיר האדומה&quot;" data-en="🏛️ Marrakesh &amp; High Atlas Background &amp; 4 Spicy Historical Stories Behind the Red City">🏛️ רקע על מרקש והאטלס ו-4 סיפורים פיקנטיים שמשנים את איך שמסתכלים על &quot;העיר האדומה&quot;</h2>
+        <button type="button" class="btn-stop-speak" onclick="speakCustomBlock('intro')" data-he="🔊 האזן לרקע ולסיפורים" data-en="🔊 Listen to City Stories">🔊 האזן לרקע ולסיפורים</button>
+      </div>
+      <div class="story-cards-grid">
+        <div class="story-mini-card">
+          <strong data-he="1. למה מסגד ה-Koutoubia נבנה פעמיים בגלל טעות של 5 מעלות בכיוון מכה (1147)" data-en="1. Why the Koutoubia Mosque Was Built Twice Over a 5-Degree Mecca Alignment Error (1147)">1. למה מסגד ה-Koutoubia נבנה פעמיים בגלל טעות של 5 מעלות בכיוון מכה (1147)</strong>
+          <span data-he="כששושלת האלמוהאדים הקנאית כבשה את מרקש ב-1147 ובנתה את מסגד הכותוביה הראשון, האסטרונומים גילו שהמחראב סוטה ב-5 מעלות דרומה מכיוון מכה. הסולטן ציווה לבנות מסגד שני צמוד אליו בזווית מתוקנת — ועד היום רואים ברחבה החיצונית את עמודי המסגד הראשון!" data-en="After building the first Koutoubia Mosque in 1147, Almohad astronomers discovered its mihrab was 5 degrees off Mecca’s alignment. The Caliph built a second angled mosque right beside it—you can still walk across the stone footprints of the first mosque outside!">כששושלת האלמוהאדים הקנאית כבשה את מרקש ב-1147 ובנתה את מסגד הכותוביה הראשון, האסטרונומים גילו שהמחראב סוטה ב-5 מעלות דרומה מכיוון מכה. הסולטן ציווה לבנות מסגד שני צמוד אליו בזווית מתוקנת — ועד היום רואים ברחבה החיצונית את עמודי המסגד הראשון!</span>
+        </div>
+        <div class="story-mini-card">
+          <strong data-he="2. ארמון אל-באדי (El Badi): &quot;הבלתי ניתן להשוואה&quot; שנבנה מכופר קרב שלושת המלכים ופורק ב-10 שנים" data-en="2. El Badi Palace: Funded by Portuguese Royal Ransom and Stripped Bare in 10 Years">2. ארמון אל-באדי (El Badi): &quot;הבלתי ניתן להשוואה&quot; שנבנה מכופר קרב שלושת המלכים ופורק ב-10 שנים</strong>
+          <span data-he="ב-1578 הסולטן אחמד אל-מנסור הביס את מלך פורטוגל בקרב שלושת המלכים ובכספי הכופר האדירים בנה ארמון של 360 חדרים מצופים זהב, שיש מאיטליה ואוניקס. מאה שנה אחר כך הסולטן מולאי איסמעיל פירק כל לוח שיש מן הארמון כדי לבנות את בירתו החדשה במקנס, והותיר שלד אדמה נגוחה ברוטליסטי אדיר." data-en="In 1578 Sultan Ahmad al-Mansur used the massive Portuguese ransom from the Battle of the Three Kings to build a 360-room palace of Italian marble and gold—only for Sultan Moulay Ismail to strip every marble slab a century later, leaving a colossal sunken rammed-earth ruin.">ב-1578 הסולטן אחמד אל-מנסור הביס את מלך פורטוגל בקרב שלושת המלכים ובכספי הכופר האדירים בנה ארמון של 360 חדרים מצופים זהב, שיש מאיטליה ואוניקס. מאה שנה אחר כך הסולטן מולאי איסמעיל פירק כל לוח שיש מן הארמון כדי לבנות את בירתו החדשה במקנס, והותיר שלד אדמה נגוחה ברוטליסטי אדיר.</span>
+        </div>
+        <div class="story-mini-card">
+          <strong data-he="3. הקברים הסעדיים שנאטמו בקיר במשך 200 שנה והתגלו מצילום אוויר (1917)" data-en="3. The Saadian Tombs Sealed Behind a Wall for 200 Years Until a 1917 Aerial Photo">3. הקברים הסעדיים שנאטמו בקיר במשך 200 שנה והתגלו מצילום אוויר (1917)</strong>
+          <span data-he="כדי למחוק את זכר השושלת הסעדית אך בלי לחלל קברים, הסולטן מולאי איסמעיל אטם ב-1677 את אחוזת הקבר המפוארת מאחורי חומות גבוהות. המקום נשכח לחלוטין במשך 240 שנה עד שמטוס סיור צרפתי צילם מלמעלה ב-1917 את הגגות הירוקים החבויים." data-en="Afraid to desecrate royal graves directly, Sultan Moulay Ismail walled off the Saadian Tombs in 1677. They vanished from memory for 240 years until a 1917 French reconnaissance biplane spotted the hidden green-tiled roofs from the air.">כדי למחוק את זכר השושלת הסעדית אך בלי לחלל קברים, הסולטן מולאי איסמעיל אטם ב-1677 את אחוזת הקבר המפוארת מאחורי חומות גבוהות. המקום נשכח לחלוטין במשך 240 שנה עד שמטוס סיור צרפתי צילם מלמעלה ב-1917 את הגגות הירוקים החבויים.</span>
+        </div>
+        <div class="story-mini-card">
+          <strong data-he="4. מערכת ה-Khettaras התת-קרקעית ו-Studio KO במוזיאון YSL" data-en="4. The 11th-Century Underground Khettara Aqueducts &amp; Studio KO’s Brick Brutalism">4. מערכת ה-Khettaras התת-קרקעית ו-Studio KO במוזיאון YSL</strong>
+          <span data-he="מרקש קיימת בלב המישור הצחיח רק בזכות רשת מנהרות תת-קרקעיות מהמאה ה-11 (Khettaras) שהובילו מי שלגים מהרי האטלס בגרביטציה אל גני מנרה ואגדל. באותה אדמה אדומה בדיוק השתמשו האדריכלים של Studio KO ב-2017 כדי ליצור את חזית תחרת הלבנים של מוזיאון איב סן לורן." data-en="Marrakesh survived in the arid plain thanks to 11th-century underground gravity tunnels (Khettaras) channeling High Atlas snowmelt into the Menara and Agdal reservoirs—the same local red clay Studio KO sculpted into the 2017 YSL Museum brick facade.">מרקש קיימת בלב המישור הצחיח רק בזכות רשת מנהרות תת-קרקעיות מהמאה ה-11 (Khettaras) שהובילו מי שלגים מהרי האטלס בגרביטציה אל גני מנרה ואגדל. באותה אדמה אדומה בדיוק השתמשו האדריכלים של Studio KO ב-2017 כדי ליצור את חזית תחרת הלבנים של מוזיאון איב סן לורן.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGISTICS & TRANSIT -->
+    <section class="logistics-banner" aria-label="לוגיסטיקה ותחבורה">
+      <h2 data-he="🚌 לוגיסטיקה קריטית למרקש: כרטיס נייר מודפס, אוטובוס L19 מהשדה וכלל בוקר יום שני 06:35!" data-en="🚌 Critical Marrakesh Rules: Printed Paper Boarding Pass, Bus L19 &amp; Monday 06:35 AM Airport Rule!">🚌 לוגיסטיקה קריטית למרקש: כרטיס נייר מודפס, אוטובוס L19 מהשדה וכלל בוקר יום שני 06:35!</h2>
+      <p data-he="🛂 1. דרכון פורטוגלי + כרטיס עלייה למטוס מודפס על נייר A4 (חובה ב-RAK!): בשדה התעופה של מרקש (RAK) ראיינאייר מחייבת כרטיס עלייה למטוס מודפס על נייר והחתמת Visa/Document Check בדלפק הצ׳ק-אין לפני מעבר הביטחון. הדפס מראש (או בקש בקבלה בריאד להדפיס)." data-en="🛂 1. Portuguese Passport + MANDATORY Printed Paper Boarding Pass at RAK: Marrakesh Menara Airport strictly requires a physical A4 printed boarding pass stamped at the Ryanair check-in desk before security.">🛂 <strong>1. דרכון פורטוגלי + הדפסת כרטיס עלייה למטוס על נייר (חובה ב-<code>RAK</code>):</strong> ראיינאייר מחייבת ב-<code>RAK</code> כרטיס מודפס על נייר והחתמת <code>Document Check</code> בדלפק לפני הביטחון.</p><p data-he="🚌 2. טריק אוטובוס האקספרס L19 (ALSA) הלוך-חזור ב-50 דירהם (4.50€): שדה התעופה RAK נמצא רק 5.5 ק״מ (12 דק׳ נסיעה!) ממסגד ה-Koutoubia. ביציאה מהטרמינל בחמישי 11:45 עלה על אוטובוס L19 וקנה מהנהג כרטיס הלוך-חזור (Aller-Retour ב-50 MAD / 4.50€, תקף ל-14 יום). שמור את הקבלה המודפסת לבוקר יום שני!" data-en="🚌 2. ALSA Airport Express Bus L19 Return Ticket Hack (50 MAD / €4.50): RAK Airport is just 5.5km (12 mins) from Koutoubia Mosque. Outside the terminal on Thu 11:45, board Bus L19 and buy the Return Ticket (Aller-Retour, 50 MAD, valid 14 days)—keep the receipt for Monday morning!">🚌 <strong>2. אוטובוס אקספרס <code>L19</code> (<code>50 MAD / 4.50€</code> הלוך-חזור):</strong> שדה <code>RAK</code> נמצא רק 5.5 ק"מ מהכותוביה. קנה בנחיתה כרטיס <strong>הלוך-חזור (<code>Aller-Retour</code>)</strong> ושמור את הפתק ליום שני בבוקר.</p><p data-he="⏰ 3. כלל הברזל לבוקר יום שני 30/11 (טיסה ב-09:45): בשדה RAK יש 4 תורים נפרדים (שיקוף בכניסה לטרמינל, דלפק החתמת נייר Ryanair, בידוק מרכזי, וחותמת דרכון ידנית ביציאה). התייצב בתחנת L19 ליד ה-Koutoubia ב-06:35 בבוקר (מגיע לשדה ב-06:55); אם האוטובוס לא עבר עד 06:50, עצור מונית בז׳ (Petit Taxi ב-50-70 MAD / 5€, 10 דק׳ לשדה)." data-en="⏰ 3. Monday 30/11 06:35 AM Rule (for 09:45 Flight): RAK has 4 separate queues (terminal entry scanner, Ryanair paper stamp desk, security, and exit passport stamp). Be at the Koutoubia L19 bus stop at 06:35 AM (or hail a 50-70 MAD Petit Taxi at 06:50 AM to arrive by 07:00 AM).">⏰ <strong>3. כלל בוקר יום שני 30/11 (טיסה 09:45):</strong> התייצב בתחנת <code>L19</code> בכותוביה ב-<strong>06:35 בבוקר</strong> (או קח מונית ב-<code>50-70 MAD</code> ב-06:50) כדי להיות בטרמינל ב-<code>07:00</code> (לפני 4 התורים של <code>RAK</code>).</p>
+    </section>
+
+    <!-- CASH & PAYMENT LOGISTICS -->
+    <section class=logistics-banner aria-label="מזומן ותשלומים במרקש">
+      <h2 data-he="💶 מדריך כסף ותשלומים למרקש ולאטלס: כמה דירהם למשוך (MAD), איפה יש קונטקטלס ואיפה רק מזומן?" data-en="💶 Money &amp; Payment Guide for Marrakesh &amp; High Atlas: How Many MAD to Withdraw, Where Contactless Works vs. Cash Only">💶 מדריך כסף ותשלומים למרקש ולאטלס: כמה דירהם למשוך (MAD), איפה יש קונטקטלס ואיפה רק מזומן?</h2>
+      <p data-he="💳 1. קונטקטלס בנייד (Apple Pay / Google Wallet) מול מזומן במרקש: בסופרמרקטים מודרניים בשכונת Gueliz (Carrefour, Acima) ובחלק מאתרי המורשת הגדולים (מוזיאון איב סן לורן) אפשר לשלם בקונטקטלס בנייד. לעומת זאת, בתוך סמטאות המדינה, בכיכר ג'מע אל-פנא, באוטובוס L19 מהשדה, באוכל רחוב, ובטיול לאטלס ולאגפאי — הכלכלה עובדת על מזומן בלבד!" data-en="💳 1. Mobile Contactless vs. Cash in Marrakesh: In modern Gueliz supermarkets (Carrefour) and major museum ticket desks, phone contactless works. However, inside Medina souks, Jemaa el-Fnaa stalls, Airport Bus L19, street food, and the High Atlas tour — the economy operates strictly on physical cash!">💳 <strong>1. קונטקטלס בנייד מול מזומן במרקש:</strong> בסופרמרקטים גדולים (<code>Carrefour</code>) אפשר להצמיד טלפון. בתוך המדינה, בכיכר ג'מע אל-פנא, באוטובוסי שדה ובטיול להרי האטלס <strong>הכל עובד על מזומן פיזי בלבד</strong> (שטרות ומטבעות).</p>
+      <div style="overflow-x:auto;margin:10px 0;">
+        <table class="graveyard-table" style="font-size:0.88rem;">
+          <thead>
+            <tr>
+              <th data-he="תחנה / שירות" data-en="Stop / Service">תחנה / שירות</th>
+              <th data-he="עלות משוערת" data-en="Estimated Cost">עלות משוערת</th>
+              <th data-he="אמצעי תשלום נתמך" data-en="Payment Method">אמצעי תשלום נתמך</th>
+              <th data-he="הנחיית שטח" data-en="Field Guidance">הנחיית שטח</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>אוטובוס אקספרס מהשדה ALSA קו L19</strong></td>
+              <td><code>50 MAD</code> (הלוך-חזור)</td>
+              <td>💵 <strong>מזומן בלבד</strong> לנהג</td>
+              <td>קנה כרטיס Aller-Retour בעלייה בשדה ושמור את הפתק המודפס לחזור ביום שני</td>
+            </tr>
+            <tr>
+              <td><strong>לינה ב-Sindi Sud (4 לילות)</strong></td>
+              <td><code>800-1,000 MAD</code> (~75hBc91$)</td>
+              <td>💵 <strong>מזומן בצ'ק-אין</strong></td>
+              <td>תשלום בדירהם או בשטרות יורו; קבל קבלה חתומה על נייר בקבלה</td>
+            </tr>
+            <tr>
+              <td><strong>מדרסת בן יוסף (Ben Youssef Madrasa)</strong></td>
+              <td><code>50 MAD</code> (~4.60€)</td>
+              <td>💵 <strong>מזומן מועדף</strong> או אשראי</td>
+              <td>בקופת הכניסה עדיף לשלם במזומן מדוייק כדי לדלג על עיכובי מסוף</td>
+            </tr>
+            <tr>
+              <td><strong>ארמון באהיה (Bahia Palace)</strong></td>
+              <td><code>100 MAD</code> (~9.20€)</td>
+              <td>💵 <strong>מזומן מועדף</strong> או אשראי</td>
+              <td>קופה מהירה במזומן; המסוף האלקטרוני לעיתים איטי</td>
+            </tr>
+            <tr>
+              <td><strong>טיול יום משולב לאטלס ולאגפאי (שבת 28/11)</strong></td>
+              <td><code>250-350 MAD</code> (~25€-32€)</td>
+              <td>💵 <strong>מזומן בלבד</strong></td>
+              <td>משלמים ישירות לסוכנות המקומית או לנהג בבוקר הטיול</td>
+            </tr>
+            <tr>
+              <td><strong>ארוחת טאג'ין כפרית באימליל (אטלס)</strong></td>
+              <td><code>70-100 MAD</code> (~7€-9€)</td>
+              <td>💵 <strong>מזומן בלבד</strong></td>
+              <td>במסעדות הכפר למרגלות ההר אין מסופי סליקה כלל</td>
+            </tr>
+            <tr>
+              <td><strong>אוכל רחוב, מיצי תפוזים, מאפים ומים (4 ימים)</strong></td>
+              <td><code>250-300 MAD</code> סך הכל</td>
+              <td>💵 <strong>מזומן בלבד</strong></td>
+              <td>מיץ תפוזים טרי בכיכר (5-10 MAD), תה נענע (10 MAD), בקבוק מים (6 MAD)</td>
+            </tr>
+            <tr>
+              <td><strong>סופרמרקט מודרני ב-Gueliz (Carrefour)</strong></td>
+              <td><code>50-100 MAD</code></td>
+              <td>📱 <strong>קונטקטלס בנייד</strong></td>
+              <td>קבלת Apple Pay / Google Wallet מלאה לרכישת נשנושים ומים ביום שישי</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p data-he="💰 סך מזומן מומלץ למשיכה במרקש (26-30/11): כ-1,800 עד 2,000 דירהם (כ-165€-185€) המכסים את מלוא הלינה, התחבורה, הכניסות לאתרים, הטיול לאטלס והאוכל ל-4 ימים שלמים. משוך בכספומט Al Barid Bank או Attijariwafa בטרמינל הנחיתה, ותמיד סרב להמרת שער (Without Conversion)!" data-en="💰 Total Recommended Cash for Marrakesh: ~1,800-2,000 MAD (~€165-€185) covering lodging, airport buses, site admissions, Atlas day trip, and all meals for 4 full days. Withdraw at Al Barid Bank / Attijariwafa ATM at RAK airport and decline conversion!">💰 <strong>סך מזומן מומלץ למשיכה במרקש:</strong> כ-<strong>1,800 עד 2,000 MAD</strong> (~165€-185€) המכסים את <strong>כל הוצאות הטיול במזומן</strong> (לינה ל-4 לילות, אוטובוס שדה, כניסות לאתרים, יום הטיול לאטלס ולאגפאי ואוכל מלא). אם המלון ישולם ביורו מזומן מהבית, מספיק למשוך <strong>900-1,000 MAD</strong> בלבד.</p>
+    </section>
+
+    <!-- WEATHER & SUNSET -->
+    <section class="logistics-banner" aria-label="תחזית מזג אוויר ושקיעה">
+      <h2 data-he="🌦️ תחזית מזג אוויר (26/11-30/11), הפרשי גובה (1,900m באטלס) וכלל שקיעה (~18:15)" data-en="🌦️ Weather Forecast (26/11-30/11), High Atlas Altitude (1,900m) &amp; Sunset (~18:15)">🌦️ תחזית מזג אוויר (26/11-30/11), הפרשי גובה (1,900m באטלס) וכלל שקיעה (~18:15)</h2>
+      <!-- LIVE_NIGHTLY_WEATHER_START -->
+      <p id="live-nightly-weather-box" style="margin-top:6px;padding:8px 10px;border-radius:6px;background:rgba(245,158,11,0.14);border-inline-start:4px solid #f59e0b;" data-he="🔄 תחזית רב-מודלית למרקש והרי האטלס (26/11-30/11): שמש חמימה של 22°-24°C ביום במרקש, 10°-13°C בערב במדבר אגפאי, ו-8°-14°C בכפר ההררי Armed בגובה 1,900m למרגלות פסגת טובקאל המושלגת." data-en="🔄 Multi-Model Forecast for Marrakesh &amp; High Atlas (26/11-30/11): Crisp 22°-24°C sunny days in Marrakesh, dropping to 10°-13°C after sunset in Agafay Desert and 8°-14°C at 1,900m in Armed village in the High Atlas.">🔄 <strong>תחזית רב-מודלית למרקש והרי האטלס (26/11-30/11):</strong> <code>22°-24°C</code> שמשי ביום במרקש, ו-<code>8°-14°C</code> בטיפוס לכפר <code>Armed</code> (גובה 1,900m) ובערב במדבר אגפאי.</p>
+      <!-- LIVE_NIGHTLY_WEATHER_END --><p data-he="🌅 כלל האור באגפאי ובמנרה: לעולם אל תבקר במדבר הסלע Agafay בצהריים (אז הגבעות נראות שטוחות ודהויות). בשבת 28/11 אנחנו משלבים בלופ אחד את הטיפוס בהרי האטלס (Imlil &amp; Armed) בבוקר, חוצים את רמת Kik ומגיעים לאגפאי בדיוק ב-16:00 לשקיעה (18:15) כשהצללים הארוכים מפסלים את קניוני החרסית מול הרי האטלס המושלגים!" data-en="🌅 The Agafay &amp; Menara Light Rule: Never visit Agafay Stone Desert at midday when overhead light flattens the dunes. On Sat 28/11 we combine the High Atlas hike (Imlil &amp; Armed) in the morning, cross the Kik Plateau, and hit Agafay strictly at 16:00-18:30 when low sunset shadows carve the clay canyons against the snow-dusted Atlas wall!">🌅 <strong>כלל האור באגפאי:</strong> בשבת 28/11 מטפסים בהרי האטלס (<code>Imlil &amp; Armed</code>) בבוקר, חוצים את <code>Kik Plateau</code> ומגיעים ל-<strong>Agafay בדיוק ב-16:00 לשקיעה (18:15)</strong> כשהצללים מפסלים את גבעות החרסית.</p>
+    </section>
+
+    <nav class="day-tabs" aria-label="סינון לפי ימים">
+      <button type="button" class="day-tab" data-day="all" aria-pressed="true" onclick="filterDay('all')" data-he="כל 5 הימים (16 תחנות)" data-en="All 5 Days (16 Stops)">כל 5 הימים (16 תחנות)</button>
+      <button type="button" class="day-tab" data-day="1" aria-pressed="false" onclick="filterDay('1')" data-he="יום ה׳ 26/11: כותוביה + מדרסת בן יוסף + גגות המדינה" data-en="Thu 26/11: Koutoubia + Ben Youssef + Medina Rooftops">יום ה׳ 26/11: כותוביה + מדרסת בן יוסף + גגות המדינה</button>
+      <button type="button" class="day-tab" data-day="2" aria-pressed="false" onclick="filterDay('2')" data-he="יום ו׳ 27/11: ארמונות Bahia ו-El Badi + המלאח + שקיעה ב-Menara" data-en="Fri 27/11: Bahia &amp; El Badi Palaces + Mellah + Menara Sunset">יום ו׳ 27/11: ארמונות Bahia ו-El Badi + המלאח + שקיעה ב-Menara</button>
+      <button type="button" class="day-tab" data-day="3" aria-pressed="false" onclick="filterDay('3')" data-he="יום ש׳ 28/11: הרי האטלס (Imlil &amp; Armed 1,900m) + רמת Kik + שקיעה באגפאי" data-en="Sat 28/11: High Atlas Hike (Imlil &amp; Armed) + Kik Plateau + Agafay Sunset">יום ש׳ 28/11: הרי האטלס (Imlil &amp; Armed 1,900m) + רמת Kik + שקיעה באגפאי</button>
+      <button type="button" class="day-tab" data-day="4" aria-pressed="false" onclick="filterDay('4')" data-he="יום א׳ 29/11: חזית הלבנים Studio KO + אר-דקו ותחנת ONCF ב-Gueliz + חומות המערב + טיסה" data-en="Sun 29/11 + Mon: Studio KO Brick Facade + Gueliz Art Deco &amp; ONCF Hall + Western Ramparts + Flight">יום א׳ 29/11: חזית הלבנים Studio KO + אר-דקו ותחנת ONCF ב-Gueliz + חומות המערב + טיסה</button>
+    </nav>
+
+    <div id="itinerary-content" aria-live="polite" aria-atomic="true"></div>
+
+    <section class="logistics-banner" aria-label="הוסטל ולינת הבסיס">
+      <h2 data-he="🛏️ ריאד/דירת הבסיס במרקש (4 לילות: חמישי-שני 26-30/11, מאומת בזמן אמת עם מדגם ביקורות ענק ואבטחת Brigade Touristique)" data-en="🛏️ Verified Base Riad/Apartment in Marrakesh (4 Nights: Thu-Mon 26-30/11, High Review Sample &amp; Tourist Police Zone)">🛏️ ריאד/דירת הבסיס במרקש (4 לילות: חמישי-שני 26-30/11, מאומת בזמן אמת עם מדגם ביקורות ענק ואבטחת Brigade Touristique)</h2>
+      <p data-he="📍 4 לילות במרקש (26/11-30/11, באזור המאובטח של Riad Zitoun Lakdim / Kasbah צמוד למטה משטרת התיירות Brigade Touristique בכותוביה ובג׳מע אל-פנא = 0€ מוניות ודיסקרטיות מלאה):" data-en="📍 4 Nights in Marrakesh (26/11-30/11, in the policed Riad Zitoun Lakdim / Kasbah zone next to Brigade Touristique HQ at Koutoubia &amp; Jemaa el-Fnaa):">📍 <strong>4 לילות במרקש (26/11-30/11, 250-600m מתחנת <code>L19 Koutoubia</code> לשדה התעופה וממטה משטרת התיירות <code>Brigade Touristique</code>):</strong> <a href="https://www.booking.com/hotel/ma/sindi-sud.html?checkin=2026-11-26&amp;checkout=2026-11-30&amp;group_adults=1&amp;no_rooms=1&amp;selected_currency=EUR" target="_blank" rel="noopener">🥇 #1 Sindi Sud ב-Booking (2,521 חוות דעת, ציון מיקום 9.5/10, 250m מג׳מע אל-פנא וארמון בהיה: חדר יחיד פרטי Economy Single ב-82€ לכל 4 הלילות = 20.50€/לילה, או 101€ עם ביטול חינם ותשלום במקום)</a> · <a href="https://www.booking.com/hotel/ma/riad-papadou-marrakech.html?checkin=2026-11-26&amp;checkout=2026-11-30&amp;group_adults=1&amp;no_rooms=1&amp;selected_currency=EUR" target="_blank" rel="noopener">🥇 #1b Riad Papadou ב-Booking (ציון 8.9 מ-585 ביקורות, 600m מהמרכז: חדר זוגי פרטי עם מקלחת פרטית Ensuite ב-202€ ל-4 לילות = 50.50€/לילה)</a> · <a href="https://www.booking.com/hotel/ma/dar-mirai.html?checkin=2026-11-26&amp;checkout=2026-11-30&amp;group_adults=1&amp;no_rooms=1&amp;selected_currency=EUR" target="_blank" rel="noopener">🥈 Dar Mirai ב-Booking (ציון 9.0 מ-582 ביקורות: חדר פרטי + ארוחת בוקר וביטול חינם ב-216€ ל-4 לילות = 54€/לילה)</a> · <a href="https://www.booking.com/hotel/ma/waka-waka-hostel.html?checkin=2026-11-26&amp;checkout=2026-11-30&amp;group_adults=1&amp;no_rooms=1&amp;selected_currency=EUR" target="_blank" rel="noopener">🥉 Waka Waka Hostel ב-Booking (ציון 9.4 מ-615 ביקורות: דורם 4 מיטות עם מקלחת במסדרון + ביטול חינם ב-40€ ל-4 לילות = 10€/לילה)</a> · <a href="https://www.booking.com/hotel/ma/riad-dar-sahrawi.html?checkin=2026-11-26&amp;checkout=2026-11-30&amp;group_adults=1&amp;no_rooms=1&amp;selected_currency=EUR" target="_blank" rel="noopener">🥉 Riad dar sahrawi ב-Booking (ציון 9.1 מ-1,794 ביקורות: דורם 4 מיטות + ארוחת בוקר כלולה ב-78€ ל-4 לילות = 19.50€/לילה)</a> · <a href="https://www.hostelworld.com/pwa/hosteldetails.php/Riad-Layla-Rouge/Marrakech/53643?from=2026-11-26&amp;to=2026-11-30&amp;guests=1" target="_blank" rel="noopener">🏠 Riad Layla Rouge ב-Hostelworld (ציון 9.4, 599m מתחנת L19: חדר פרטי Ensuite ב-47.56€/לילה + מטבח וארוחת בוקר)</a> · <a href="https://www.booking.com/searchresults.html?ss=Marrakech&amp;dest_id=-38833&amp;dest_type=city&amp;checkin=2026-11-26&amp;checkout=2026-11-30&amp;group_adults=1&amp;no_rooms=1&amp;selected_currency=EUR&amp;order=price&amp;nflt=review_score%3D80%3Bdistance%3D2000%3Boos%3D1" target="_blank" rel="noopener">🔍 כל הריאדים והדירות במרקש ב-Booking (ביורו)</a></p>
+      <p style="font-size:0.86rem;color:var(--muted);margin-top:6px;" data-he="🛡️ ביטחון ופרופיל נמוך לישראלי במרקש: ציר Riad Zitoun Lakdim / Kasbah / Bab Doukkala הוא האזור המתוייר והמאובטח ביותר בעיר, בצמוד למטה משטרת התיירות (Brigade Touristique) בכותוביה ובג׳מע אל-פנא עם סיורים סמויים וגלויים 24/7. בית הכנסת ההיסטורי צלאת אל-עזמה ובית העלמין היהודי ב-Mellah פעילים ומאובטחים קבוע (5 דק׳ הליכה מ-Sindi Sud). בהזמנת חדר יחיד פרטי ב-Sindi Sud (82€-101€ ל-4 לילות, הפרש זניח של 4€-23€ מדורם!) נהנים מפרטיות מלאה מאחורי דלת נעולה ואפס שיחות חולין (&quot;Where are you from?&quot;) בחדר משותף." data-en="🛡️ Low-Profile Israeli Safety in Marrakesh: The Riad Zitoun Lakdim / Kasbah / Bab Doukkala axis is the most heavily policed tourist zone in the city, next to the Brigade Touristique HQ at Koutoubia &amp; Jemaa el-Fnaa. Booking a private single room at Sindi Sud (82€-101€ for 4 nights, only 4€-23€ more than a dorm) ensures 100% locked-door privacy.">🛡️ <strong>ביטחון ופרופיל נמוך לישראלי במרקש:</strong> ציר <code>Riad Zitoun Lakdim / Kasbah / Bab Doukkala</code> הוא האזור המתוייר והמאובטח ביותר בעיר, בצמוד למטה משטרת התיירות (<code>Brigade Touristique</code>) בכותוביה ובג׳מע אל-פנא עם סיורים סמויים וגלויים 24/7. בית הכנסת ההיסטורי צלאת אל-עזמה ובית העלמין היהודי ב-<code>Mellah</code> פעילים ומאובטחים קבוע (5 דק׳ הליכה מ-<code>Sindi Sud</code>). בהזמנת חדר יחיד פרטי ב-<code>Sindi Sud</code> (<code>82€-101€</code> ל-4 לילות, הפרש זניח של <code>4€-23€</code> מדורם) נהנים מפרטיות מלאה מאחורי דלת נעולה ואפס שיחות חולין בחדר משותף.</p>
+    </section>
+
+    <section aria-label="אתרים וכפרים שנחתכו">
+      <h2 style="font-size:0.92rem;color:var(--accent);margin-top:10px;" data-he="✂️ Tier 3 - בית הקברות לאתרים שנחתכו (Skipped / Cut List)" data-en="✂️ Tier 3 - Skipped / Cut Graveyard (Why We Cut These)">✂️ Tier 3 - בית הקברות לאתרים שנחתכו (Skipped / Cut List)</h2>
+      <table class="graveyard-table">
+        <thead>
+          <tr>
+            <th data-he="אתר / כפר שנחתך" data-en="Cut Site / Village">אתר / כפר שנחתך</th>
+            <th data-he="ציון (/20)" data-en="Score (/20)">ציון (/20)</th>
+            <th data-he="סיבת החיתוך ההנדסית (10-Second Audit)" data-en="Engineering Cut Reason (10-Second Audit)">סיבת החיתוך ההנדסית (10-Second Audit)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Ouzoud Waterfalls Day Bus</strong></td>
+            <td>11/20 (A:3, B:3, C:1, D:4)</td>
+            <td data-he="נסיעת מיניבוס מתישה של 6 שעות הלוך-חזור בכבישים מפותלים; הלופ המשולב של Imlil + Kik + Agafay קרוב פי 2 ודרמטי פי 3." data-en="Exhausting 6-hour round-trip minibus ride; the combined Imlil High Atlas + Kik Plateau + Agafay Sunset loop is twice as close and 3x more dramatic.">נסיעת מיניבוס מתישה של 6 שעות הלוך-חזור בכבישים מפותלים; הלופ המשולב של Imlil + Kik + Agafay קרוב פי 2 ודרמטי פי 3.</td>
+          </tr>
+          <tr>
+            <td><strong>Essaouira Day Trip</strong></td>
+            <td>12/20 (A:4, B:4, C:1, D:3)</td>
+            <td data-he="6 שעות באוטובוס הלוך-חזור לעיר חוף אחרי שכבר חווית את האוקיינוס האטלנטי והמצודות של רבאט וקזבלנקה ב-06-08/11." data-en="6 hours on a bus for an Atlantic port town right after you already experienced the Atlantic citadels of Rabat &amp; Casablanca on Nov 6-8.">6 שעות באוטובוס הלוך-חזור לעיר חוף אחרי שכבר חווית את האוקיינוס האטלנטי והמצודות של רבאט וקזבלנקה ב-06-08/11.</td>
+          </tr>
+          <tr>
+            <td><strong>Quad Biking / Camel Tourist Traps in Palmeraie</strong></td>
+            <td>6/20 (A:1, B:1, C:2, D:2)</td>
+            <td data-he="מלכודת תיירים מאובקת במטע דקלים דליל ליד כבישים עירוניים; מדבר האבן של Agafay בשקיעה אמיתי ופוטוגני לאין שיעור." data-en="Dusty tourist trap in a scrubby suburban palm grove; Agafay’s lunar canyon ridges at sunset are infinitely superior.">מלכודת תיירים מאובקת במטע דקלים דליל ליד כבישים עירוניים; מדבר האבן של Agafay בשקיעה אמיתי ופוטוגני לאין שיעור.</td>
+          </tr>
+          <tr>
+            <td><strong>Musée YSL Interior &amp; Jardin Majorelle Ticket (330 MAD / €30)</strong></td>
+            <td>11/20 (G:2, E:2, V:1, T:3, L:3)</td>
+            <td data-he="פנים מוזיאון YSL הוא תצוגת שמלות וסקיצות אופנה בחדרים חשוכים, ו-Jardin Majorelle הוא גן קקטוסים קטן וצפוף עם תור סלפי מול קיר כחול אחד; את אדריכלות הלבנים של Studio KO רואים ב-100% מהרחוב בחוץ ב-0 MAD." data-en="YSL interior is a dark fashion/dress display and Majorelle is a crowded 1-acre cactus garden queue; 100% of Studio KO’s terracotta brick architecture is visible outside from the street for 0 MAD.">פנים מוזיאון YSL הוא תצוגת שמלות וסקיצות אופנה בחדרים חשוכים, ו-Jardin Majorelle הוא גן קקטוסים קטן וצפוף עם תור סלפי מול קיר כחול אחד; את אדריכלות הלבנים של Studio KO רואים ב-100% מהרחוב בחוץ ב-0 MAD.</td>
+          </tr>
+          <tr>
+            <td><strong>Saadian Tombs Interior Queue (100 MAD)</strong></td>
+            <td>11/20 (G:4, E:3, V:2, T:0, L:2)</td>
+            <td data-he="תור עמידה איטי של 45 עד 60 דקות רק כדי להציץ ל-30 שניות מפתח דלת לחדר אחד (אולם 12 העמודים) בלי יכולת להיכנס לחלל; מדרסת בן יוסף וארמון באהיה נותנים חללים פתוחים וגדולים פי 10." data-en="45-60 minute single-file queue just to peek for 30 seconds from a roped doorway into one room; Ben Youssef Madrasa and Bahia Palace offer 10x larger walk-through spaces.">תור עמידה איטי של 45 עד 60 דקות רק כדי להציץ ל-30 שניות מפתח דלת לחדר אחד (אולם 12 העמודים) בלי יכולת להיכנס לחלל; מדרסת בן יוסף וארמון באהיה נותנים חללים פתוחים וגדולים פי 10.</td>
+          </tr>
+          <tr>
+            <td><strong>Maison de la Photographie (60 MAD) &amp; Le Jardin Secret (80 MAD)</strong></td>
+            <td>12/20 (G:2, E:3, V:2, T:2, L:3)</td>
+            <td data-he="מוזיאון הצילום הוא 3 קומות של תמונות ממוסגרות על קירות, ו-Jardin Secret הוא גן חצר שטוח וקטן; הוחלפו בחינם בחצרות החאנים וקרני האור של הסוק ובתצפית גג ישירה מעל כיכר ג׳מע אל-פנא." data-en="3 floors of framed wall photos and a small flat riad garden; replaced for free with historic caravanserai courtyards, sunbeam-slatted souks, and a high balcony directly over Jemaa el-Fna.">מוזיאון הצילום הוא 3 קומות של תמונות ממוסגרות על קירות, ו-Jardin Secret הוא גן חצר שטוח וקטן; הוחלפו בחינם בחצרות החאנים וקרני האור של הסוק ובתצפית גג ישירה מעל כיכר ג׳מע אל-פנא.</td>
+          </tr>
+          <tr>
+            <td><strong>Agdal Gardens (Jardins de l’Agdal)</strong></td>
+            <td>10/20 (G:2, E:2, V:4, T:1, L:1)</td>
+            <td data-he="הליכה מתישה של 3 ק״מ בשמש בין חומות מטעי זיתים מאובקים אל בריכת השקיה שטוחה שמשכפלת את מה שכבר רואים ב-Menara." data-en="Exhausting 3km walk through dusty walled olive orchards to a flat water basin that duplicates Menara Gardens.">הליכה מתישה של 3 ק״מ בשמש בין חומות מטעי זיתים מאובקים אל בריכת השקיה שטוחה שמשכפלת את מה שכבר רואים ב-Menara.</td>
+          </tr>
+          <tr>
+            <td><strong>Dar El Bacha Interior — Musée des Confluences (60 MAD)</strong></td>
+            <td>12/20 (G:3, E:2, V:2, T:2, L:3)</td>
+            <td data-he="חצר ריאד בודדת אחת מוקפת חדרי ויטרינות של חפצי נוי וכלים (מוזיאון Confluences) עם תור כניסה של באי בית הקפה; כפילות ישירה וקטנה בהרבה לעומת מדרסת בן יוסף ו-80 הדונם של ארמון Bahia שכבר ביקרת בהם בימים 1-2." data-en="A single central courtyard surrounded by indoor artifact vitrines (Musée des Confluences) and coffee-shop entrance queues; redundant and much smaller after experiencing Ben Youssef Madrasa and the 8-hectare Bahia Palace on Days 1-2.">חצר ריאד בודדת אחת מוקפת חדרי ויטרינות של חפצי נוי וכלים (מוזיאון Confluences) עם תור כניסה של באי בית הקפה; כפילות ישירה וקטנה בהרבה לעומת מדרסת בן יוסף ו-80 הדונם של ארמון Bahia שכבר ביקרת בהם בימים 1-2.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <aside class="map-pane" aria-label="מפת המסלול">
+    <div class="map-mode-bar">
+      <span data-he="מקרא סיכות: ★ צהוב/כתום = Tier 1 Anchor (מקסימום 3 ביום) | ● עיגול = Tier 2 Spine ליניארי" data-en="Pin Legend: ★ Gold Star = Tier 1 Crown Anchor (Max 3/day) | ● Circle = Tier 2 Linear Spine"><strong>מקרא סיכות:</strong> ★ צהוב/כתום = Tier 1 Anchor (מקסימום 3 ביום) | ● עיגול = Tier 2 Spine ליניארי</span>
+      <span id="active-filter-label" data-he="מציג: כל 4 הימים" data-en="Showing: All 4 Days">מציג: כל 4 הימים</span>
+    </div>
+    <div id="map"></div>
+    <div id="svg-fallback"></div>
+  </aside>
+</div>
+
+<!-- ELADB_SPEECH_VOICE_GUARD_START -->
+<script>
+(function() {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  var NON_STANDARD_VOICE_REGEX_ = /albert|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|hysterical|junior|organ|pipe|princess|ralph|trinoids|vicki|whisper|zarvox|fred|espeak|novelty|rocko|shelley|grandma|grandpa|eddy|flo|reed|sandy|kathy|eloquence|jester|superstar|wobble/i;
+  window.pickStandardSpeechVoice = function(targetLang) {
+    var voices = window.speechSynthesis.getVoices() || [];
+    var wantHe = String(targetLang || '').toLowerCase().indexOf('he') === 0 || String(targetLang || '').toLowerCase().indexOf('iw') === 0;
+    var bestVoice = null;
+    var bestScore = -1;
+    for (var i = 0; i < voices.length; i++) {
+      var v = voices[i];
+      if (!v) continue;
+      var name = String(v.name || '');
+      var lang = String(v.lang || '').toLowerCase().replace('_', '-');
+      if (NON_STANDARD_VOICE_REGEX_.test(name)) continue;
+      if (wantHe) {
+        if (lang.indexOf('he') !== 0 && lang.indexOf('iw') !== 0 && !/hebrew|עברית|carmit/i.test(name)) continue;
+        var scoreHe = 20 + (v.localService === false ? 25 : 0);
+        if (/google|natural|neural|online|carmit|אסף|asaf/i.test(name)) scoreHe += 80;
+        if (scoreHe > bestScore) { bestScore = scoreHe; bestVoice = v; }
+      } else {
+        if (lang.indexOf('en') !== 0) continue;
+        var scoreEn = 10 + (lang === 'en-us' ? 30 : 20) + (v.localService === false ? 15 : 0);
+        if (/google us english/i.test(name)) scoreEn += 100;
+        else if (/google uk english female/i.test(name)) scoreEn += 90;
+        else if (/google uk english male/i.test(name)) scoreEn += 85;
+        else if (/natural|neural|online|premium|enhanced|siri/i.test(name)) scoreEn += 80;
+        else if (/\b(samantha|ava|allison|alex|victoria|karen|daniel|serena|zira|david|jenny|aria|guy|moira)\b/i.test(name)) scoreEn += 70;
+        else if (v.default) scoreEn += 40;
+        if (scoreEn > bestScore) { bestScore = scoreEn; bestVoice = v; }
+      }
+    }
+    return bestVoice;
+  };
+})();
+</script>
+<!-- ELADB_SPEECH_VOICE_GUARD_END -->
+
+<script>
+let currentLang = 'he';
+let captionsEnabled = true;
+
+const CITY_INTRO_NARRATION = {
+  "he": "ברוכים הבאים למדריך האדריכלות וההרים של מרקש, הרי האטלס הגבוה ומדבר אגפאי. שלושה כללי ברזל לטיול הזה: ראשית, נחיתה בחמישי באחת עשרה וחצי בבוקר, יוצאים מהטרמינל ועולים על אוטובוס האקספרס אלסה קו תשע עשרה אל מסגד הכותוביה, וקונים מהנהג כרטיס הלוך-חזור בחמישים דירהם ושומרים את הקבלה ליום שני. שנית, חובה להחזיק כרטיס עלייה למטוס מודפס על נייר עבור טיסת החזור של יום שני בתשע ארבעים וחמש בבוקר, ולהתייצב בתחנת האוטובוס בכותוביה בשש שלושים וחמש בבוקר כדי להגיע לשדה שעהורבעים וחמש דקות לפני סגירת הדלפק. שלישית, בשבת אנחנו מבצעים לופ חד-כיווני מושלם: טיפוס בוקר בהרי האטלס מאימליל לכפר הברברי ארמד בגובה אלף תשע מאות מטר מול פסגת טובקאל, חצייה דרך רמת קיק, והגעה למדבר הסלע אגפאי בדיוק בארבע אחר הצהריים לאור השקיעה.",
+  "en": "Welcome to your architectural and mountain guide for Marrakesh, the High Atlas, and the Agafay Stone Desert. Three golden rules for this trip: first, upon landing Thursday at 11:30 AM, board the ALSA L19 Airport Express bus right outside the terminal to Koutoubia Mosque, buy the 50-dirham return ticket, and keep the printed ticket for Monday morning. Second, carry your A4 printed paper boarding pass for Monday’s 09:45 AM flight, and be at the Koutoubia L19 stop at 06:35 AM so you reach the terminal by 07:00 AM to clear the Ryanair document stamp desk and security queues. Third, on Saturday we execute a one-way mountain-to-desert loop: morning High Atlas hike from Imlil to Armed at 1,900 meters facing Mount Toubkal, crossing the Kik Plateau, and arriving at Agafay Stone Desert strictly at 4:00 PM for sunset."
+};
+
+const ITINERARY_DATA = {
+  "days": [
+    {
+      "day": "1",
+      "title": "יום 1 (חמישי 26/11, 11:30 - 21:30): נחיתה ב-RAK -> מסגד Koutoubia -> מדרסת Ben Youssef -> גגות המדינה -> שקיעה ב-Jemaa el-Fna",
+      "title_en": "Day 1 (Thu 26/11, 11:30 - 21:30): Land at RAK -> Koutoubia Mosque -> Ben Youssef Madrasa -> Medina Rooftops -> Jemaa el-Fna Blue Hour",
+      "subtitle": "אוטובוס אקספרס L19 מהשדה (12 דק׳, 50 MAD הלוך-חזור) -> צ׳ק-אין בריאד -> הציר הגיאומטרי של צפון המדינה",
+      "subtitle_en": "ALSA Bus L19 from RAK (12m, 50 MAD return ticket) -> Riad check-in -> North Medina Geometric Courtyard Spine",
+      "color": "#059669",
+      "stops": [
+        {
+          "id": "d1-s1",
+          "num": 1,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 19/20 (A:5 B:5 C:5 D:4)",
+          "name": "Koutoubia Mosque & משטח העמודים של המסגד הראשון (1147, צריח בגובה 77m)",
+          "name_en": "Koutoubia Mosque, 77m Almohad Minaret & Footprint of the First 1147 Mosque",
+          "map_name": "Koutoubia Mosque Marrakesh",
+          "lat": 31.6248,
+          "lng": -7.9933,
+          "time": "12:45 - 13:30 (45m)",
+          "time_en": "12:45 - 13:30 (45m)",
+          "cost_he": "חינם לחלוטין (0 MAD לרחבה, לעמודים העתיקים ולגני Lalla Hasna)",
+          "cost_en": "100% Free (0 MAD for the archaeological plaza & Lalla Hasna palm gardens)",
+          "dur_he": "45 דק׳",
+          "dur_en": "45 mins",
+          "skip_he": "🔥 חובה - המצפן האדריכלי של מרקש (אסור לבנות בעיר שום בניין גבוה מעץ דקל מלבדו)",
+          "skip_en": "🔥 MUST-SEE - The architectural compass of Marrakesh",
+          "isMust": true,
+          "in_he": "חוץ בלבד (כניסה למסגד למוסלמים בלבד): הקף את הצריח אל הרחבה הצפון-מערבית שבה חשופים בסיסי העמודים של המסגד הראשון שנבנה בזווית שגויה.",
+          "in_en": "Outside Plaza & Gardens: Walk around to the northwest archaeological plaza where the stone column bases of the misaligned first 1147 mosque stand exposed.",
+          "wow_he": "למה זה וואו: צריח אבן החול האדמדם מ-1158 בגובה 77 מטר שהפך לאב-הטיפוס של החיראלדה בסביליה ומגדל חסן ברבאט, מוקף שדרות דקלים ובריכות השתקפות.",
+          "wow_en": "Why It Is WOW: The 77m red sandstone Almohad masterpiece that served as the direct architectural prototype for Seville’s Giralda and Rabat’s Hassan Tower.",
+          "enroute_he": "על הדרך מהשדה: אוטובוס L19 מוריד אותך ממש בצל הצריח של הכותוביה בתוך 12 דקות מהטרמינל.",
+          "enroute_en": "En-Route from RAK: Bus L19 drops you right at the foot of the Koutoubia minaret just 12 minutes after leaving the airport.",
+          "wx_he": "☀️ 23°C שמשי ונעים.",
+          "wx_en": "☀️ 23°C crisp sunshine.",
+          "photo_tip": "עדשה 1x מבין בסיסי העמודים העתיקים בצד הצפון-מערבי כלפי הצריח.",
+          "photo_tip_en": "1x lens from the ruined stone pillar grid on the northwest terrace looking up at the minaret.",
+          "move": "15 דק׳ הליכה צפונה דרך סמטאות הסוק המקורות אל מדרסת בן יוסף",
+          "move_en": "15m walk north through the slatted-wood souk alleys to Ben Youssef Madrasa"
+        },
+        {
+          "id": "d1-s2",
+          "num": 2,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 20/20 (A:5 B:5 C:5 D:5)",
+          "name": "Ben Youssef Madrasa & Almoravid Koubba (שיא הגיאומטריה האסלאמית במרקש - 1565)",
+          "name_en": "Ben Youssef Madrasa & 1117 Almoravid Koubba (Peak Islamic Geometric Symmetry)",
+          "map_name": "Ben Youssef Madrasa Marrakesh",
+          "lat": 31.6318,
+          "lng": -7.9869,
+          "time": "13:50 - 15:10 (80m)",
+          "time_en": "13:50 - 15:10 (80m)",
+          "cost_he": "50 MAD (~4.60€)",
+          "cost_en": "50 MAD (~€4.60)",
+          "dur_he": "80 דק׳",
+          "dur_en": "80 mins",
+          "skip_he": "🔥 חובה מוחלטת - החלל הסימטרי המושלם ביותר במרוקו",
+          "skip_en": "🔥 ABSOLUTE MUST-SEE - The single greatest geometric courtyard in Morocco",
+          "isMust": true,
+          "in_he": "פנים + קומה שנייה (מוצדק ב-100% ב-4.60€): כניסה לחצר המרכזית עם בריכת השיש השחורה ועלייה ל-130 חדרי הסטודנטים המקיפים את החצר מלמעלה.",
+          "in_en": "Inside Courtyard & Upper Galleries (100% Worth €4.60): Explore the central marble reflecting pool and climb to the second-floor carved cedar windows.",
+          "wow_he": "למה זה וואו: מכללה אסלאמית מהמאה ה-16 שבה כל סנטימטר מכוסה בפסיפס זליז׳ גיאומטרי, קירות סטוקו מגולפים וכיפות עץ ארז מהרי האטלס המשתקפים בבריכת שיש.",
+          "wow_en": "Why It Is WOW: A 16th-century Quranic college where intricate zellij mosaic, honeycomb stucco muqarnas, and carved Atlas cedarwood mirror perfectly in a central marble basin.",
+          "enroute_he": "על הדרך: ממש מחוץ לשער המדרסה נמצאת ה-Koubba Almoravid מ-1117 — המבנה העתיק ביותר ששרד במרקש, השקוע 7 מטרים מתחת למפלס הרחוב של היום.",
+          "enroute_en": "En-Route: Right outside the Madrasa sits the 1117 Almoravid Koubba, excavated 7 meters below modern street level.",
+          "wx_he": "☀️ 24°C: אור צהריים מאיר את קירות הסטוקו הלבנים בחצר הפתוחה.",
+          "wx_en": "☀️ 24°C: Overhead sun illuminates the carved stucco walls of the open courtyard.",
+          "photo_tip": "עדשה 0.5x נמוכה מקצה בריכת המים לקבלת השתקפות סימטרית מלאה, ועוד תמונה מחלון העץ בקומה השנייה.",
+          "photo_tip_en": "Low 0.5x ultra-wide at the edge of the marble pool for a mirror reflection, plus a 1x shot framed through the upstairs cedar window.",
+          "move": "3 דק׳ הליכה דרומה לתוך ציר חאנות הסוחרים וקרני האור של הסוק",
+          "move_en": "3m walk south into the historic Foundouks and sunbeam-slatted Souks"
+        },
+        {
+          "id": "d1-s3",
+          "num": 3,
+          "isTier1": false,
+          "tier": "Tier 2 Spine | 18/20 (G:4 E:5 V:4 T:3 L:2)",
+          "name": "ציר חאנות הסוחרים וקרני האור בסוק (Foundouk El Amri, סוק הנפחים Souk Haddadine ומזרקת Mouassine מ-1570)",
+          "name_en": "Historic Caravanserai Courtyards & Slatted Sunbeam Souks (Foundouk El Amri, Souk Haddadine & 1570 Mouassine Fountain)",
+          "map_name": "Fontaine Mouassine Marrakesh",
+          "lat": 31.6295,
+          "lng": -7.9885,
+          "time": "15:15 - 16:45 (90m)",
+          "time_en": "15:15 - 16:45 (90m)",
+          "cost_he": "[חוץ + חצרות פתוחות] חינם לחלוטין (0 MAD — מדלגים על 60 MAD למוזיאון הצילום ועל 80 MAD ל-Jardin Secret)",
+          "cost_en": "[Open Courtyards & Alleys] 100% Free (0 MAD — skip 60 MAD Photo Museum & 80 MAD Jardin Secret)",
+          "dur_he": "90 דק׳",
+          "dur_en": "90 mins",
+          "skip_he": "🔥 משחקי אור וצל תלת-ממדיים אמיתיים בסמטאות המקורות ובחצרות החאנים ב-0 MAD (במקום תמונות ממוסגרות על קיר)",
+          "skip_en": "🔥 Real 3D chiaroscuro light beams through slatted reed roofs & multi-story caravanserai courtyards at 0 MAD",
+          "isMust": true,
+          "in_he": "[תמהיל: 100% חלל סמטאות מקורות וחצרות חאן פתוחות ב-0 MAD]: הליכה רציפה ממדרסת בן יוסף דרך חצר הקומות של Foundouk El Amri, תקרות הקנים של Souk Haddadine ו-Souk des Teinturiers ועד קשתות העץ המגולפות של מזרקת Mouassine מ-1570.",
+          "in_en": "[100% Open Spatial Architecture at 0 MAD]: Continuous walk from Ben Youssef through the two-story Foundouk El Amri courtyard, the sunbeam-sliced reed roofs of Souk Haddadine, and the 1570 carved cedar Mouassine Fountain.",
+          "wow_he": "למה זה וואו: קרני שמש אלכסוניות של אחה״צ חודרות דרך תקרות הקנים הקלועות ויוצרות פסי אור וצל גיאומטריים עזים לאורך הסמטאות, ללא שום כרטיס כניסה וללא ויטרינות.",
+          "wow_en": "Why It Is WOW: Diagonal afternoon sunbeams slice through woven reed canopies to cast dramatic geometric light-and-shadow stripes across the earthen alleys and historic merchant courtyards.",
+          "enroute_he": "על הדרך: ציר ליניארי לחלוטין מצפון המדינה דרומה אל כיכר ג׳מע אל-פנא.",
+          "enroute_en": "En-Route: Pure north-to-south linear spine connecting Ben Youssef directly to Jemaa el-Fna.",
+          "wx_he": "☀️ 23°C מוצל ונעים מתחת לתקרות הקנים.",
+          "wx_en": "☀️ 23°C shaded under the slatted canopies.",
+          "photo_tip": "עדשה 1x לאורך סמטת Souk Haddadine כשפסי האור האלכסוניים חוצים את החלל החשוך.",
+          "photo_tip_en": "1x lens down Souk Haddadine capturing diagonal sunbeams cutting through the shaded alley.",
+          "move": "5 דק׳ הליכה דרומה אל כיכר Jemaa el-Fna לשקיעה",
+          "move_en": "5m walk south to Jemaa el-Fna for sunset"
+        },
+        {
+          "id": "d1-s4",
+          "num": 4,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 19/20 (G:4 E:5 V:5 T:3 L:2)",
+          "name": "שקיעה ושעה כחולה מעל כיכר Jemaa el-Fna וצריח ה-Koutoubia המואר",
+          "name_en": "Jemaa el-Fna Sunset & Blue Hour Panorama Overlooking the Illuminated Koutoubia Minaret",
+          "map_name": "Jemaa el-Fnaa Marrakesh",
+          "lat": 31.6258,
+          "lng": -7.9891,
+          "time": "16:50 - 20:30 (שקיעה 18:15 + שעה כחולה בכיכר)",
+          "time_en": "16:50 - 20:30 (Sunset at 18:15 + Blue Hour over the square)",
+          "cost_he": "[חוץ + מרפסת גג] חינם בכיכר (0 MAD; כוס תה ב-15 MAD במרפסת גג לתצפית עילית)",
+          "cost_en": "[Outside + Rooftop Balcony] Free plaza (0 MAD; 15 MAD mint tea for upper terrace panorama)",
+          "dur_he": "160 דק׳",
+          "dur_en": "160 mins",
+          "skip_he": "🔥 חובה מוחלטת - מחזה השעה הכחולה של ג׳מע אל-פנא מלמעלה",
+          "skip_en": "🔥 ABSOLUTE MUST-SEE - The Blue Hour smoke & lantern spectacle from above",
+          "isMust": true,
+          "in_he": "[חוץ + מרפסת גג פתוחה]: תצפית עילית ממרפסת גג במזרח הכיכר (למשל L’Adresse / Café de France / Glacier ב-17:45-18:45) ושיטוט ערב ברחבה העצומה.",
+          "in_en": "[Outside + Open Rooftop Balcony]: High balcony perspective over Jemaa el-Fna at 17:45-18:45 Blue Hour followed by an evening walk across the square.",
+          "wow_he": "למה זה וואו: בדיוק ב-18:15 כשהשמש שוקעת מאחורי צריח הכותוביה, מאות עששיות ועמודי עשן עולים מכיכר ג׳מע אל-פנא תחת שמיים כחולים עמוקים.",
+          "wow_en": "Why It Is WOW: At 18:15 Blue Hour, hundreds of glowing lanterns and rising smoke plumes transform the vast plaza beneath the silhouetted Koutoubia minaret.",
+          "enroute_he": "על הדרך: יציאה ישירה מ-Rue Mouassine אל הקצה הצפוני של הכיכר.",
+          "enroute_en": "En-Route: Step directly out of Rue Mouassine onto the northern edge of the square.",
+          "wx_he": "🌅 19°C בשקיעה (18:15).",
+          "wx_en": "🌅 19°C at 18:15 sunset.",
+          "photo_tip": "עדשה 1x ב-Night Mode ממרפסת גבוהה בצד המזרחי של הכיכר כשצריח ה-Koutoubia מצולם בצללית מול השקיעה.",
+          "photo_tip_en": "1x Night Mode from an eastern rooftop balcony framing the glowing plaza smoke with the Koutoubia silhouette behind.",
+          "move": "הליכה קצרה ללינה בריאד",
+          "move_en": "Short walk back to your riad"
+        }
+      ]
+    },
+    {
+      "day": "2",
+      "title": "יום 2 (שישי 27/11, 08:00 - 20:30): ארמונות הדרום (Bahia & El Badi) -> המלאח היהודי -> שער Bab Agnaou וחומות הקסבה -> שקיעה ב-Menara",
+      "title_en": "Day 2 (Fri 27/11, 08:00 - 20:30): South Palaces (Bahia & El Badi) -> Jewish Mellah -> Bab Agnaou & Kasbah Ramparts -> Menara Sunset",
+      "subtitle": "התייצבות ב-08:00 בבוקר בשער ארמון Bahia (לפני קבוצות התיירים!) -> רצף צמוד של 5 אתרי ענק בדרום המדינה -> שקיעה בבריכת Menara",
+      "subtitle_en": "Arrive 08:00 sharp at Bahia Palace gate (zero crowds!) -> Walkable cluster of 5 southern monuments -> Sunset reflection at Menara Gardens",
+      "color": "#d97706",
+      "stops": [
+        {
+          "id": "d2-s1",
+          "num": 5,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 20/20 (A:5 B:5 C:5 D:5)",
+          "name": "Bahia Palace (ארמון הווזיר הגדול בא-אחמד מ-1894 - כניסה ב-08:00 לחצרות ריקות!)",
+          "name_en": "Bahia Palace (1894 Grand Vizier’s 150-Room Zellij & Painted Cedar Palace at 08:00 Opening)",
+          "map_name": "Bahia Palace Marrakesh",
+          "lat": 31.6216,
+          "lng": -7.983,
+          "time": "08:00 - 09:20 (80m)",
+          "time_en": "08:00 - 09:20 (80m)",
+          "cost_he": "100 MAD (~9.20€)",
+          "cost_en": "100 MAD (~€9.20)",
+          "dur_he": "80 דק׳",
+          "dur_en": "80 mins",
+          "skip_he": "🔥 חובה ב-08:00 בבוקר בדיוק (ב-10:30 המקום מתמלא קבוצות)",
+          "skip_en": "🔥 MUST-SEE at 08:00 sharp before tour groups arrive",
+          "isMust": true,
+          "in_he": "פנים + חצרות (מוצדק ב-100%): עוברים בין חצר הריאד הקטן, תקרות עץ הארז הצבועות (Zouak) והחצר הגדולה המרוצפת שיש ופסיפס זליז׳ ברוחב 50 מטר.",
+          "in_en": "Inside Courtyards & Halls (100% Worth €9.20): Walk the Petit Riad, painted Zouak cedar ceilings, and the vast 50m marble Cour d’Honneur.",
+          "wow_he": "למה זה וואו: 80 דונם של חצרות שיש, מזרקות, ויטראז׳ים צבעוניים ותקרות עץ ארז מגולפות וצבועות ביד חופשית שבנו טובי האומנים מפאס במשך 14 שנה.",
+          "wow_en": "Why It Is WOW: A sprawling 8-hectare labyrinth of geometric marble courtyards, stained glass, and hand-painted cedar ceilings crafted over 14 years.",
+          "enroute_he": "על הדרך: הליכה של 10 דק׳ מהריאד באור הבוקר השקט.",
+          "enroute_en": "En-Route: 10-minute morning walk through quiet Medina streets.",
+          "wx_he": "☀️ 17°C קריר ב-08:00 בבוקר.",
+          "wx_en": "☀️ Crisp 17°C at 08:00 opening.",
+          "photo_tip": "עדשה 0.5x במרכז החצר הגדולה הריקה מאדם ב-08:15 בבוקר, ועוד זווית כלפי מעלה לתקרות ה-Zouak.",
+          "photo_tip_en": "0.5x across the empty Cour d’Honneur marble tiles at 08:15 AM, plus straight-up shots of the painted wooden ceilings.",
+          "move": "4 דק׳ הליכה אל ארמון El Badi והמלאח",
+          "move_en": "4m walk to El Badi Palace & the Mellah"
+        },
+        {
+          "id": "d2-s2",
+          "num": 6,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 19/20 (A:5 B:5 C:5 D:4)",
+          "name": "El Badi Palace & המלאח היהודי (ארמון האדמה הנגוחה השקוע מ-1578, בית הכנסת Slat Al Azama וכיכר הפחחים)",
+          "name_en": "El Badi Sunken Palace Ruins (1578), Jewish Mellah, Slat Al Azama Courtyard & Place des Ferblantiers",
+          "map_name": "El Badi Palace Marrakesh",
+          "lat": 31.6184,
+          "lng": -7.9859,
+          "time": "09:25 - 11:30 (125m)",
+          "time_en": "09:25 - 11:30 (125m)",
+          "cost_he": "100 MAD ל-El Badi + 20 MAD לבית הכנסת הכחול Slat Al Azama (1492)",
+          "cost_en": "100 MAD for El Badi + 20 MAD for the 1492 blue Slat Al Azama courtyard",
+          "dur_he": "125 דק׳",
+          "dur_en": "125 mins",
+          "skip_he": "🔥 חובה - קנה מידה ברוטליסטי אדיר מ-1578 וסיפור יהדות מרוקו",
+          "skip_en": "🔥 MUST-SEE - Colossal 1578 sunken architecture & 1492 Mellah heritage",
+          "isMust": true,
+          "in_he": "פנים + חוץ: הולכים לאורך בריכת הענק השקועה (90 מטר אורך!) והגנים התת-קרקעיים של El Badi, ועוברים למלאח היהודי מ-1558 ולחצר הכחולה-לבנה של בית הכנסת Slat Al Azama (מגורשי ספרד מ-1492).",
+          "in_en": "Inside Ruined Esplanade + Mellah Walk: Walk the 90m sunken reflecting pool and subterranean orange groves of El Badi, then step into the 1558 Jewish Mellah and the blue-and-white courtyard of the 1492 Slat Al Azama Synagogue.",
+          "wow_he": "למה זה וואו: חצר ענק שקועה בגודל אצטדיון כדורגל המוקפת חומות אדמה נגוחה (Pisé) אדומות וגבוהות שעליהן עשרות קני חסידות, עם בריכות מים ופרדסי תפוזים השקועים 4 מטרים מתחת לרצפה.",
+          "wow_en": "Why It Is WOW: A stadium-sized sunken courtyard framed by towering red rammed-earth walls crowned with stork nests, surrounding a 90m reflecting pool and sunken citrus orchards.",
+          "enroute_he": "על הדרך: עוברים ב-Place des Ferblantiers (כיכר אומני פנסי המתכת המחוררים).",
+          "enroute_en": "En-Route: Cross Place des Ferblantiers lined with geometric pierced-brass lantern workshops.",
+          "wx_he": "☀️ 21°C.",
+          "wx_en": "☀️ 21°C.",
+          "photo_tip": "עדשה 0.5x מקצה הבריכה המרכזית של El Badi ועדשה 1x מהטרסה העליונה מעל הפרדסים השקועים.",
+          "photo_tip_en": "0.5x along the 90m sunken pool axis and 1x from the upper rampart terrace.",
+          "move": "6 דק׳ הליכה אל שער האבן המלכותי Bab Agnaou וציר חומות הקסבה",
+          "move_en": "6m walk to Bab Agnaou Carved Stone Gate & Kasbah Ramparts"
+        },
+        {
+          "id": "d2-s3",
+          "num": 7,
+          "isTier1": false,
+          "tier": "Tier 2 Spine | 18/20 (G:4 E:4 V:5 T:3 L:2)",
+          "name": "שער האבן האלמוהאדי Bab Agnaou (1188), חזית מסגד הקסבה (צריח הטורקיז) וציר חומות הקסבה המלכותית",
+          "name_en": "Bab Agnaou Carved Stone Gate (1188), Kasbah Mosque Turquoise Minaret Exterior & Royal Ramparts Spine",
+          "map_name": "Bab Agnaou Marrakesh",
+          "lat": 31.6176,
+          "lng": -7.9906,
+          "time": "12:00 - 15:00 (מסלול רציף דרך חומות הקסבה ושער Bab Jdid ללא חור בלו״ז)",
+          "time_en": "12:00 - 15:00 (Continuous architectural walk along the Kasbah ramparts & Bab Jdid with zero schedule gap)",
+          "cost_he": "[חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על תור העמידה של שעה בקברים הסעדיים ב-100 MAD בשביל הצצה של 30 שניות מפתח דלת)",
+          "cost_en": "[Outside Only] 100% Free (0 MAD — skip the 100 MAD / 60-min single-file doorway queue at Saadian Tombs)",
+          "dur_he": "180 דק׳ (כולל הליכת החומות המבוצרות מ-Bab Agnaou דרך מסגד הקסבה ו-Bab Robb אל שדרת Hivernage)",
+          "dur_en": "180 mins (including the fortified rampart walk from Bab Agnaou past Kasbah Mosque and Bab Robb toward Hivernage)",
+          "skip_he": "🔥 100% אדריכלות מונומנטלית פתוחה ב-0 MAD ובלי לעמוד שעה בתור בשביל להציץ מחבל בפתח חדר",
+          "skip_en": "🔥 100% monumental open-air Almohad stone architecture at 0 MAD with zero doorway queue",
+          "isMust": true,
+          "in_he": "[חוץ בלבד - 100% חזיתות אבן וחומות]: צילום שער האבן המגולף Bab Agnaou (1188), כיכר מסגד הקסבה (Mosquée Moulay El Yazid) עם פסיפס הטורקיז, והליכה לאורך חומות האדמה האדומות המבוצרות דרך שער Bab Robb ו-Bab Jdid.",
+          "in_en": "[Outside Only - 100% Monumental Gateways & Ramparts]: Frame the carved 1188 Bab Agnaou gate, the turquoise-tiled Kasbah Mosque plaza, and walk the towering red ramparts past Bab Robb and Bab Jdid.",
+          "wow_he": "למה זה וואו: Bab Agnaou הוא שער האבן המלכותי מ-1188 החצוב באבן חול כחלחלה-אפורה עם 4 קשתות פרסה קונצנטריות וכתובת קוראנית גיאומטרית, ומיד מאחוריו מתנשא צריח הפסיפס של מסגד הקסבה.",
+          "wow_en": "Why It Is WOW: Bab Agnaou (1188) is carved from blue-grey Gueliz stone with four concentric foliated arches, framing the turquoise-and-white ceramic minaret of the Kasbah Mosque right behind it.",
+          "enroute_he": "על הדרך אל Menara (15:00-15:45): צועדים מ-Bab Jdid לאורך ציר הדקלים המלכותי של Hivernage ו-Avenue de la Ménara ישירות אל מאגר המים.",
+          "enroute_en": "En-Route to Menara (15:00-15:45): Walk from Bab Jdid down the palm-lined royal axis of Avenue de la Ménara straight to the reflecting basin.",
+          "wx_he": "☀️ 24°C.",
+          "wx_en": "☀️ 24°C.",
+          "photo_tip": "עדשה 1x אלכסונית על הטבעות החצובות של Bab Agnaou.",
+          "photo_tip_en": "1x diagonal shot highlighting the deep carved stone relief of Bab Agnaou.",
+          "move": "הליכה רציפה לאורך חומות Bab Jdid ושדרת הדקלים אל מאגר Menara (הגעה ב-15:45 לאור הזהב)",
+          "move_en": "Continuous walk along Bab Jdid ramparts & Avenue de la Ménara to Menara Basin (arrive 15:45 for Golden Hour)"
+        },
+        {
+          "id": "d2-s4",
+          "num": 8,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 19/20 (A:5 B:4 C:5 D:5)",
+          "name": "Menara Gardens & Pavilion (השתקפות ביתן הפירמידה הירוק מהמאה ה-19 והרי האטלס בשקיעה)",
+          "name_en": "Menara Gardens Reservoir & 1869 Green-Tiled Pavilion Reflecting the High Atlas at Sunset",
+          "map_name": "Menara Gardens Marrakesh",
+          "lat": 31.6133,
+          "lng": -8.0219,
+          "time": "15:45 - 18:30 (שקיעה 18:15)",
+          "time_en": "15:45 - 18:30 (Sunset at 18:15)",
+          "cost_he": "חינם לחלוטין לפארק ולמאגר המים העצום (0 MAD)",
+          "cost_en": "100% Free for the olive groves and giant reflecting basin (0 MAD)",
+          "dur_he": "120 דק׳",
+          "dur_en": "120 mins",
+          "skip_he": "🔥 חובה בשעת השקיעה - הפריים הקלאסי של מרקש מול הרי האטלס",
+          "skip_en": "🔥 MUST-SEE at Sunset - The signature postcard reflection of Marrakesh & the Atlas peaks",
+          "isMust": true,
+          "in_he": "חוץ בלבד (הקפת בריכת האגירה מהמאה ה-12): הולכים לאורך שפת המאגר הצפוני כך שהשמש השוקעת מאירה מהצד את הביתן ואת פסגות הרי האטלס מאחוריו.",
+          "in_en": "Outside Reservoir Walk: Stand along the northern embankment of the 200m-long 12th-century water basin looking south toward the pavilion and the High Atlas wall.",
+          "wow_he": "למה זה וואו: מאגר מים הידראולי עצום מהמאה ה-12 שממנו משתקפים יחד ביתן ה-Saadian/Alaouite מ-1869 עם גג הפירמידה הירוק ורכס הרי האטלס המושלג.",
+          "wow_en": "Why It Is WOW: A colossal 12th-century hydraulic basin acting as a giant mirror for the 1869 green-pyramid pavilion and the 4,000m snow-dusted High Atlas behind it.",
+          "enroute_he": "על הדרך חזרה: שדרת Avenue de la Ménara מובילה בקו ישר בחזרה אל מואזין ה-Koutoubia המואר.",
+          "enroute_en": "En-Route back: Avenue de la Ménara leads in a straight visual axis directly back toward the illuminated Koutoubia minaret.",
+          "wx_he": "🌅 20°C בשקיעה: אור ורוד-זהוב (Alpenglow) על הפסגות.",
+          "wx_en": "🌅 20°C at sunset: Warm alpenglow lighting up the snowfields on Mount Toubkal.",
+          "photo_tip": "עדשה 2x משפת הבריכה הצפונית שמכווצת את פסגות האטלס קרוב לגג הירוק של הביתן.",
+          "photo_tip_en": "2x telephoto from the north edge of the pool compressing the towering Atlas peaks right behind the green pyramid roof.",
+          "move": "חזרה למדינה לערב שני",
+          "move_en": "Return to the Medina for Friday evening"
+        }
+      ]
+    },
+    {
+      "day": "3",
+      "title": "יום 3 (שבת 28/11, 08:15 - 19:30): הלופ המשולב: הרי האטלס (Imlil & כפר Armed ב-1,900m) -> רמת Kik -> שקיעה במדבר Agafay",
+      "title_en": "Day 3 (Sat 28/11, 08:15 - 19:30): Combined Mountain-to-Desert Loop: High Atlas (Imlil & Armed 1,900m) -> Kik Plateau -> Agafay Sunset",
+      "subtitle": "איסוף/יציאה ב-08:15 -> קניון Asni -> טיפוס רגלי מהיר מ-Imlil (1,740m) לכפר הברברי המדורג Armed (1,900m) -> מעבר Kik -> שקיעה ב-Agafay (16:00-18:30)",
+      "subtitle_en": "Depart 08:15 -> Asni Gorge -> Fast mountain hike from Imlil (1,740m) to stepped Armed village (1,900m) -> Kik Plateau -> Agafay Stone Desert Sunset (16:00-18:30)",
+      "color": "#0284c7",
+      "stops": [
+        {
+          "id": "d3-s1",
+          "num": 9,
+          "isTier1": false,
+          "tier": "Tier 2 Spine | 17/20 (A:4 B:4 C:5 D:4)",
+          "name": "Tahanaout & קניון נהר ה-Rherhaia (עמק Asni וכפרי האדמה האדומה התלויים)",
+          "name_en": "Tahanaout Red-Earth Cliff Villages & Asni / Rherhaia River Gorge",
+          "map_name": "Asni High Atlas Morocco",
+          "lat": 31.2486,
+          "lng": -7.9814,
+          "time": "09:15 - 09:50 (35m)",
+          "time_en": "09:15 - 09:50 (35m)",
+          "cost_he": "חינם (0 MAD)",
+          "cost_en": "Free (0 MAD)",
+          "dur_he": "35 דק׳ (עצירות תצפית בעלייה לאטלס)",
+          "dur_en": "35 mins (scenic canyon viewpoints ascending into the Atlas)",
+          "skip_he": "⚡ על כביש העלייה הישיר אל Imlil",
+          "skip_en": "⚡ Directly on the mountain ascent road to Imlil",
+          "isMust": false,
+          "in_he": "חוץ: תצפית מעל ערוץ הנהר וכפרי הבוץ והאבן הברבריים הבנויים בקומות על צלע ההר.",
+          "in_en": "Outside Canyon Pullouts: View the stacked Berber pisé and stone villages clinging to the red-ochre canyon walls.",
+          "wow_he": "למה זה וואו: כפרים ברבריים שנראים כאילו צמחו מתוך סלע האדמה האדומה עצמו בתוך קניון הרים צר מתחת לפסגות של 4,000 מטר.",
+          "wow_en": "Why It Is WOW: Terraced earthen Amazigh villages blending seamlessly into stratified red, purple, and ochre mountain walls.",
+          "enroute_he": "על הדרך: ביום שבת מתקיים ב-Asni השוק הברברי השבועי של אנשי ההרים.",
+          "enroute_en": "En-Route: Saturday is the traditional weekly Amazigh mountain market day in Asni.",
+          "wx_he": "☀️ 16°C בהרים: אוויר הרים צלול.",
+          "wx_en": "☀️ 16°C crisp mountain air.",
+          "photo_tip": "עדשה 1x מנקודת התצפית מעל Tahanaout שמראה את קוביות הבתים האדומות על המצוק.",
+          "photo_tip_en": "1x lens framing the cubic earthen houses stacked up the canyon slope.",
+          "move": "25 דק׳ עלייה אל סוף הכביש ב-Imlil (1,740m)",
+          "move_en": "25m climb to the road-end trailhead at Imlil (1,740m)"
+        },
+        {
+          "id": "d3-s2",
+          "num": 10,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 20/20 (A:5 B:5 C:5 D:5)",
+          "name": "Imlil (1,740m) & טיפוס רגלי לכפר הברברי המדורג Armed (1,900m) ומפלי Imlil מול פסגת Toubkal (4,167m)",
+          "name_en": "Imlil (1,740m) & Mountain Hike to Stepped Armed Village (1,900m) Facing Mount Toubkal (4,167m)",
+          "map_name": "Armed Imlil High Atlas Morocco",
+          "lat": 31.1272,
+          "lng": -7.9168,
+          "time": "10:15 - 13:30 (195m)",
+          "time_en": "10:15 - 13:30 (195m)",
+          "cost_he": "חינם לשביל ההרים (ניתן לשלב עם סיור יומי מ-GetYourGuide ב-~25€ או Grand Taxi מאורגן)",
+          "cost_en": "Free mountain trail (or ~€25 organized Atlas + Agafay day loop / Grand Taxi)",
+          "dur_he": "3 ורבע שעות של הליכה הררית קצבית בעמק Mizane",
+          "dur_en": "3.25 hours of fast-paced alpine valley hiking",
+          "skip_he": "🔥 חובה מוחלטת - הנוף ההררי העוצמתי ביותר בצפון אפריקה",
+          "skip_en": "🔥 ABSOLUTE MUST-SEE - The highest & most dramatic mountain amphitheater in North Africa",
+          "isMust": true,
+          "in_he": "חוץ (מסלול טיפוס מעגלי): עולים מ-Imlil דרך חורשות אגוז המלך וטרסות ההשקיה אל הכפר המדורג Armed (הכפר הגבוה בעמק ב-1,900m) ויורדים דרך מפלי Imlil.",
+          "in_en": "Outside Mountain Loop Hike: Ascend the mule path through walnut groves and stone terraces to the fortress-like village of Armed (1,900m) facing snow-capped Jbel Toubkal (4,167m), descending via Imlil Waterfalls.",
+          "wow_he": "למה זה וואו: כפר אבן ברברי הבנוי במדרגות תלולות על מורנה קרחונית ענקית בגובה 1,900 מטר, כשממש מעליו סותמת את האופק פסגת ג׳בל טובקאל (4,167m — הפסגה הגבוהה בצפון אפריקה).",
+          "wow_en": "Why It Is WOW: A stepped stone Amazigh village perched atop a giant glacial moraine at 1,900m, directly confronting the snow-crowned 4,167m pyramid of Jbel Toubkal.",
+          "enroute_he": "על הדרך: שים לב לקסבה של Kasbah du Toubkal התלויה על שפיץ סלע בראש העמק.",
+          "enroute_en": "En-Route: Pass beneath the eagle-nest ramparts of Kasbah du Toubkal crowning the central crag.",
+          "wx_he": "🧥 12°-15°C בגובה 1,900m: שמש חזקה אך אוויר קריר; נעלי הליכה טובות ושכבת פליז קלה.",
+          "wx_en": "🧥 12°-15°C at 1,900m: Strong high-altitude sun with cool mountain air.",
+          "photo_tip": "עדשה 1x מהטרסה העליונה של כפר Armed שממסגרת את בתי האבן השטוחים יחד עם הפסגה המושלגת של Toubkal.",
+          "photo_tip_en": "1x lens from upper Armed village framing the flat-roofed stone houses against the snow-covered Toubkal massif.",
+          "move": "חצייה מערבה ברכב על כביש הרכס הגבוה של Kik Plateau (13:30 - 15:30)",
+          "move_en": "Drive west across the high-altitude Kik Plateau ridge road toward Lalla Takerkoust & Agafay"
+        },
+        {
+          "id": "d3-s3",
+          "num": 11,
+          "isTier1": false,
+          "tier": "Tier 2 Spine | 18/20 (A:5 B:4 C:5 D:4)",
+          "name": "Kik Plateau (רמת הגיר בגובה 1,800m) ותצפית סכר ואגם Lalla Takerkoust",
+          "name_en": "Kik Plateau High-Altitude Limestone Ridge (1,800m) & Lalla Takerkoust Lake Panorama",
+          "map_name": "Plateau du Kik Morocco",
+          "lat": 31.2615,
+          "lng": -8.0825,
+          "time": "14:15 - 15:30 (75m)",
+          "time_en": "14:15 - 15:30 (75m)",
+          "cost_he": "חינם (0 MAD)",
+          "cost_en": "Free (0 MAD)",
+          "dur_he": "75 דק׳ (נסיעת רכס פנורמית + עצירות תצפית)",
+          "dur_en": "75 mins (panoramic ridge crossing & cliff pullouts)",
+          "skip_he": "🔥 החוליה המקשרת הגאונית שמחברת את האטלס למדבר אגפאי בלי לחזור למרקש באמצע!",
+          "skip_en": "🔥 The scenic mountain bridge connecting Imlil directly to Agafay without backtracking to Marrakesh!",
+          "isMust": true,
+          "in_he": "חוץ: עצירה בשפת המצוק של רמת Kik בגובה 1,800 מטר מעל אגם הטורקיז של סכר Lalla Takerkoust (מ-1935).",
+          "in_en": "Outside Cliff Overlooks: Stop along the 1,800m escarpment edge looking straight down at the 7km turquoise ribbon of Lake Lalla Takerkoust.",
+          "wow_he": "למה זה וואו: רמת סלע קרסטית חשופה בגובה 1,800 מטר עם נוף 360 מעלות אל קיר הרי האטלס מצד אחד ואל האגם הכחול והמדבר מצד שני.",
+          "wow_en": "Why It Is WOW: A vast lunar limestone tableland suspended at 1,800m between the snow-capped High Atlas and the turquoise waters of Lalla Takerkoust.",
+          "enroute_he": "על הדרך: ירידה בפיתולי המצוק אל שער הכניסה הדרומי של מדבר אגפאי בדיוק ב-15:50 לקראת השקיעה.",
+          "enroute_en": "En-Route: Descend the dramatic switchbacks directly into the southern canyons of Agafay Stone Desert at 15:50.",
+          "wx_he": "☀️ 18°C.",
+          "wx_en": "☀️ 18°C.",
+          "photo_tip": "עדשה 0.5x משפת המצוק מעל האגם הכחול.",
+          "photo_tip_en": "0.5x ultra-wide from the escarpment rim above the turquoise reservoir.",
+          "move": "20 דק׳ כניסה אל לב גבעות החרסית של מדבר Agafay לשקיעה",
+          "move_en": "20m drive into the heart of the Agafay canyon ridges for sunset"
+        },
+        {
+          "id": "d3-s4",
+          "num": 12,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 20/20 (A:5 B:5 C:5 D:5)",
+          "name": "Agafay Stone Desert at Sunset & Blue Hour (גבעות החרסית הירחיות באור השקיעה מול הרי האטלס)",
+          "name_en": "Agafay Stone Desert at Sunset & Blue Hour (Lunar Clay Dunes Carved by Low Sunset Shadows)",
+          "map_name": "Agafay Desert Morocco",
+          "lat": 31.4258,
+          "lng": -8.1742,
+          "time": "16:00 - 18:45 (שקיעה ב-18:15 + שעה כחולה במדבר)",
+          "time_en": "16:00 - 18:45 (Sunset at 18:15 + Desert Blue Hour)",
+          "cost_he": "חינם בשבילי המצוקים הפתוחים",
+          "cost_en": "Free across the open desert ridge trails",
+          "dur_he": "165 דק׳ (הליכה על רכסי החרסית ב-16:00-18:30)",
+          "dur_en": "165 mins (ridge walk across the sculpted clay badlands from 16:00 to 18:30)",
+          "skip_he": "🔥 חובה מוחלטת בשקיעה - הנוף הירחי הדרמטי ביותר במרחק 40 דק׳ ממרקש",
+          "skip_en": "🔥 ABSOLUTE MUST-SEE at Sunset - Surreal lunar badlands glowing gold and violet against the Atlas wall",
+          "isMust": true,
+          "in_he": "חוץ בלבד: צעידה על קווי הרכס החדים של גבעות האבן והחרסית בשעה וחצי שלפני השקיעה ובשעה הכחולה.",
+          "in_en": "Outside Ridge Walk: Hike along the razor-sharp clay and limestone ridges as the setting sun casts deep geometric shadows across the desert.",
+          "wow_he": "למה זה וואו: בין 16:30 ל-18:30 קרני השמש הנמוכות צובעות מאות גבעות חרסית גליות בזהב, נחושת וסגול, כשמאחוריהן מתנשא קיר הרי האטלס המושלג.",
+          "wow_en": "Why It Is WOW: Between 16:30 and 18:30, low angled light transforms hundreds of undulating stone hills into waves of liquid gold and deep shadow backed by the snow-covered High Atlas.",
+          "enroute_he": "על הדרך חזרה למרקש (40 דק׳ נסיעה אחרי השקיעה): הגעה חזרה לריאד ב-19:30.",
+          "enroute_en": "En-Route back to Marrakesh (40m drive after Blue Hour): Return to your riad by 19:30.",
+          "wx_he": "🌅 20°C ב-16:00 שיורדים ל-13°C ב-18:30: לבש ג׳קט רוח עם שקיעת השמש.",
+          "wx_en": "🌅 20°C at 16:00 dropping to 13°C after sunset: Put on your wind jacket at dusk.",
+          "photo_tip": "עדשה 2x לאורך קווי הרכס החדים כשהחצי המואר של הגבעה בזהב והחצי המוצל בשחור-כחול.",
+          "photo_tip_en": "2x telephoto compressing the S-curve ridge lines split between golden sunlight and deep shadow.",
+          "move": "40 דק׳ נסיעה חזרה למרקש",
+          "move_en": "40m drive back to Marrakesh"
+        }
+      ]
+    },
+    {
+      "day": "4",
+      "title": "יום 4 (ראשון 29/11) + בוקר שני (30/11): חזית הלבנים Studio KO (0€) -> Gueliz & תחנת ONCF -> ציר החומות המערביות והכותוביה -> טיסה 09:45",
+      "title_en": "Day 4 (Sun 29/11) + Mon Morning (30/11): Studio KO Brick Facade (€0) -> Gueliz & ONCF Hall -> Western Ramparts & Koutoubia -> 09:45 Flight",
+      "subtitle": "ראשון 09:15: חזית לבני הטרקוטה של Studio KO מבחוץ (0 MAD) + שדרת Gueliz ואולם תחנת הרכבת + ציר החומות המערביות ושער Bab Doukkala (0 MAD) -> שני 06:35 אוטובוס L19 לשדה RAK",
+      "subtitle_en": "Sun 09:15: Studio KO Terracotta Facade outside (0 MAD) + Gueliz Art Deco & ONCF Concourse + Bab Doukkala & Western Ramparts Spine (0 MAD) -> Mon 06:35 Bus L19 to RAK",
+      "color": "#db2777",
+      "stops": [
+        {
+          "id": "d4-s1",
+          "num": 13,
+          "isTier1": false,
+          "tier": "Tier 2 Spine | 17/20 (G:4 E:4 V:5 T:2 L:2)",
+          "name": "חזית הלבנים הברוטליסטית של Studio KO ב-Rue Yves Saint Laurent [תצפית חוץ בלבד ב-0 MAD]",
+          "name_en": "Studio KO Terracotta Brick Brutalist Facade at Rue Yves Saint Laurent [Outside Only at 0 MAD]",
+          "map_name": "Musee Yves Saint Laurent Marrakech",
+          "lat": 31.6416,
+          "lng": -8.0033,
+          "time": "09:15 - 09:45 (30m תצפית אדריכלית מהרחוב הפתוח)",
+          "time_en": "09:15 - 09:45 (30m exterior architectural stop from the pedestrian street)",
+          "cost_he": "[חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על 330 MAD / 30€ למוזיאון השמלות החשוך בפנים ולתור הסלפי ב-Jardin Majorelle)",
+          "cost_en": "[Outside Only] 100% Free (0 MAD — skip the 330 MAD / €30 ticket for the dark dress exhibition & crowded Jardin Majorelle selfie queue)",
+          "dur_he": "30 דק׳",
+          "dur_en": "30 mins",
+          "skip_he": "🔥 נהנים מ-100% מהאדריכלות הברוטליסטית של Studio KO מהרחוב ב-0€ וחוסכים 30€ ותורי תיירים צפופים",
+          "skip_en": "🔥 Capture 100% of Studio KO’s terracotta brick geometry from the street at €0 while skipping the €30 tourist queue",
+          "isMust": true,
+          "in_he": "[חוץ בלבד ב-0 MAD]: צילום קירות התוף המעוגלים ותבליטי לבני הטרקוטה של Studio KO (2017) מהמדרכה הפתוחה ב-Rue Yves Saint Laurent (בלי לשלם 30€ לתצוגת שמלות וסקיצות אופנה בחדרים חשוכים או לתור בגן הקקטוסים הקטן של Majorelle).",
+          "in_en": "[Outside Only at 0 MAD]: Photograph Studio KO’s 2017 curved terracotta-brick drum and fabric-like geometric brickwork right from the public walkway on Rue Yves Saint Laurent.",
+          "wow_he": "למה זה וואו: כל העוצמה האדריכלית של בניין Studio KO נמצאת במעטפת החיצונית הפונה לרחוב: קוביות ותופים עגולים של לבני חמר מקומיות המסודרות כמו סיבי בד באור הבוקר האלכסוני.",
+          "wow_en": "Why It Is WOW: The entire architectural achievement of Studio KO is its street-facing exterior envelope weaving local earth-colored bricks into geometric reliefs.",
+          "enroute_he": "על הדרך מהמדינה (15 דק׳ הליכה מ-Bab Doukkala): אור הבוקר האלכסוני מדגיש את עומק תבליטי הלבנים.",
+          "enroute_en": "En-Route from the Medina (15m walk from Bab Doukkala): Morning side-lighting carves deep shadows into the brick relief facade.",
+          "wx_he": "☀️ 20°C בבוקר.",
+          "wx_en": "☀️ 20°C morning sun.",
+          "photo_tip": "עדשה 1x צמודה לקיר הלבנים המעוגל של Studio KO לתפיסת הטקסטורה הגיאומטרית.",
+          "photo_tip_en": "1x oblique shot grazing the curved terracotta brickwork of Studio KO.",
+          "move": "12 דק׳ הליכה דרומה לתוך שדרת האר-דקו של Gueliz",
+          "move_en": "12m walk south into the Gueliz Art Deco quarter"
+        },
+        {
+          "id": "d4-s2",
+          "num": 14,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 19/20 (G:5 E:5 V:5 T:2 L:2)",
+          "name": "Gueliz Modernist Spine, אכסדרת התיאטרון המלכותי והאולם המונומנטלי של תחנת הרכבת Marrakesh Railway Station (ONCF)",
+          "name_en": "Gueliz 1930s Art Deco Spine, Royal Theatre Colonnade & Monumental Marrakesh ONCF Railway Station Hall",
+          "map_name": "Gare de Marrakech ONCF",
+          "lat": 31.6306,
+          "lng": -8.0172,
+          "time": "10:00 - 12:45 (165m)",
+          "time_en": "10:00 - 12:45 (165m)",
+          "cost_he": "[חוץ + פנים אולם התחנה העצום] חינם לחלוטין (0 MAD)",
+          "cost_en": "[Outside + Soaring Station Concourse Interior] 100% Free (0 MAD)",
+          "dur_he": "165 דק׳ (סיור אדריכלי ליניארי ברובע המודרני Gueliz)",
+          "dur_en": "165 mins (linear architectural walk down Avenue Mohammed V to the Royal Theatre and ONCF Station)",
+          "skip_he": "🔥 חובה - אדריכלות מונומנטלית בקנה מידה עצום (קשתות של 25 מטר גובה) ב-0 MAD",
+          "skip_en": "🔥 MUST-SEE - Monumental 25m-high arches and glass domes outside the Medina walls at 0 MAD",
+          "isMust": true,
+          "in_he": "[תמהיל: 100% חלל אטריום עצום ואכסדרות עמודים ב-0 MAD]: כניסה חופשית להיכל הזכוכית, השיש והקשתות של תחנת הרכבת ONCF + הליכה לאורך שדרת Mohammed V והתיאטרון המלכותי של Charles Boccara.",
+          "in_en": "[100% Monumental Concourse & Colonnades at 0 MAD]: Step inside the soaring glass-and-marble ONCF Station hall and walk Avenue Mohammed V past Charles Boccara’s Neo-Moorish Royal Theatre.",
+          "wow_he": "למה זה וואו: תחנת הרכבת של מרקש וצמוד אליה התיאטרון המלכותי (בעיצוב האדריכל Charles Boccara) בנויים כמקדשים מונומנטליים עם קשתות ענק בנות 25 מטר, כיפות זכוכית פתוחות ועמודי טרקוטה.",
+          "wow_en": "Why It Is WOW: Architect Charles Boccara’s monumental colonnades at the Royal Theatre and the neighbouring ONCF Railway Station feature 25m-high geometric arches and soaring sunlit glass domes.",
+          "enroute_he": "על הדרך: שדרת Mohammed V ב-Gueliz תוכננה ב-1913 ע״י Henri Prost עם קוד צבע אחיד של ורוד-אוכרה.",
+          "enroute_en": "En-Route: Walk Avenue Mohammed V where every 1930s Art Deco facade obeys Henri Prost’s signature salmon-ochre color code.",
+          "wx_he": "☀️ 23°C.",
+          "wx_en": "☀️ 23°C.",
+          "photo_tip": "עדשה 0.5x סימטרית בתוך אולם הקשתות והזכוכית של תחנת הרכבת ועדשה 1x בין עמודי התיאטרון המלכותי.",
+          "photo_tip_en": "Symmetrical 0.5x inside the soaring geometric station hall and 1x through the Royal Theatre colonnade.",
+          "move": "חזרה מזרחה לאורך Avenue Mohammed V אל ביצורי החומה המערבית (Bab Doukkala & Bab Nkob)",
+          "move_en": "Walk east along Avenue Mohammed V to the monumental Western Ramparts (Bab Doukkala & Bab Nkob)"
+        },
+        {
+          "id": "d4-s3",
+          "num": 15,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 18/20 (G:4 E:4 V:5 T:3 L:2)",
+          "name": "ביצורי החומה המערבית (Bab Doukkala 1126 & Bab Nkob), תעלות ה-Khettara של Arsat Moulay Abdeslam ורחבת הכותוביה בשקיעה",
+          "name_en": "Western Almoravid Ramparts (Bab Doukkala 1126 & Bab Nkob), Arsat Moulay Abdeslam Hydraulic Channels & Koutoubia Sunset Plaza",
+          "map_name": "Bab Doukkala Marrakesh",
+          "lat": 31.6301,
+          "lng": -7.9936,
+          "time": "13:15 - 18:15 (רצף אדריכלי פתוח ב-0 MAD לאורך חומות המערב ללא מוזיאון הכלים Dar El Bacha וללא הליכת האבק ל-Agdal)",
+          "time_en": "13:15 - 18:15 (100% Free open-air western ramparts & hydraulic spine avoiding Dar El Bacha vitrines & Agdal dust)",
+          "cost_he": "[חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על 60 MAD לחדרי הוויטרינות של Dar El Bacha ועל הליכת האבק ל-Agdal)",
+          "cost_en": "[Outside Only] 100% Free (0 MAD — skip the 60 MAD Dar El Bacha artifact vitrines & dusty Agdal walk)",
+          "dur_he": "150 דק׳",
+          "dur_en": "150 mins",
+          "skip_he": "🔥 ציר ביצורים אלמורבידיים אדיר מהמאה ה-12 ב-0 MAD שמוביל ברגל ישירות אל צריח הכותוביה בשקיעה",
+          "skip_en": "🔥 Massive 12th-century rammed-earth bastions & historic hydraulic channels at 0 MAD leading straight to Koutoubia at sunset",
+          "isMust": true,
+          "in_he": "[חוץ בלבד - 100% ביצורי חומה וצירים הידראוליים ב-0 MAD]: הליכה לאורך מגדלי השמירה המכופפים של שער Bab Doukkala (1126), חזית מסגד Bab Doukkala מהמאה ה-16, תעלות המים של Arsat Moulay Abdeslam מ-1730 ושער Bab Nkob ישירות אל רחבת העמודים של ה-Koutoubia באור הזהב.",
+          "in_en": "[Outside Only - 100% Monumental Bastions & Hydraulic Spine at 0 MAD]: Walk the massive bent-entrance bastions of Bab Doukkala (1126), the 16th-century Bab Doukkala Mosque exterior, the 1730 water channels of Arsat Moulay Abdeslam, and Bab Nkob straight to the Koutoubia colonnade at Golden Hour.",
+          "wow_he": "למה זה וואו: Bab Doukkala (1126) הוא אחד השערים האלמורבידיים המקוריים הבודדים ששרדו במרקש עם מעבר מבוצר כפול בן 900 שנה, שמחבר ברצף רגלי מישורי לאורך חומות האדמה האדומות המוארות בשמש אחה״צ עד למרגלות הכותוביה.",
+          "wow_en": "Why It Is WOW: Bab Doukkala (1126) preserves its original 900-year-old Almoravid flanking bastions, connecting along a dramatic red-earth rampart corridor bathed in west-facing afternoon sunlight straight to the foot of Koutoubia.",
+          "enroute_he": "על הדרך: ציר מישורי ורציף שמחזיר אותך ללב המדינה לקראת ערב מוקדם ושינה לפני טיסת הבוקר.",
+          "enroute_en": "En-Route: Flat, continuous walk bringing you right back to the heart of the Medina for an early night before Monday’s flight.",
+          "wx_he": "🌅 22°C באור אחה\"צ ישיר על החומות המערביות הפונות לשמש.",
+          "wx_en": "🌅 22°C direct Golden Hour light hitting the west-facing rampart walls.",
+          "photo_tip": "עדשה 1x לאורך קו החומות האדומות מ-Bab Nkob כשצריח הכותוביה מתנשא בקצה הציר.",
+          "photo_tip_en": "1x telephoto shot down the crenellated red-earth rampart line from Bab Nkob with the Koutoubia minaret rising at the end of the axis.",
+          "move": "ערב אחרון במדינה -> שינה מוקדמת לקראת בוקר יום שני (06:35 יציאה לשדה)",
+          "move_en": "Final evening in the Medina -> sleep for Monday morning departure (06:35 airport bus)"
+        },
+        {
+          "id": "d4-s4",
+          "num": 16,
+          "isTier1": true,
+          "tier": "Tier 1 Anchor | 19/20 (A:5 B:5 C:5 D:4)",
+          "name": "בוקר יום שני 30/11 (06:35): אוטובוס L19 מהכותוביה -> טרמינל העץ הגיאומטרי של RAK (07:00) -> טיסה לדבלין (09:45)",
+          "name_en": "Mon 30/11 Morning (06:35 AM): Bus L19 from Koutoubia -> RAK Geometric Lattice Terminal (07:00) -> Flight to Dublin (09:45)",
+          "map_name": "Marrakesh Menara Airport RAK",
+          "lat": 31.6069,
+          "lng": -8.0363,
+          "time": "שני 30/11: 06:35 יציאה -> 07:00 בטרמינל RAK -> 09:45 המראה לדבלין (13:35 נחיתה)",
+          "time_en": "Mon 30/11: 06:35 depart -> 07:00 at RAK terminal -> 09:45 flight to Dublin (13:35 arrival)",
+          "cost_he": "0 MAD (כבר שולם בכרטיס ההלוך-חזור של L19 מיום חמישי! או 50-70 MAD במונית)",
+          "cost_en": "0 MAD (covered by your Thu L19 return ticket receipt! Or 50-70 MAD Petit Taxi)",
+          "dur_he": "15 דק׳ נסיעה + שעתיים ו-45 דק׳ בטרמינל",
+          "dur_en": "15m ride + 2h 45m buffer at RAK terminal",
+          "skip_he": "🔥 חובה לוגיסטית ואדריכלית: להיות בטרמינל ב-07:00 עם דף הנייר המודפס ולהרים מבט אל חזית המעוינים האייקונית של השדה!",
+          "skip_en": "🔥 MANDATORY: Arrive at 07:00 AM with your printed paper boarding pass and admire RAK’s famous geometric facade!",
+          "isMust": true,
+          "in_he": "פנים + חוץ הטרמינל: שיקוף בכניסה -> חותמת Document Check בדלפק Ryanair על הנייר -> בידוק -> ביקורת דרכונים.",
+          "in_en": "Inside + Outside Terminal: Entry scanner -> Ryanair desk stamp on printed boarding pass -> Security -> Passport exit stamp.",
+          "wow_he": "למה זה וואו: טרמינל שדה התעופה מרקש-מנרה (בעיצוב E2A Architecture) נחשב לאחד משדות התעופה היפים בעולם, עם שלד של 24 מעויני בטון ופלדה עצומים המחופים תחרת ערבסקות שיוצרת משחקי אור וצל על הרצפה.",
+          "wow_en": "Why It Is WOW: Designed by E2A Architecture, Marrakesh Menara Airport is a contemporary Islamic architectural icon built from 24 giant concrete-and-steel rhombuses wrapped in solar mashrabiya screens.",
+          "enroute_he": "זכור להוציא את שארית המטבעות בדירהם לפני העלייה למטוס.",
+          "enroute_en": "Spend any remaining Moroccan Dirham coins before boarding.",
+          "wx_he": "✈️ 09:45 המראה מ-RAK -> 13:35 נחיתה בדבלין (DUB).",
+          "wx_en": "✈️ 09:45 depart RAK -> 13:35 land in Dublin (DUB).",
+          "photo_tip": "עדשה 0.5x בכניסה החיצונית ובאולם ההמראות מתחת לתקרת המעוינים המוארת בשמש הבוקר.",
+          "photo_tip_en": "0.5x ultra-wide looking up through the geometric diamond lattice canopy as morning sun casts patterns across the floor.",
+          "move": "טיסה ישירה מ-RAK לדבלין (09:45 -> 13:35)",
+          "move_en": "Direct Ryanair flight RAK to Dublin (09:45 -> 13:35)"
+        }
+      ]
+    }
+  ]
+};
+
+let activeDayFilter = 'all';
+let currentMapDisplay = 'leaflet';
+let map = null;
+let markersLayer = null;
+let polylinesLayer = null;
+let markerRefs = {};
+let activeSpeechTimer = null;
+let activeSpeakingStopId = null;
+let currentAudioSpeed = 1.0;
+
+function applySpeedToAudioPlayers() {
+  ['audio-player-short', 'audio-player-flight'].forEach(id => {
+    const p = document.getElementById(id);
+    if (p) {
+      p.defaultPlaybackRate = currentAudioSpeed;
+      p.playbackRate = currentAudioSpeed;
+    }
+  });
+}
+
+function setAudioSpeed(speed) {
+  const num = parseFloat(speed);
+  if (!isNaN(num) && num >= 0.5 && num <= 3.0) {
+    currentAudioSpeed = num;
+  }
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    const btnSpeed = parseFloat(btn.getAttribute('data-speed'));
+    const isSelected = Math.abs(btnSpeed - currentAudioSpeed) < 0.01;
+    btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+  });
+  applySpeedToAudioPlayers();
+  try {
+    localStorage.setItem('eladb_rak_trip_speed', String(currentAudioSpeed));
+  } catch (e) {}
+  // If Web Speech is actively speaking a stop right now, restart that stop at the new rate
+  if (activeSpeakingStopId && 'speechSynthesis' in window && window.speechSynthesis.speaking) {
+    const stopToReplay = activeSpeakingStopId;
+    activeSpeakingStopId = null;
+    speakStop(stopToReplay);
+  }
+}
+window.setAudioSpeed = setAudioSpeed;
+
+function setLanguage(lang) {
+  currentLang = (lang === 'en') ? 'en' : 'he';
+  const isEn = (currentLang === 'en');
+  document.documentElement.lang = isEn ? 'en' : 'he';
+  document.documentElement.dir = isEn ? 'ltr' : 'rtl';
+  document.title = isEn
+    ? "Marrakesh, High Atlas (Imlil & Armed) & Agafay Stone Desert (26/11 11:30 - 30/11 09:45)"
+    : "מרקש, הרי האטלס הגבוה (Imlil & Armed) ומדבר אגפאי (26/11 11:30 - 30/11 09:45)";
+
+  const btnHe = document.getElementById('langBtnHe');
+  const btnEn = document.getElementById('langBtnEn');
+  if (btnHe) btnHe.setAttribute('aria-pressed', isEn ? 'false' : 'true');
+  if (btnEn) btnEn.setAttribute('aria-pressed', isEn ? 'true' : 'false');
+
+  document.querySelectorAll('[data-he][data-en]').forEach(el => {
+    const val = isEn ? el.getAttribute('data-en') : el.getAttribute('data-he');
+    if (val !== null) {
+      if (val.indexOf('<') !== -1 || val.indexOf('&') !== -1) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    }
+  });
+
+  // Update default audio player sources to match selected language and preserve playback speed
+  const shortPlayer = document.getElementById('audio-player-short');
+  const flightPlayer = document.getElementById('audio-player-flight');
+  if (shortPlayer && shortPlayer.paused) {
+    shortPlayer.src = isEn ? 'audio/rak_trip_short_en.mp3' : 'audio/rak_trip_short_he.mp3';
+  }
+  if (flightPlayer && flightPlayer.paused) {
+    flightPlayer.src = isEn ? 'audio/rak_trip_flight_en.mp3' : 'audio/rak_trip_flight_he.mp3';
+  }
+  applySpeedToAudioPlayers();
+
+  // Sync theme button label
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const btnTheme = document.getElementById('btn-theme');
+  if (btnTheme) {
+    btnTheme.textContent = isEn
+      ? (isDark ? '☀️ Day Mode (D)' : '🌙 Night Mode (D)')
+      : (isDark ? '☀️ מצב יום (D)' : '🌙 מצב לילה (D)');
+  }
+
+  // Sync CC button label
+  const btnCc = document.getElementById('btn-cc-toggle');
+  if (btnCc) {
+    btnCc.textContent = isEn
+      ? (captionsEnabled ? '💬 CC: ON' : '💬 CC: OFF')
+      : (captionsEnabled ? '💬 כתוביות: פעיל' : '💬 כתוביות: כבוי');
+  }
+
+  try {
+    localStorage.setItem('eladb_rak_trip_lang', currentLang);
+  } catch (e) {}
+
+  filterDay(activeDayFilter);
+}
+window.setLang = setLanguage;
+window.setLanguage = setLanguage;
+
+function toggleCaptions() {
+  captionsEnabled = !captionsEnabled;
+  const box = document.getElementById('live-caption-box');
+  const btn = document.getElementById('btn-cc-toggle');
+  if (box) box.classList.toggle('visible', captionsEnabled);
+  if (btn) {
+    btn.setAttribute('aria-pressed', captionsEnabled ? 'true' : 'false');
+    btn.textContent = (currentLang === 'en')
+      ? (captionsEnabled ? '💬 CC: ON' : '💬 CC: OFF')
+      : (captionsEnabled ? '💬 כתוביות: פעיל' : '💬 כתוביות: כבוי');
+  }
+}
+
+function updateLiveCaption(text) {
+  const el = document.getElementById('live-caption-text');
+  if (el) el.textContent = text;
+}
+
+function stopLiveNarrator() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  if (activeSpeechTimer) {
+    clearInterval(activeSpeechTimer);
+    activeSpeechTimer = null;
+  }
+  const shortPlayer = document.getElementById('audio-player-short');
+  const flightPlayer = document.getElementById('audio-player-flight');
+  if (shortPlayer && !shortPlayer.paused) shortPlayer.pause();
+  if (flightPlayer && !flightPlayer.paused) flightPlayer.pause();
+
+  lastSyncedAudioStopId = null;
+  activeHighlightedStopId = null;
+  document.querySelectorAll('.stop-card.speaking-active').forEach(c => c.classList.remove('speaking-active'));
+  document.querySelectorAll('.custom-pin-inner').forEach(el => el.classList.remove('pin-speaking-active'));
+  document.querySelectorAll('.jump-stop-chip').forEach(ch => ch.setAttribute('aria-pressed', 'false'));
+  document.querySelectorAll('.btn-stop-speak[aria-pressed="true"]').forEach(b => b.setAttribute('aria-pressed', 'false'));
+  const bShort = document.getElementById('btn-tts-short');
+  const bFlight = document.getElementById('btn-tts-flight');
+  if (bShort) bShort.setAttribute('aria-pressed', 'false');
+  if (bFlight) bFlight.setAttribute('aria-pressed', 'false');
+  activeSpeakingStopId = null;
+}
+
+function speakTextWithWebSpeech(text, onDone) {
+  if (!('speechSynthesis' in window)) {
+    updateLiveCaption(text);
+    if (onDone) onDone();
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  window._activeUtterance = utter;
+  const targetLang = (currentLang === 'en') ? 'en-US' : 'he-IL';
+  utter.lang = targetLang;
+  if (typeof window.pickStandardSpeechVoice === 'function') {
+    const v = window.pickStandardSpeechVoice(targetLang);
+    if (v) utter.voice = v;
+  }
+  utter.rate = Math.max(0.5, Math.min(3.0, currentAudioSpeed || 1.0));
+  utter.pitch = 1.0;
+  updateLiveCaption(text);
+  if (activeSpeechTimer) clearInterval(activeSpeechTimer);
+  activeSpeechTimer = setInterval(() => {
+    if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+      window.speechSynthesis.pause();
+      window.speechSynthesis.resume();
+    }
+  }, 10000);
+  utter.onend = () => {
+    if (activeSpeechTimer) { clearInterval(activeSpeechTimer); activeSpeechTimer = null; }
+    if (onDone) onDone();
+  };
+  utter.onerror = () => {
+    if (activeSpeechTimer) { clearInterval(activeSpeechTimer); activeSpeechTimer = null; }
+    if (onDone) onDone();
+  };
+  window.speechSynthesis.speak(utter);
+}
+
+function buildStopNarrationText(stop) {
+  const isEn = (currentLang === 'en');
+  if (isEn) {
+    return `Stop ${stop.num}: ${stop.name_en}. Cost: ${stop.cost_en}. Inside or Outside: ${stop.in_en} Weather Plan A: ${stop.wx_en} En-route sights and story: ${stop.enroute_en} Recommended time: ${stop.dur_en}. Priority if short on time: ${stop.skip_en}. ${stop.wow_en} Smartphone framing: ${stop.photo_tip_en} Transit: ${stop.move_en}`;
+  }
+  return `תחנה מספר ${stop.num}: ${stop.name}. עלות כניסה: ${stop.cost_he}. האם להיכנס פנימה או רק מבחוץ: ${stop.in_he} התאמת מזג אוויר: ${stop.wx_he} מה רואים על הדרך וסיפור מעבר: ${stop.enroute_he} זמן מומלץ במקום: ${stop.dur_he}. האם ניתן לוותר בבלת"ם: ${stop.skip_he}. ${stop.wow_he} זווית צילום: ${stop.photo_tip} הגעה והמשך: ${stop.move}`;
+}
+
+function speakStop(stopId) {
+  if (activeSpeakingStopId === stopId) {
+    stopLiveNarrator();
+    return;
+  }
+  stopLiveNarrator();
+  const info = getStopById(stopId);
+  if (!info) return;
+  const foundStop = info.stop;
+  activeSpeakingStopId = stopId;
+  highlightStopAndFocusMap(stopId, true);
+
+  // Jump the neural MP3 player directly to this stop's timestamp so it plays with studio audio & speed control, with Web Speech fallback
+  const pShort = document.getElementById('audio-player-short');
+  if (pShort) {
+    jumpAudioToStop(foundStop.num);
+    return;
+  }
+  const scriptText = buildStopNarrationText(foundStop);
+  speakTextWithWebSpeech(scriptText, () => {
+    activeSpeakingStopId = null;
+  });
+}
+
+function speakCustomBlock(blockKey) {
+  stopLiveNarrator();
+  if (blockKey === 'intro') {
+    const txt = (currentLang === 'en') ? CITY_INTRO_NARRATION.en : CITY_INTRO_NARRATION.he;
+    speakTextWithWebSpeech(txt);
+  }
+}
+
+function startLiveNarrator(mode) {
+  stopLiveNarrator();
+  const isEn = (currentLang === 'en');
+  const bShort = document.getElementById('btn-tts-short');
+  const bFlight = document.getElementById('btn-tts-flight');
+  if (mode === 'short' && bShort) bShort.setAttribute('aria-pressed', 'true');
+  if (mode === 'flight' && bFlight) bFlight.setAttribute('aria-pressed', 'true');
+
+  // Play the pre-generated high-quality neural MP3 directly in the browser AND step through stops!
+  const player = document.getElementById(mode === 'flight' ? 'audio-player-flight' : 'audio-player-short');
+  if (player) {
+    const wantSrc = (mode === 'flight')
+      ? (isEn ? 'audio/rak_trip_flight_en.mp3' : 'audio/rak_trip_flight_he.mp3')
+      : (isEn ? 'audio/rak_trip_short_en.mp3' : 'audio/rak_trip_short_he.mp3');
+    if (player.getAttribute('src') !== wantSrc) {
+      player.setAttribute('src', wantSrc);
+    }
+    player.defaultPlaybackRate = currentAudioSpeed;
+    player.playbackRate = currentAudioSpeed;
+    player.currentTime = 0;
+    player.play().catch(() => {
+      // Fallback to Web Speech queue if audio autoplay blocked
+      runSequentialWebSpeechTour();
+    });
+    updateLiveCaption(
+      isEn
+        ? (mode === 'flight'
+            ? `Playing Full In-Flight Deep-Dive Audio (${currentAudioSpeed}x speed)... Use the speed buttons above or download 1x / 2x MP3 below.`
+            : `Playing Practical 16-Stop Audio Guide (${currentAudioSpeed}x speed)... Use the speed buttons above or download 1x / 2x MP3 below.`)
+        : (mode === 'flight'
+            ? `מנגן כעת את מהדורת הטיסה והסיפורים (במהירות ${currentAudioSpeed}x)... ניתן לשנות מהירות למעלה או להוריד MP3 רגיל / x2 למטה.`
+            : `מנגן כעת את מדריך השטח המעשי לכל 16 התחנות (במהירות ${currentAudioSpeed}x)... ניתן לשנות מהירות למעלה או להוריד MP3 רגיל / x2 למטה.`)
+    );
+  } else {
+    runSequentialWebSpeechTour();
+  }
+}
+
+function runSequentialWebSpeechTour() {
+  const queue = [];
+  queue.push({ stop: null, text: (currentLang === 'en') ? CITY_INTRO_NARRATION.en : CITY_INTRO_NARRATION.he });
+  ITINERARY_DATA.days.forEach(d => {
+    d.stops.forEach(s => {
+      queue.push({ stop: s, text: buildStopNarrationText(s) });
+    });
+  });
+  let idx = 0;
+  function nextStep() {
+    if (idx >= queue.length) {
+      stopLiveNarrator();
+      return;
+    }
+    const item = queue[idx++];
+    document.querySelectorAll('.stop-card.speaking-active').forEach(c => c.classList.remove('speaking-active'));
+    if (item.stop) {
+      const card = document.getElementById('card-' + item.stop.id);
+      if (card) {
+        card.classList.add('speaking-active');
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      focusStop(item.stop.id, item.stop.lat, item.stop.lng);
+    }
+    speakTextWithWebSpeech(item.text, nextStep);
+  }
+  nextStep();
+}
+
+function renderItinerary() {
+  const container = document.getElementById('itinerary-content');
+  if (!container) return;
+  const isEn = (currentLang === 'en');
+  const daysToShow = activeDayFilter === 'all'
+    ? ITINERARY_DATA.days
+    : ITINERARY_DATA.days.filter(d => d.day === activeDayFilter);
+
+  let html = '';
+  daysToShow.forEach(dayObj => {
+    const dTitle = isEn ? dayObj.title_en : dayObj.title;
+    const dSub = isEn ? dayObj.subtitle_en : dayObj.subtitle;
+    html += `
+      <section class="day-section" aria-label="${dTitle}">
+        <div class="day-header" style="background:${dayObj.color};">
+          <span>${dTitle}</span>
+          <span style="font-size:0.76rem;font-weight:600;opacity:0.95;">${dSub}</span>
+        </div>
+    `;
+    dayObj.stops.forEach(stop => {
+      const sName = isEn ? stop.name_en : stop.name;
+      const sTime = isEn ? stop.time_en : stop.time;
+      const sWow = isEn ? stop.wow_en : stop.wow_he;
+      const sPhoto = isEn ? stop.photo_tip_en : stop.photo_tip;
+      const sMove = isEn ? stop.move_en : stop.move;
+      const sCost = isEn ? stop.cost_en : stop.cost_he;
+      const sInOut = isEn ? stop.in_en : stop.in_he;
+      const sDur = isEn ? stop.dur_en : stop.dur_he;
+      const sSkip = isEn ? stop.skip_en : stop.skip_he;
+      const costLabel = isEn ? '🎟️ Cost:' : '🎟️ עלות:';
+      const inOutLabel = isEn ? '🏛️ Inside/Outside:' : '🏛️ פנים/חוץ:';
+      const durLabel = isEn ? '⏳ Stay:' : '⏳ שהייה:';
+      const skipBg = stop.isMust ? 'rgba(245, 158, 11, 0.16)' : 'rgba(56, 189, 248, 0.14)';
+      const skipBorder = stop.isMust ? '#f59e0b' : '#38bdf8';
+      const photoPrefix = isEn ? '📸 Smartphone Angle: ' : '📸 זווית סמארטפון: ';
+      const listenLabel = isEn ? '🔊 Listen' : '🔊 קריין';
+      const gimgLink = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(stop.map_name + ' architecture');
+      const gmapsLink = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(stop.map_name);
+      const badgeClass = stop.isTier1 ? 'badge badge-t1' : 'badge badge-t2';
+      const cardClass = stop.isTier1 ? 'stop-card tier-1' : 'stop-card tier-2';
+      const starPrefix = stop.isTier1 ? '★ ' : '● ';
+      html += `
+        <article class="${cardClass}" id="card-${stop.id}">
+          <div class="stop-top">
+            <button type="button" class="stop-title-btn" onclick="focusStop('${stop.id}', ${stop.lat}, ${stop.lng})">
+              <span>${starPrefix}#${stop.num} ${sName}</span>
+            </button>
+            <div class="stop-actions-right">
+              <span class="now-playing-pill">${isEn ? '🔊 Now Playing' : '🔊 מנגן כעת'}</span>
+              <button type="button" id="btn-speak-${stop.id}" class="btn-stop-speak" aria-pressed="false" onclick="speakStop('${stop.id}')">${listenLabel}</button>
+              <span class="${badgeClass}">[${stop.tier}]</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:0.76rem;padding:5px 8px;margin-bottom:5px;border-radius:5px;background:${skipBg};border-inline-start:3px solid ${skipBorder};">
+            <span><strong>${costLabel}</strong> ${sCost}</span>
+            <span>|</span>
+            <span><strong>${durLabel}</strong> ${sDur}</span>
+            <span>|</span>
+            <span><strong>${sSkip}</strong></span>
+            <div style="width:100%;margin-top:2px;padding-top:3px;border-top:1px dashed var(--border);"><strong>${inOutLabel}</strong> ${sInOut}</div>
+          </div>
+          <div class="wow-line">✨ ${sWow}</div>
+          <div style="font-size:0.77rem;padding:5px 8px;margin-bottom:5px;border-radius:5px;background:rgba(16, 185, 129, 0.11);border-inline-start:3px solid #10b981;color:var(--text);">
+            <strong>${isEn ? '🛤️ En-Route Sights &amp; Story:' : '🛤️ מה רואים על הדרך וסיפור מעבר:'}</strong> ${isEn ? stop.enroute_en : stop.enroute_he}
+          </div>
+          <div style="font-size:0.75rem;padding:4px 8px;margin-bottom:5px;border-radius:5px;background:rgba(99, 102, 241, 0.11);border-inline-start:3px solid #6366f1;color:var(--text);">
+            <strong>${isEn ? '🌦️ Weather-Smart Plan A:' : '🌦️ התאמת מזג אוויר (Plan A):'}</strong> ${isEn ? stop.wx_en : stop.wx_he}
+          </div>
+          <div class="photo-line">${photoPrefix}${sPhoto}</div>
+          <div class="move-line">
+            <span>⏰ <strong>${sTime}</strong> | 🚶/🚆 ${sMove}</span>
+            <span class="ext-links">
+              <a href="${gmapsLink}" target="_blank" rel="noopener">📍 Google Maps</a>
+              <a href="${gimgLink}" target="_blank" rel="noopener">🖼️ Google Images</a>
+            </span>
+          </div>
+        </article>
+      `;
+    });
+    html += '</section>';
+  });
+  container.innerHTML = html;
+  buildJumpStopChips();
+}
+
+function switchMapDisplay(mode) {
+  currentMapDisplay = mode;
+  const mapEl = document.getElementById('map');
+  const svgEl = document.getElementById('svg-fallback');
+  const btnLeaflet = document.getElementById('btn-map-leaflet');
+  const btnSvg = document.getElementById('btn-map-svg');
+
+  if (mode === 'svg') {
+    if (mapEl) mapEl.style.display = 'none';
+    if (svgEl) {
+      svgEl.style.display = 'block';
+      renderSvgFallback();
+    }
+    if (btnSvg) btnSvg.setAttribute('aria-pressed', 'true');
+    if (btnLeaflet) btnLeaflet.setAttribute('aria-pressed', 'false');
+  } else {
+    if (typeof L === 'undefined') {
+      switchMapDisplay('svg');
+      return;
+    }
+    if (svgEl) svgEl.style.display = 'none';
+    if (mapEl) mapEl.style.display = 'block';
+    if (btnLeaflet) btnLeaflet.setAttribute('aria-pressed', 'true');
+    if (btnSvg) btnSvg.setAttribute('aria-pressed', 'false');
+    if (!map) {
+      initMap();
+    } else {
+      setTimeout(() => {
+        map.invalidateSize();
+        updateMapMarkers();
+      }, 150);
+    }
+  }
+}
+
+function initMap() {
+  try {
+    if (typeof L === 'undefined') throw new Error('Leaflet offline');
+    const mapEl = document.getElementById('map');
+    if (mapEl && mapEl._leaflet_id) {
+      mapEl._leaflet_id = null;
+      mapEl.innerHTML = '';
+    }
+    map = L.map('map').setView([31.5, -7.98], 10);
+    const tileLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      attribution: '&copy; Google Maps &copy; OpenStreetMap',
+      maxZoom: 20
+    }).addTo(map);
+    let tileErrors = 0;
+    let switchedToOsm = false;
+    tileLayer.on('tileerror', () => {
+      tileErrors++;
+      if (tileErrors > 4 && !switchedToOsm) {
+        switchedToOsm = true;
+        tileErrors = 0;
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap',
+          maxZoom: 19
+        }).addTo(map);
+      } else if (tileErrors > 12) {
+        switchMapDisplay('svg');
+      }
+    });
+    markersLayer = L.layerGroup().addTo(map);
+    polylinesLayer = L.layerGroup().addTo(map);
+    updateMapMarkers();
+    [120, 350, 800].forEach(ms => {
+      setTimeout(() => {
+        if (map && currentMapDisplay === 'leaflet') {
+          map.invalidateSize();
+          updateMapMarkers();
+        }
+      }, ms);
+    });
+    if ('ResizeObserver' in window && mapEl) {
+      const ro = new ResizeObserver(() => {
+        if (map && currentMapDisplay === 'leaflet') {
+          map.invalidateSize();
+        }
+      });
+      ro.observe(mapEl);
+    }
+  } catch (e) {
+    switchMapDisplay('svg');
+  }
+}
+
+function updateMapMarkers() {
+  if (currentMapDisplay === 'svg') {
+    renderSvgFallback();
+    return;
+  }
+  if (!map || !markersLayer || !polylinesLayer) return;
+  markersLayer.clearLayers();
+  polylinesLayer.clearLayers();
+  markerRefs = {};
+
+  const isEn = (currentLang === 'en');
+  const dirAttr = isEn ? 'ltr' : 'rtl';
+  const daysToShow = activeDayFilter === 'all'
+    ? ITINERARY_DATA.days
+    : ITINERARY_DATA.days.filter(d => d.day === activeDayFilter);
+
+  const allCoords = [];
+  daysToShow.forEach(dayObj => {
+    const dayCoords = [];
+    dayObj.stops.forEach(stop => {
+      const coord = [stop.lat, stop.lng];
+      dayCoords.push(coord);
+      allCoords.push(coord);
+
+      const borderStyle = stop.isTier1 ? '3px solid #fef08a' : '2px solid #ffffff';
+      const size = stop.isTier1 ? 30 : 24;
+      const label = stop.isTier1 ? ('★' + stop.num) : String(stop.num);
+      const isPinActive = (activeHighlightedStopId === stop.id) ? ' pin-speaking-active' : '';
+      const icon = L.divIcon({
+        className: 'custom-pin',
+        html: `<div id="map-pin-${stop.id}" class="custom-pin-inner${isPinActive}" style="background:${dayObj.color};color:#ffffff;width:${size}px;height:${size}px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.72rem;border:${borderStyle};box-shadow:0 2px 5px rgba(0,0,0,0.45);">${label}</div>`,
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2]
+      });
+
+      const sName = isEn ? stop.name_en : stop.name;
+      const sTime = isEn ? stop.time_en : stop.time;
+      const sWow = isEn ? stop.wow_en : stop.wow_he;
+      const sPhoto = isEn ? stop.photo_tip_en : stop.photo_tip;
+      const sMove = isEn ? stop.move_en : stop.move;
+      const gimgLink = 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(stop.map_name + ' architecture');
+      const gmapsLink = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(stop.map_name);
+
+      const marker = L.marker(coord, { icon }).bindPopup(`
+        <div style="direction:${dirAttr};text-align:start;font-family:sans-serif;min-width:250px;color:#0f172a;">
+          <div style="font-weight:800;font-size:0.9rem;margin-bottom:3px;">#${stop.num}: ${sName}</div>
+          <div style="font-size:0.75rem;color:#b45309;font-weight:800;margin-bottom:4px;">[${stop.tier}]</div>
+          <div style="font-size:0.78rem;color:#334155;margin-bottom:5px;">⏰ ${sTime}</div>
+          <div style="font-size:0.75rem;color:#065f46;background:#ecfdf5;padding:4px 6px;border-radius:4px;margin-bottom:5px;">✨ ${sWow}</div>
+          <div style="font-size:0.76rem;color:#581c87;background:#f3e8ff;padding:4px 6px;border-radius:4px;margin-bottom:5px;">📸 ${sPhoto}</div>
+          <div style="font-size:0.75rem;color:#475569;margin-bottom:6px;">🚶/🚆 ${sMove}</div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <a href="${gmapsLink}" target="_blank" rel="noopener" style="font-size:0.78rem;color:#1d4ed8;font-weight:700;">📍 Google Maps</a>
+            <a href="${gimgLink}" target="_blank" rel="noopener" style="font-size:0.78rem;color:#7c3aed;font-weight:700;">🖼️ Google Images</a>
+          </div>
+        </div>
+      `);
+      marker.addTo(markersLayer);
+      markerRefs[stop.id] = marker;
+    });
+
+    if (dayCoords.length > 1) {
+      L.polyline(dayCoords, {
+        color: dayObj.color,
+        weight: 4,
+        opacity: 0.85,
+        dashArray: '6, 6'
+      }).addTo(polylinesLayer);
+    }
+  });
+
+  if (allCoords.length > 0) {
+    map.fitBounds(allCoords, { padding: [32, 32] });
+  }
+}
+
+const AUDIO_STOP_TIMELINE = {
+  "rak_short_he": [
+    {
+      "id": "d1-s1",
+      "num": 1,
+      "start": 73.8,
+      "end": 164.0
+    },
+    {
+      "id": "d1-s2",
+      "num": 2,
+      "start": 164.0,
+      "end": 232.7
+    },
+    {
+      "id": "d1-s3",
+      "num": 3,
+      "start": 232.7,
+      "end": 289.4
+    },
+    {
+      "id": "d1-s4",
+      "num": 4,
+      "start": 289.4,
+      "end": 355.1
+    },
+    {
+      "id": "d2-s1",
+      "num": 5,
+      "start": 355.1,
+      "end": 441.6
+    },
+    {
+      "id": "d2-s2",
+      "num": 6,
+      "start": 441.6,
+      "end": 529.1
+    },
+    {
+      "id": "d2-s3",
+      "num": 7,
+      "start": 529.1,
+      "end": 591.2
+    },
+    {
+      "id": "d2-s4",
+      "num": 8,
+      "start": 591.2,
+      "end": 655.3
+    },
+    {
+      "id": "d3-s1",
+      "num": 9,
+      "start": 655.3,
+      "end": 732.6
+    },
+    {
+      "id": "d3-s2",
+      "num": 10,
+      "start": 732.6,
+      "end": 825.5
+    },
+    {
+      "id": "d3-s3",
+      "num": 11,
+      "start": 825.5,
+      "end": 886.3
+    },
+    {
+      "id": "d3-s4",
+      "num": 12,
+      "start": 886.3,
+      "end": 952.8
+    },
+    {
+      "id": "d4-s1",
+      "num": 13,
+      "start": 952.8,
+      "end": 1050.2
+    },
+    {
+      "id": "d4-s2",
+      "num": 14,
+      "start": 1050.2,
+      "end": 1125.9
+    },
+    {
+      "id": "d4-s3",
+      "num": 15,
+      "start": 1125.9,
+      "end": 1204.4
+    },
+    {
+      "id": "d4-s4",
+      "num": 16,
+      "start": 1204.4,
+      "end": 1295.5
+    }
+  ],
+  "rak_short_en": [
+    {
+      "id": "d1-s1",
+      "num": 1,
+      "start": 63.4,
+      "end": 136.1
+    },
+    {
+      "id": "d1-s2",
+      "num": 2,
+      "start": 136.1,
+      "end": 194.1
+    },
+    {
+      "id": "d1-s3",
+      "num": 3,
+      "start": 194.1,
+      "end": 245.1
+    },
+    {
+      "id": "d1-s4",
+      "num": 4,
+      "start": 245.1,
+      "end": 298.2
+    },
+    {
+      "id": "d2-s1",
+      "num": 5,
+      "start": 298.2,
+      "end": 368.9
+    },
+    {
+      "id": "d2-s2",
+      "num": 6,
+      "start": 368.9,
+      "end": 436.8
+    },
+    {
+      "id": "d2-s3",
+      "num": 7,
+      "start": 436.8,
+      "end": 491.0
+    },
+    {
+      "id": "d2-s4",
+      "num": 8,
+      "start": 491.0,
+      "end": 548.1
+    },
+    {
+      "id": "d3-s1",
+      "num": 9,
+      "start": 548.1,
+      "end": 611.7
+    },
+    {
+      "id": "d3-s2",
+      "num": 10,
+      "start": 611.7,
+      "end": 693.7
+    },
+    {
+      "id": "d3-s3",
+      "num": 11,
+      "start": 693.7,
+      "end": 749.6
+    },
+    {
+      "id": "d3-s4",
+      "num": 12,
+      "start": 749.6,
+      "end": 807.5
+    },
+    {
+      "id": "d4-s1",
+      "num": 13,
+      "start": 807.5,
+      "end": 887.9
+    },
+    {
+      "id": "d4-s2",
+      "num": 14,
+      "start": 887.9,
+      "end": 952.1
+    },
+    {
+      "id": "d4-s3",
+      "num": 15,
+      "start": 952.1,
+      "end": 1022.1
+    },
+    {
+      "id": "d4-s4",
+      "num": 16,
+      "start": 1022.1,
+      "end": 1095.4
+    }
+  ],
+  "rak_flight_he": [
+    {
+      "id": "d1-s1",
+      "num": 1,
+      "start": 222.2,
+      "end": 354.4
+    },
+    {
+      "id": "d1-s2",
+      "num": 2,
+      "start": 354.4,
+      "end": 471.0
+    },
+    {
+      "id": "d1-s3",
+      "num": 3,
+      "start": 471.0,
+      "end": 573.5
+    },
+    {
+      "id": "d1-s4",
+      "num": 4,
+      "start": 573.5,
+      "end": 678.5
+    },
+    {
+      "id": "d2-s1",
+      "num": 5,
+      "start": 678.5,
+      "end": 798.8
+    },
+    {
+      "id": "d2-s2",
+      "num": 6,
+      "start": 798.8,
+      "end": 924.1
+    },
+    {
+      "id": "d2-s3",
+      "num": 7,
+      "start": 924.1,
+      "end": 1032.3
+    },
+    {
+      "id": "d2-s4",
+      "num": 8,
+      "start": 1032.3,
+      "end": 1138.3
+    },
+    {
+      "id": "d3-s1",
+      "num": 9,
+      "start": 1138.3,
+      "end": 1250.2
+    },
+    {
+      "id": "d3-s2",
+      "num": 10,
+      "start": 1250.2,
+      "end": 1388.5
+    },
+    {
+      "id": "d3-s3",
+      "num": 11,
+      "start": 1388.5,
+      "end": 1490.1
+    },
+    {
+      "id": "d3-s4",
+      "num": 12,
+      "start": 1490.1,
+      "end": 1605.9
+    },
+    {
+      "id": "d4-s1",
+      "num": 13,
+      "start": 1605.9,
+      "end": 1760.5
+    },
+    {
+      "id": "d4-s2",
+      "num": 14,
+      "start": 1760.5,
+      "end": 1874.4
+    },
+    {
+      "id": "d4-s3",
+      "num": 15,
+      "start": 1874.4,
+      "end": 1990.4
+    },
+    {
+      "id": "d4-s4",
+      "num": 16,
+      "start": 1990.4,
+      "end": 2135.4
+    }
+  ],
+  "rak_flight_en": [
+    {
+      "id": "d1-s1",
+      "num": 1,
+      "start": 174.4,
+      "end": 278.8
+    },
+    {
+      "id": "d1-s2",
+      "num": 2,
+      "start": 278.8,
+      "end": 374.5
+    },
+    {
+      "id": "d1-s3",
+      "num": 3,
+      "start": 374.5,
+      "end": 465.6
+    },
+    {
+      "id": "d1-s4",
+      "num": 4,
+      "start": 465.6,
+      "end": 552.5
+    },
+    {
+      "id": "d2-s1",
+      "num": 5,
+      "start": 552.5,
+      "end": 650.3
+    },
+    {
+      "id": "d2-s2",
+      "num": 6,
+      "start": 650.3,
+      "end": 751.2
+    },
+    {
+      "id": "d2-s3",
+      "num": 7,
+      "start": 751.2,
+      "end": 839.7
+    },
+    {
+      "id": "d2-s4",
+      "num": 8,
+      "start": 839.7,
+      "end": 935.4
+    },
+    {
+      "id": "d3-s1",
+      "num": 9,
+      "start": 935.4,
+      "end": 1027.3
+    },
+    {
+      "id": "d3-s2",
+      "num": 10,
+      "start": 1027.3,
+      "end": 1147.1
+    },
+    {
+      "id": "d3-s3",
+      "num": 11,
+      "start": 1147.1,
+      "end": 1235.9
+    },
+    {
+      "id": "d3-s4",
+      "num": 12,
+      "start": 1235.9,
+      "end": 1335.8
+    },
+    {
+      "id": "d4-s1",
+      "num": 13,
+      "start": 1335.8,
+      "end": 1459.2
+    },
+    {
+      "id": "d4-s2",
+      "num": 14,
+      "start": 1459.2,
+      "end": 1558.2
+    },
+    {
+      "id": "d4-s3",
+      "num": 15,
+      "start": 1558.2,
+      "end": 1661.6
+    },
+    {
+      "id": "d4-s4",
+      "num": 16,
+      "start": 1661.6,
+      "end": 1774.9
+    }
+  ]
+};
+
+let activeHighlightedStopId = null;
+let lastSyncedAudioStopId = null;
+
+function getStopById(stopId) {
+  let found = null;
+  ITINERARY_DATA.days.forEach(d => {
+    d.stops.forEach(s => {
+      if (s.id === stopId) found = { stop: s, day: d.day };
+    });
+  });
+  return found;
+}
+
+function getStopByNum(num) {
+  let found = null;
+  ITINERARY_DATA.days.forEach(d => {
+    d.stops.forEach(s => {
+      if (s.num === num) found = { stop: s, day: d.day };
+    });
+  });
+  return found;
+}
+
+function highlightStopAndFocusMap(stopId, scrollCard = true) {
+  const info = getStopById(stopId);
+  if (!info) return;
+  const { stop, day } = info;
+
+  // Ensure the stop's day is visible in the list and on the map
+  if (activeDayFilter !== 'all' && String(activeDayFilter) !== String(day)) {
+    filterDay('all');
+  }
+
+  activeHighlightedStopId = stopId;
+
+  // 1. Highlight stop card in sidebar list and scroll it into view
+  document.querySelectorAll('.stop-card.speaking-active').forEach(c => c.classList.remove('speaking-active'));
+  document.querySelectorAll('.btn-stop-speak').forEach(b => b.setAttribute('aria-pressed', 'false'));
+  const card = document.getElementById('card-' + stopId);
+  const btn = document.getElementById('btn-speak-' + stopId);
+  if (card) {
+    card.classList.add('speaking-active');
+    if (scrollCard) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+  if (btn) btn.setAttribute('aria-pressed', 'true');
+
+  // 2. Highlight active jump chip (#1..#22)
+  document.querySelectorAll('.jump-stop-chip').forEach(ch => {
+    const isThis = ch.dataset.stopId === stopId;
+    ch.setAttribute('aria-pressed', isThis ? 'true' : 'false');
+  });
+
+  // 3. Highlight active pin on Leaflet map & pan/zoom map to stop
+  document.querySelectorAll('.custom-pin-inner').forEach(el => el.classList.remove('pin-speaking-active'));
+  const pinEl = document.getElementById('map-pin-' + stopId);
+  if (pinEl) pinEl.classList.add('pin-speaking-active');
+
+  if (map && markerRefs[stopId] && currentMapDisplay === 'leaflet') {
+    map.flyTo([stop.lat, stop.lng], 15, { animate: true, duration: 0.75 });
+    markerRefs[stopId].openPopup();
+  } else if (currentMapDisplay === 'svg') {
+    renderSvgFallback();
+  }
+
+  // 4. Update Live Caption banner with current stop details
+  const isEn = (currentLang === 'en');
+  const sName = isEn ? stop.name_en : stop.name;
+  const sCost = isEn ? stop.cost_en : stop.cost_he;
+  const sInOut = isEn ? stop.in_en : stop.in_he;
+  const sWow = isEn ? stop.wow_en : stop.wow_he;
+  updateLiveCaption(
+    isEn
+      ? `🔊 Now Narrating Stop #${stop.num}/16: ${sName} | Cost: ${sCost} | ${sInOut}: ${sWow}`
+      : `🔊 מקריא כעת תחנה #${stop.num}/16: ${sName} | עלות: ${sCost} | ${sInOut}: ${sWow}`
+  );
+}
+
+function focusStop(stopId, lat, lng) {
+  highlightStopAndFocusMap(stopId, false);
+}
+
+function getTrackKeyForPlayer(player) {
+  const src = (player && player.getAttribute('src')) || '';
+  if (src.includes('flight_en')) return 'rak_flight_en';
+  if (src.includes('flight_he')) return 'rak_flight_he';
+  if (src.includes('short_en')) return 'rak_short_en';
+  return 'rak_short_he';
+}
+
+function syncAudioPlayerToStop(player, forceScroll = false) {
+  if (!player) return;
+  const trackKey = getTrackKeyForPlayer(player);
+  const cues = AUDIO_STOP_TIMELINE[trackKey];
+  if (!cues || !cues.length) return;
+  // If user selected a _2x file directly or standard 1x file, scale by duration ratio
+  const nominalEnd = cues[cues.length - 1].end;
+  const actualDur = (player.duration && isFinite(player.duration) && player.duration > 10) ? player.duration : nominalEnd;
+  const scale = nominalEnd / actualDur;
+  const effectiveSec = player.currentTime * scale;
+
+  let matchedStopId = null;
+  for (let i = 0; i < cues.length; i++) {
+    if (effectiveSec >= cues[i].start - 0.5 && effectiveSec < cues[i].end) {
+      matchedStopId = cues[i].id;
+      break;
+    }
+  }
+
+  const introChip = document.getElementById('jump-chip-intro');
+  if (!matchedStopId) {
+    if (introChip) introChip.setAttribute('aria-pressed', 'true');
+    document.querySelectorAll('#jump-chips-container .jump-stop-chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+    if (lastSyncedAudioStopId !== 'intro') {
+      lastSyncedAudioStopId = 'intro';
+      const isEn = (currentLang === 'en');
+      updateLiveCaption(
+        isEn
+          ? '🔊 Playing Intro: Historical Background, €1.70 Airport Tram Rule & Contactless vs. Cash Guide (Map & cards will auto-focus at Stop #1)...'
+          : '🔊 מנגן פתיחה: רקע היסטורי, טריק ה-1.70€ מהשדה וכללי קונטקטלס מול מזומן (המפה והכרטיסיות יתמקדו אוטומטית החל מתחנה #1)...'
+      );
+    }
+    return;
+  }
+
+  if (introChip) introChip.setAttribute('aria-pressed', 'false');
+  if (forceScroll || matchedStopId !== lastSyncedAudioStopId) {
+    lastSyncedAudioStopId = matchedStopId;
+    highlightStopAndFocusMap(matchedStopId, true);
+  }
+}
+
+function jumpAudioToStop(stopNum) {
+  // Determine active player (prefer currently playing player, else short player)
+  const pShort = document.getElementById('audio-player-short');
+  const pFlight = document.getElementById('audio-player-flight');
+  const player = (pFlight && !pFlight.paused) ? pFlight : pShort;
+  if (!player) return;
+
+  const isEn = (currentLang === 'en');
+  const isFlight = (player.id === 'audio-player-flight');
+  const wantSrc = isFlight
+    ? (isEn ? 'audio/rak_trip_flight_en.mp3' : 'audio/rak_trip_flight_he.mp3')
+    : (isEn ? 'audio/rak_trip_short_en.mp3' : 'audio/rak_trip_short_he.mp3');
+  if (player.getAttribute('src') !== wantSrc) {
+    player.setAttribute('src', wantSrc);
+  }
+
+  const trackKey = getTrackKeyForPlayer(player);
+  const cues = AUDIO_STOP_TIMELINE[trackKey] || [];
+  if (stopNum === 0) {
+    lastSyncedAudioStopId = null;
+    player.currentTime = 0;
+    player.defaultPlaybackRate = currentAudioSpeed;
+    player.playbackRate = currentAudioSpeed;
+    player.play().catch(() => {});
+    syncAudioPlayerToStop(player, true);
+    return;
+  }
+
+  const cue = cues.find(c => c.num === stopNum);
+  if (!cue) return;
+  highlightStopAndFocusMap(cue.id, true);
+  lastSyncedAudioStopId = cue.id;
+
+  const applySeekAndPlay = () => {
+    const nominalEnd = cues[cues.length - 1].end;
+    const actualDur = (player.duration && isFinite(player.duration) && player.duration > 10) ? player.duration : nominalEnd;
+    const scale = actualDur / nominalEnd;
+    player.currentTime = Math.max(0, cue.start * scale);
+    player.defaultPlaybackRate = currentAudioSpeed;
+    player.playbackRate = currentAudioSpeed;
+    player.play().catch(() => {});
+  };
+
+  if (player.readyState >= 1) {
+    applySeekAndPlay();
+  } else {
+    player.addEventListener('loadedmetadata', applySeekAndPlay, { once: true });
+    player.load();
+  }
+}
+
+function buildJumpStopChips() {
+  const container = document.getElementById('jump-chips-container');
+  if (!container) return;
+  let chipsHtml = '';
+  ITINERARY_DATA.days.forEach(d => {
+    d.stops.forEach(s => {
+      const isPressed = (activeHighlightedStopId === s.id) ? 'true' : 'false';
+      const titleText = (currentLang === 'en') ? `#${s.num} ${s.name_en}` : `#${s.num} ${s.name}`;
+      chipsHtml += `<button type="button" class="jump-stop-chip" data-stop-id="${s.id}" aria-pressed="${isPressed}" title="${titleText}" onclick="jumpAudioToStop(${s.num})">#${s.num}</button>`;
+    });
+  });
+  container.innerHTML = chipsHtml;
+}
+
+function filterDay(day) {
+  activeDayFilter = day;
+  document.querySelectorAll('.day-tab').forEach(btn => {
+    const isActive = String(btn.dataset.day) === String(day);
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+  const labelEl = document.getElementById('active-filter-label');
+  if (labelEl) {
+    const isEn = (currentLang === 'en');
+    labelEl.textContent = isEn
+      ? (day === 'all' ? 'Showing: All 4 Days' : ('Showing: Day ' + day))
+      : (day === 'all' ? 'מציג: כל 4 הימים' : ('מציג: יום ' + day));
+  }
+  renderItinerary();
+  updateMapMarkers();
+}
+
+function renderSvgFallback() {
+  const el = document.getElementById('svg-fallback');
+  if (!el) return;
+  const daysToShow = activeDayFilter === 'all'
+    ? ITINERARY_DATA.days
+    : ITINERARY_DATA.days.filter(d => d.day === activeDayFilter);
+
+  const stops = [];
+  daysToShow.forEach(d => {
+    d.stops.forEach(s => stops.push({ ...s, color: d.color }));
+  });
+  if (!stops.length) return;
+
+  let minLat = Math.min(...stops.map(s => s.lat)) - 0.02;
+  let maxLat = Math.max(...stops.map(s => s.lat)) + 0.02;
+  let minLng = Math.min(...stops.map(s => s.lng)) - 0.03;
+  let maxLng = Math.max(...stops.map(s => s.lng)) + 0.03;
+
+  const W = 820, H = 500;
+  const project = (lat, lng) => {
+    const x = ((lng - minLng) / (maxLng - minLng)) * (W - 80) + 40;
+    const y = H - (((lat - minLat) / (maxLat - minLat)) * (H - 80) + 40);
+    return [Math.round(x), Math.round(y)];
+  };
+
+  let polylinesSvg = '';
+  let nodesSvg = '';
+  daysToShow.forEach(d => {
+    const pts = d.stops.map(s => project(s.lat, s.lng).join(',')).join(' ');
+    polylinesSvg += `<polyline points="${pts}" fill="none" stroke="${d.color}" stroke-width="3" stroke-dasharray="6,4" />`;
+    d.stops.forEach(s => {
+      const [x, y] = project(s.lat, s.lng);
+      nodesSvg += `
+        <g>
+          ${activeHighlightedStopId === s.id ? `<circle cx="${x}" cy="${y}" r="20" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="4,3" />` : ''}
+          <circle cx="${x}" cy="${y}" r="${activeHighlightedStopId === s.id ? 16 : (s.isTier1 ? 13 : 10)}" fill="${activeHighlightedStopId === s.id ? '#f59e0b' : d.color}" stroke="#ffffff" stroke-width="2" />
+          <text x="${x}" y="${y + 4}" fill="#ffffff" font-size="9.5" font-weight="800" text-anchor="middle">${s.num}</text>
+        </g>
+      `;
+    });
+  });
+
+  el.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:#0f172a;border-radius:8px;" aria-label="Vector Route Map">
+      ${polylinesSvg}
+      ${nodesSvg}
+    </svg>
+  `;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  // Detect initial language from ?lang=en|he or localStorage
+  let initLang = 'he';
+  let initSpeed = 1.0;
+  try {
+    const p = new URLSearchParams(window.location.search);
+    const qLang = (p.get('lang') || '').toLowerCase();
+    if (qLang === 'en' || qLang === 'he') {
+      initLang = qLang;
+    } else {
+      const savedLang = localStorage.getItem('eladb_rak_trip_lang');
+      if (savedLang === 'en' || savedLang === 'he') initLang = savedLang;
+    }
+    const qSpeed = parseFloat(p.get('speed') || localStorage.getItem('eladb_rak_trip_speed') || '1');
+    if (!isNaN(qSpeed) && qSpeed >= 0.5 && qSpeed <= 3.0) {
+      initSpeed = qSpeed;
+    }
+  } catch (e) {}
+  ['audio-player-short', 'audio-player-flight'].forEach(id => {
+    const p = document.getElementById(id);
+    if (p) {
+      p.addEventListener('play', () => {
+        // Pause the other player if both were started
+        const otherId = (id === 'audio-player-short') ? 'audio-player-flight' : 'audio-player-short';
+        const other = document.getElementById(otherId);
+        if (other && !other.paused) other.pause();
+        p.defaultPlaybackRate = currentAudioSpeed;
+        p.playbackRate = currentAudioSpeed;
+        syncAudioPlayerToStop(p, true);
+      });
+      p.addEventListener('timeupdate', () => {
+        if (!p.paused) syncAudioPlayerToStop(p, false);
+      });
+      p.addEventListener('seeked', () => {
+        syncAudioPlayerToStop(p, true);
+      });
+      p.addEventListener('loadedmetadata', () => {
+        p.defaultPlaybackRate = currentAudioSpeed;
+        p.playbackRate = currentAudioSpeed;
+      });
+    }
+  });
+  setLanguage(initLang);
+  setAudioSpeed(initSpeed);
+  initMap();
+});
+
+window.addEventListener('load', () => {
+  if (!map && typeof L !== 'undefined') {
+    switchMapDisplay('leaflet');
+  } else if (map) {
+    map.invalidateSize();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.defaultPrevented) return;
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+  if (tag === 'input' || tag === 'textarea' || tag === 'select' || (e.target && e.target.isContentEditable)) return;
+  if (!e.ctrlKey && !e.metaKey && !e.altKey && (e.key === 'l' || e.key === 'L' || e.key === 'ך')) {
+    e.preventDefault();
+    setLanguage(currentLang === 'en' ? 'he' : 'en');
+  }
+});
+</script>
+<!-- ELADB_UNIVERSAL_THEME_JS_START -->
+<script>
+(function() {
+  var STORAGE_KEY = 'eladb_x20_theme_v2';
+  function resolveInitialTheme() {
+    try {
+      var p = new URLSearchParams(window.location.search);
+      var t = (p.get('theme') || '').toLowerCase();
+      if (t === 'dark' || t === 'night') return 'dark';
+      if (t === 'light' || t === 'day') return 'light';
+    } catch (e) {}
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === 'dark' || saved === 'light') return saved;
+    } catch (e) {}
+    var existing = document.documentElement.getAttribute('data-theme');
+    if (existing === 'dark' || existing === 'light') return existing;
+    return 'dark';
+  }
+  function syncButtons(mode) {
+    var isDark = (mode === 'dark');
+    document.body.classList.toggle('night-mode', isDark);
+    var niceBtn = document.getElementById('btn-theme');
+    if (niceBtn) {
+      niceBtn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      var isEn = document.documentElement.lang === 'en';
+      niceBtn.textContent = isEn
+        ? (isDark ? '☀️ Day Mode (D)' : '🌙 Night Mode (D)')
+        : (isDark ? '☀️ מצב יום (D)' : '🌙 מצב לילה (D)');
+    }
+  }
+  window.setTheme = function(mode) {
+    var next = (mode === 'dark' || mode === 'night') ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+    syncButtons(next);
+  };
+  window.toggleTheme = function() {
+    var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    window.setTheme(cur === 'dark' ? 'light' : 'dark');
+  };
+  var initMode = resolveInitialTheme();
+  window.setTheme(initMode);
+  document.addEventListener('keydown', function(e) {
+    if (e.defaultPrevented) return;
+    var tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+    if (tag === 'input' || tag === 'textarea' || tag === 'select' || (e.target && e.target.isContentEditable)) return;
+    if (!e.ctrlKey && !e.metaKey && !e.altKey && (e.key === 'd' || e.key === 'D' || e.key === 'ג')) {
+      e.preventDefault();
+      window.toggleTheme();
+    }
+  });
+})();
+</script>
+<!-- ELADB_UNIVERSAL_THEME_JS_END -->
+</body>
+</html>

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מרקש, הרי האטלס ומדבר אגפאי — מהדורת שטח לנייד</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #0f172a;
+    --muted: #475569;
+    --border: #cbd5e1;
+    --primary: #0284c7;
+    --card-bg: #f8fafc;
+    --accent: #d97706;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #334155;
+      --primary: #38bdf8;
+      --card-bg: #1e293b;
+      --accent: #f59e0b;
+    }
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 14px;
+    line-height: 1.6;
+  }
+  header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  h1 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .sub-header {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .global-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    min-height: 44px;
+  }
+  .btn-sec {
+    background: #334155;
+    color: #fff;
+  }
+  .btn-green {
+    background: #059669;
+    color: #fff;
+  }
+  .day-tabs {
+    display: flex;
+    gap: 6px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    flex: 1;
+    min-width: 75px;
+    padding: 10px 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--primary);
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    min-height: 44px;
+  }
+  .tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+  }
+  .tab-content {
+    display: none;
+    padding-top: 14px;
+  }
+  .tab-content.active {
+    display: block;
+  }
+  .day-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .day-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .day-subtitle {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .wa-box {
+    background: rgba(5, 150, 105, 0.1);
+    border: 1px dashed #059669;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 16px;
+  }
+  .wa-title {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #059669;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .wa-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .wa-btn {
+    background: #059669;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 40px;
+  }
+  .wa-btn-sec {
+    background: transparent;
+    color: #059669;
+    border: 1px solid #059669;
+  }
+  .stop-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .stop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .stop-name {
+    font-size: 0.98rem;
+    font-weight: 800;
+  }
+  .stop-tier {
+    font-size: 0.72rem;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .tier-must {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  .tier-sec {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+  .map-copy-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.04);
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+  .map-name-text {
+    font-family: monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    direction: ltr;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .btn-copy-map {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    min-height: 36px;
+  }
+  .info-row {
+    font-size: 0.82rem;
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .info-label {
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .photo-tip {
+    background: rgba(147, 51, 234, 0.08);
+    border-inline-start: 3px solid #9333ea;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    margin-top: 8px;
+  }
+  .transit-tip {
+    background: rgba(16, 185, 129, 0.08);
+    border-inline-start: 3px solid #10b981;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    margin-top: 8px;
+  }
+  .stop-links {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .link-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    border-radius: 6px;
+    min-height: 36px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧭 מרקש, הרי האטלס ומדבר אגפאי — מהדורת שטח לנייד</h1>
+  <div class="sub-header">26/11 (נחיתה 11:30) עד 30/11 (המראה 09:45) | מרקש, אימליל והרי האטלס, מדבר אגפאי</div>
+  <div class="global-actions">
+    <button type="button" class="btn btn-green" onclick="copyAllDaysWhatsApp()">📱 העתק הכל לווטסאפ (Maps + תקציר)</button>
+    <a href="desktop.html" class="btn btn-sec">🗺️ תצוגת מפה מלאה (Desktop)</a>
+  </div>
+</header>
+
+<nav class="day-tabs" aria-label="ניווט לפי ימים">
+  <button type="button" class="tab-btn active" onclick="switchTab('1', this)">יום 1</button>
+  <button type="button" class="tab-btn " onclick="switchTab('2', this)">יום 2</button>
+  <button type="button" class="tab-btn " onclick="switchTab('3', this)">יום 3</button>
+  <button type="button" class="tab-btn " onclick="switchTab('4', this)">יום 4</button>
+</nav>
+
+<div class="tab-content active" id="tab-day-1">
+  <div class="day-card">
+    <div class="day-title">יום 1 (חמישי 26/11, 11:30 - 21:30): נחיתה ב-RAK -> מסגד Koutoubia -> מדרסת Ben Youssef -> גגות המדינה -> שקיעה ב-Jemaa el-Fna</div>
+    <div class="day-subtitle">אוטובוס אקספרס L19 מהשדה (12 דק׳, 50 MAD הלוך-חזור) -> צ׳ק-אין בריאד -> הציר הגיאומטרי של צפון המדינה</div>
+    <div class="wa-box">
+      <span class="wa-title">📲 העתקה לווטסאפ / פתקים — יום 1</span>
+      <div class="wa-btn-group">
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('1', 1, this)">📋 רמה 1: שמות ל-Maps (רווח כפול)</button>
+        <button type="button" class="wa-btn" onclick="copyDayWhatsApp('1', 2, this)">📋 רמה 2: שם + זמנים + עלויות + תקציר</button>
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('1', 3, this)">📋 רמה 3: מדריך שטח מלא</button>
+      </div>
+    </div>
+    <article class="stop-card" id="card-d1-s1">
+      <div class="stop-header">
+        <div class="stop-name">#1. Koutoubia Mosque & משטח העמודים של המסגד הראשון (1147, צריח בגובה 77m)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Koutoubia Mosque Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Koutoubia Mosque Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 12:45 - 13:30 (45m) (45 דק׳) | 🔥 חובה - המצפן האדריכלי של מרקש (אסור לבנות בעיר שום בניין גבוה מעץ דקל מלבדו)</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> חינם לחלוטין (0 MAD לרחבה, לעמודים העתיקים ולגני Lalla Hasna)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> חוץ בלבד (כניסה למסגד למוסלמים בלבד): הקף את הצריח אל הרחבה הצפון-מערבית שבה חשופים בסיסי העמודים של המסגד הראשון שנבנה בזווית שגויה.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: צריח אבן החול האדמדם מ-1158 בגובה 77 מטר שהפך לאב-הטיפוס של החיראלדה בסביליה ומגדל חסן ברבאט, מוקף שדרות דקלים ובריכות השתקפות.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך מהשדה: אוטובוס L19 מוריד אותך ממש בצל הצריח של הכותוביה בתוך 12 דקות מהטרמינל.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x מבין בסיסי העמודים העתיקים בצד הצפון-מערבי כלפי הצריח.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 15 דק׳ הליכה צפונה דרך סמטאות הסוק המקורות אל מדרסת בן יוסף</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Koutoubia+Mosque+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d1-s2">
+      <div class="stop-header">
+        <div class="stop-name">#2. Ben Youssef Madrasa & Almoravid Koubba (שיא הגיאומטריה האסלאמית במרקש - 1565)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Ben Youssef Madrasa Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Ben Youssef Madrasa Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 13:50 - 15:10 (80m) (80 דק׳) | 🔥 חובה מוחלטת - החלל הסימטרי המושלם ביותר במרוקו</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> 50 MAD (~4.60€)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> פנים + קומה שנייה (מוצדק ב-100% ב-4.60€): כניסה לחצר המרכזית עם בריכת השיש השחורה ועלייה ל-130 חדרי הסטודנטים המקיפים את החצר מלמעלה.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: מכללה אסלאמית מהמאה ה-16 שבה כל סנטימטר מכוסה בפסיפס זליז׳ גיאומטרי, קירות סטוקו מגולפים וכיפות עץ ארז מהרי האטלס המשתקפים בבריכת שיש.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: ממש מחוץ לשער המדרסה נמצאת ה-Koubba Almoravid מ-1117 — המבנה העתיק ביותר ששרד במרקש, השקוע 7 מטרים מתחת למפלס הרחוב של היום.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x נמוכה מקצה בריכת המים לקבלת השתקפות סימטרית מלאה, ועוד תמונה מחלון העץ בקומה השנייה.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 3 דק׳ הליכה דרומה לתוך ציר חאנות הסוחרים וקרני האור של הסוק</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Ben+Youssef+Madrasa+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d1-s3">
+      <div class="stop-header">
+        <div class="stop-name">#3. ציר חאנות הסוחרים וקרני האור בסוק (Foundouk El Amri, סוק הנפחים Souk Haddadine ומזרקת Mouassine מ-1570)</div>
+        <span class="stop-tier tier-sec">● שלד</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Fontaine Mouassine Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Fontaine Mouassine Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 15:15 - 16:45 (90m) (90 דק׳) | 🔥 משחקי אור וצל תלת-ממדיים אמיתיים בסמטאות המקורות ובחצרות החאנים ב-0 MAD (במקום תמונות ממוסגרות על קיר)</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> [חוץ + חצרות פתוחות] חינם לחלוטין (0 MAD — מדלגים על 60 MAD למוזיאון הצילום ועל 80 MAD ל-Jardin Secret)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> [תמהיל: 100% חלל סמטאות מקורות וחצרות חאן פתוחות ב-0 MAD]: הליכה רציפה ממדרסת בן יוסף דרך חצר הקומות של Foundouk El Amri, תקרות הקנים של Souk Haddadine ו-Souk des Teinturiers ועד קשתות העץ המגולפות של מזרקת Mouassine מ-1570.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: קרני שמש אלכסוניות של אחה״צ חודרות דרך תקרות הקנים הקלועות ויוצרות פסי אור וצל גיאומטריים עזים לאורך הסמטאות, ללא שום כרטיס כניסה וללא ויטרינות.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: ציר ליניארי לחלוטין מצפון המדינה דרומה אל כיכר ג׳מע אל-פנא.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x לאורך סמטת Souk Haddadine כשפסי האור האלכסוניים חוצים את החלל החשוך.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 5 דק׳ הליכה דרומה אל כיכר Jemaa el-Fna לשקיעה</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Fontaine+Mouassine+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d1-s4">
+      <div class="stop-header">
+        <div class="stop-name">#4. שקיעה ושעה כחולה מעל כיכר Jemaa el-Fna וצריח ה-Koutoubia המואר</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Jemaa el-Fnaa Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Jemaa el-Fnaa Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 16:50 - 20:30 (שקיעה 18:15 + שעה כחולה בכיכר) (160 דק׳) | 🔥 חובה מוחלטת - מחזה השעה הכחולה של ג׳מע אל-פנא מלמעלה</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> [חוץ + מרפסת גג] חינם בכיכר (0 MAD; כוס תה ב-15 MAD במרפסת גג לתצפית עילית)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> [חוץ + מרפסת גג פתוחה]: תצפית עילית ממרפסת גג במזרח הכיכר (למשל L’Adresse / Café de France / Glacier ב-17:45-18:45) ושיטוט ערב ברחבה העצומה.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: בדיוק ב-18:15 כשהשמש שוקעת מאחורי צריח הכותוביה, מאות עששיות ועמודי עשן עולים מכיכר ג׳מע אל-פנא תחת שמיים כחולים עמוקים.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: יציאה ישירה מ-Rue Mouassine אל הקצה הצפוני של הכיכר.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x ב-Night Mode ממרפסת גבוהה בצד המזרחי של הכיכר כשצריח ה-Koutoubia מצולם בצללית מול השקיעה.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> הליכה קצרה ללינה בריאד</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Jemaa+el-Fnaa+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="tab-content " id="tab-day-2">
+  <div class="day-card">
+    <div class="day-title">יום 2 (שישי 27/11, 08:00 - 20:30): ארמונות הדרום (Bahia & El Badi) -> המלאח היהודי -> שער Bab Agnaou וחומות הקסבה -> שקיעה ב-Menara</div>
+    <div class="day-subtitle">התייצבות ב-08:00 בבוקר בשער ארמון Bahia (לפני קבוצות התיירים!) -> רצף צמוד של 5 אתרי ענק בדרום המדינה -> שקיעה בבריכת Menara</div>
+    <div class="wa-box">
+      <span class="wa-title">📲 העתקה לווטסאפ / פתקים — יום 2</span>
+      <div class="wa-btn-group">
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('2', 1, this)">📋 רמה 1: שמות ל-Maps (רווח כפול)</button>
+        <button type="button" class="wa-btn" onclick="copyDayWhatsApp('2', 2, this)">📋 רמה 2: שם + זמנים + עלויות + תקציר</button>
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('2', 3, this)">📋 רמה 3: מדריך שטח מלא</button>
+      </div>
+    </div>
+    <article class="stop-card" id="card-d2-s1">
+      <div class="stop-header">
+        <div class="stop-name">#5. Bahia Palace (ארמון הווזיר הגדול בא-אחמד מ-1894 - כניסה ב-08:00 לחצרות ריקות!)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Bahia Palace Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Bahia Palace Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 08:00 - 09:20 (80m) (80 דק׳) | 🔥 חובה ב-08:00 בבוקר בדיוק (ב-10:30 המקום מתמלא קבוצות)</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> 100 MAD (~9.20€)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> פנים + חצרות (מוצדק ב-100%): עוברים בין חצר הריאד הקטן, תקרות עץ הארז הצבועות (Zouak) והחצר הגדולה המרוצפת שיש ופסיפס זליז׳ ברוחב 50 מטר.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: 80 דונם של חצרות שיש, מזרקות, ויטראז׳ים צבעוניים ותקרות עץ ארז מגולפות וצבועות ביד חופשית שבנו טובי האומנים מפאס במשך 14 שנה.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: הליכה של 10 דק׳ מהריאד באור הבוקר השקט.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x במרכז החצר הגדולה הריקה מאדם ב-08:15 בבוקר, ועוד זווית כלפי מעלה לתקרות ה-Zouak.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 4 דק׳ הליכה אל ארמון El Badi והמלאח</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Bahia+Palace+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d2-s2">
+      <div class="stop-header">
+        <div class="stop-name">#6. El Badi Palace & המלאח היהודי (ארמון האדמה הנגוחה השקוע מ-1578, בית הכנסת Slat Al Azama וכיכר הפחחים)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">El Badi Palace Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('El Badi Palace Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 09:25 - 11:30 (125m) (125 דק׳) | 🔥 חובה - קנה מידה ברוטליסטי אדיר מ-1578 וסיפור יהדות מרוקו</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> 100 MAD ל-El Badi + 20 MAD לבית הכנסת הכחול Slat Al Azama (1492)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> פנים + חוץ: הולכים לאורך בריכת הענק השקועה (90 מטר אורך!) והגנים התת-קרקעיים של El Badi, ועוברים למלאח היהודי מ-1558 ולחצר הכחולה-לבנה של בית הכנסת Slat Al Azama (מגורשי ספרד מ-1492).</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: חצר ענק שקועה בגודל אצטדיון כדורגל המוקפת חומות אדמה נגוחה (Pisé) אדומות וגבוהות שעליהן עשרות קני חסידות, עם בריכות מים ופרדסי תפוזים השקועים 4 מטרים מתחת לרצפה.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: עוברים ב-Place des Ferblantiers (כיכר אומני פנסי המתכת המחוררים).</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x מקצה הבריכה המרכזית של El Badi ועדשה 1x מהטרסה העליונה מעל הפרדסים השקועים.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 6 דק׳ הליכה אל שער האבן המלכותי Bab Agnaou וציר חומות הקסבה</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=El+Badi+Palace+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d2-s3">
+      <div class="stop-header">
+        <div class="stop-name">#7. שער האבן האלמוהאדי Bab Agnaou (1188), חזית מסגד הקסבה (צריח הטורקיז) וציר חומות הקסבה המלכותית</div>
+        <span class="stop-tier tier-sec">● שלד</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Bab Agnaou Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Bab Agnaou Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 12:00 - 15:00 (מסלול רציף דרך חומות הקסבה ושער Bab Jdid ללא חור בלו״ז) (180 דק׳ (כולל הליכת החומות המבוצרות מ-Bab Agnaou דרך מסגד הקסבה ו-Bab Robb אל שדרת Hivernage)) | 🔥 100% אדריכלות מונומנטלית פתוחה ב-0 MAD ובלי לעמוד שעה בתור בשביל להציץ מחבל בפתח חדר</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> [חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על תור העמידה של שעה בקברים הסעדיים ב-100 MAD בשביל הצצה של 30 שניות מפתח דלת)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> [חוץ בלבד - 100% חזיתות אבן וחומות]: צילום שער האבן המגולף Bab Agnaou (1188), כיכר מסגד הקסבה (Mosquée Moulay El Yazid) עם פסיפס הטורקיז, והליכה לאורך חומות האדמה האדומות המבוצרות דרך שער Bab Robb ו-Bab Jdid.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: Bab Agnaou הוא שער האבן המלכותי מ-1188 החצוב באבן חול כחלחלה-אפורה עם 4 קשתות פרסה קונצנטריות וכתובת קוראנית גיאומטרית, ומיד מאחוריו מתנשא צריח הפסיפס של מסגד הקסבה.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך אל Menara (15:00-15:45): צועדים מ-Bab Jdid לאורך ציר הדקלים המלכותי של Hivernage ו-Avenue de la Ménara ישירות אל מאגר המים.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x אלכסונית על הטבעות החצובות של Bab Agnaou.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> הליכה רציפה לאורך חומות Bab Jdid ושדרת הדקלים אל מאגר Menara (הגעה ב-15:45 לאור הזהב)</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Bab+Agnaou+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d2-s4">
+      <div class="stop-header">
+        <div class="stop-name">#8. Menara Gardens & Pavilion (השתקפות ביתן הפירמידה הירוק מהמאה ה-19 והרי האטלס בשקיעה)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Menara Gardens Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Menara Gardens Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 15:45 - 18:30 (שקיעה 18:15) (120 דק׳) | 🔥 חובה בשעת השקיעה - הפריים הקלאסי של מרקש מול הרי האטלס</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> חינם לחלוטין לפארק ולמאגר המים העצום (0 MAD)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> חוץ בלבד (הקפת בריכת האגירה מהמאה ה-12): הולכים לאורך שפת המאגר הצפוני כך שהשמש השוקעת מאירה מהצד את הביתן ואת פסגות הרי האטלס מאחוריו.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: מאגר מים הידראולי עצום מהמאה ה-12 שממנו משתקפים יחד ביתן ה-Saadian/Alaouite מ-1869 עם גג הפירמידה הירוק ורכס הרי האטלס המושלג.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך חזרה: שדרת Avenue de la Ménara מובילה בקו ישר בחזרה אל מואזין ה-Koutoubia המואר.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 2x משפת הבריכה הצפונית שמכווצת את פסגות האטלס קרוב לגג הירוק של הביתן.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> חזרה למדינה לערב שני</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Menara+Gardens+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="tab-content " id="tab-day-3">
+  <div class="day-card">
+    <div class="day-title">יום 3 (שבת 28/11, 08:15 - 19:30): הלופ המשולב: הרי האטלס (Imlil & כפר Armed ב-1,900m) -> רמת Kik -> שקיעה במדבר Agafay</div>
+    <div class="day-subtitle">איסוף/יציאה ב-08:15 -> קניון Asni -> טיפוס רגלי מהיר מ-Imlil (1,740m) לכפר הברברי המדורג Armed (1,900m) -> מעבר Kik -> שקיעה ב-Agafay (16:00-18:30)</div>
+    <div class="wa-box">
+      <span class="wa-title">📲 העתקה לווטסאפ / פתקים — יום 3</span>
+      <div class="wa-btn-group">
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('3', 1, this)">📋 רמה 1: שמות ל-Maps (רווח כפול)</button>
+        <button type="button" class="wa-btn" onclick="copyDayWhatsApp('3', 2, this)">📋 רמה 2: שם + זמנים + עלויות + תקציר</button>
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('3', 3, this)">📋 רמה 3: מדריך שטח מלא</button>
+      </div>
+    </div>
+    <article class="stop-card" id="card-d3-s1">
+      <div class="stop-header">
+        <div class="stop-name">#9. Tahanaout & קניון נהר ה-Rherhaia (עמק Asni וכפרי האדמה האדומה התלויים)</div>
+        <span class="stop-tier tier-sec">● שלד</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Asni High Atlas Morocco</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Asni High Atlas Morocco', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 09:15 - 09:50 (35m) (35 דק׳ (עצירות תצפית בעלייה לאטלס)) | ⚡ על כביש העלייה הישיר אל Imlil</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> חינם (0 MAD)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> חוץ: תצפית מעל ערוץ הנהר וכפרי הבוץ והאבן הברבריים הבנויים בקומות על צלע ההר.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: כפרים ברבריים שנראים כאילו צמחו מתוך סלע האדמה האדומה עצמו בתוך קניון הרים צר מתחת לפסגות של 4,000 מטר.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: ביום שבת מתקיים ב-Asni השוק הברברי השבועי של אנשי ההרים.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x מנקודת התצפית מעל Tahanaout שמראה את קוביות הבתים האדומות על המצוק.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 25 דק׳ עלייה אל סוף הכביש ב-Imlil (1,740m)</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Asni+High+Atlas+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d3-s2">
+      <div class="stop-header">
+        <div class="stop-name">#10. Imlil (1,740m) & טיפוס רגלי לכפר הברברי המדורג Armed (1,900m) ומפלי Imlil מול פסגת Toubkal (4,167m)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Armed Imlil High Atlas Morocco</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Armed Imlil High Atlas Morocco', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 10:15 - 13:30 (195m) (3 ורבע שעות של הליכה הררית קצבית בעמק Mizane) | 🔥 חובה מוחלטת - הנוף ההררי העוצמתי ביותר בצפון אפריקה</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> חינם לשביל ההרים (ניתן לשלב עם סיור יומי מ-GetYourGuide ב-~25€ או Grand Taxi מאורגן)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> חוץ (מסלול טיפוס מעגלי): עולים מ-Imlil דרך חורשות אגוז המלך וטרסות ההשקיה אל הכפר המדורג Armed (הכפר הגבוה בעמק ב-1,900m) ויורדים דרך מפלי Imlil.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: כפר אבן ברברי הבנוי במדרגות תלולות על מורנה קרחונית ענקית בגובה 1,900 מטר, כשממש מעליו סותמת את האופק פסגת ג׳בל טובקאל (4,167m — הפסגה הגבוהה בצפון אפריקה).</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: שים לב לקסבה של Kasbah du Toubkal התלויה על שפיץ סלע בראש העמק.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x מהטרסה העליונה של כפר Armed שממסגרת את בתי האבן השטוחים יחד עם הפסגה המושלגת של Toubkal.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> חצייה מערבה ברכב על כביש הרכס הגבוה של Kik Plateau (13:30 - 15:30)</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Armed+Imlil+High+Atlas+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d3-s3">
+      <div class="stop-header">
+        <div class="stop-name">#11. Kik Plateau (רמת הגיר בגובה 1,800m) ותצפית סכר ואגם Lalla Takerkoust</div>
+        <span class="stop-tier tier-sec">● שלד</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Plateau du Kik Morocco</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Plateau du Kik Morocco', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 14:15 - 15:30 (75m) (75 דק׳ (נסיעת רכס פנורמית + עצירות תצפית)) | 🔥 החוליה המקשרת הגאונית שמחברת את האטלס למדבר אגפאי בלי לחזור למרקש באמצע!</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> חינם (0 MAD)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> חוץ: עצירה בשפת המצוק של רמת Kik בגובה 1,800 מטר מעל אגם הטורקיז של סכר Lalla Takerkoust (מ-1935).</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: רמת סלע קרסטית חשופה בגובה 1,800 מטר עם נוף 360 מעלות אל קיר הרי האטלס מצד אחד ואל האגם הכחול והמדבר מצד שני.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: ירידה בפיתולי המצוק אל שער הכניסה הדרומי של מדבר אגפאי בדיוק ב-15:50 לקראת השקיעה.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x משפת המצוק מעל האגם הכחול.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 20 דק׳ כניסה אל לב גבעות החרסית של מדבר Agafay לשקיעה</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Plateau+du+Kik+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d3-s4">
+      <div class="stop-header">
+        <div class="stop-name">#12. Agafay Stone Desert at Sunset & Blue Hour (גבעות החרסית הירחיות באור השקיעה מול הרי האטלס)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Agafay Desert Morocco</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Agafay Desert Morocco', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 16:00 - 18:45 (שקיעה ב-18:15 + שעה כחולה במדבר) (165 דק׳ (הליכה על רכסי החרסית ב-16:00-18:30)) | 🔥 חובה מוחלטת בשקיעה - הנוף הירחי הדרמטי ביותר במרחק 40 דק׳ ממרקש</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> חינם בשבילי המצוקים הפתוחים</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> חוץ בלבד: צעידה על קווי הרכס החדים של גבעות האבן והחרסית בשעה וחצי שלפני השקיעה ובשעה הכחולה.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: בין 16:30 ל-18:30 קרני השמש הנמוכות צובעות מאות גבעות חרסית גליות בזהב, נחושת וסגול, כשמאחוריהן מתנשא קיר הרי האטלס המושלג.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך חזרה למרקש (40 דק׳ נסיעה אחרי השקיעה): הגעה חזרה לריאד ב-19:30.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 2x לאורך קווי הרכס החדים כשהחצי המואר של הגבעה בזהב והחצי המוצל בשחור-כחול.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 40 דק׳ נסיעה חזרה למרקש</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Agafay+Desert+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="tab-content " id="tab-day-4">
+  <div class="day-card">
+    <div class="day-title">יום 4 (ראשון 29/11) + בוקר שני (30/11): חזית הלבנים Studio KO (0€) -> Gueliz & תחנת ONCF -> ציר החומות המערביות והכותוביה -> טיסה 09:45</div>
+    <div class="day-subtitle">ראשון 09:15: חזית לבני הטרקוטה של Studio KO מבחוץ (0 MAD) + שדרת Gueliz ואולם תחנת הרכבת + ציר החומות המערביות ושער Bab Doukkala (0 MAD) -> שני 06:35 אוטובוס L19 לשדה RAK</div>
+    <div class="wa-box">
+      <span class="wa-title">📲 העתקה לווטסאפ / פתקים — יום 4</span>
+      <div class="wa-btn-group">
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('4', 1, this)">📋 רמה 1: שמות ל-Maps (רווח כפול)</button>
+        <button type="button" class="wa-btn" onclick="copyDayWhatsApp('4', 2, this)">📋 רמה 2: שם + זמנים + עלויות + תקציר</button>
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('4', 3, this)">📋 רמה 3: מדריך שטח מלא</button>
+      </div>
+    </div>
+    <article class="stop-card" id="card-d4-s1">
+      <div class="stop-header">
+        <div class="stop-name">#13. חזית הלבנים הברוטליסטית של Studio KO ב-Rue Yves Saint Laurent [תצפית חוץ בלבד ב-0 MAD]</div>
+        <span class="stop-tier tier-sec">● שלד</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Musee Yves Saint Laurent Marrakech</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Musee Yves Saint Laurent Marrakech', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 09:15 - 09:45 (30m תצפית אדריכלית מהרחוב הפתוח) (30 דק׳) | 🔥 נהנים מ-100% מהאדריכלות הברוטליסטית של Studio KO מהרחוב ב-0€ וחוסכים 30€ ותורי תיירים צפופים</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> [חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על 330 MAD / 30€ למוזיאון השמלות החשוך בפנים ולתור הסלפי ב-Jardin Majorelle)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> [חוץ בלבד ב-0 MAD]: צילום קירות התוף המעוגלים ותבליטי לבני הטרקוטה של Studio KO (2017) מהמדרכה הפתוחה ב-Rue Yves Saint Laurent (בלי לשלם 30€ לתצוגת שמלות וסקיצות אופנה בחדרים חשוכים או לתור בגן הקקטוסים הקטן של Majorelle).</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: כל העוצמה האדריכלית של בניין Studio KO נמצאת במעטפת החיצונית הפונה לרחוב: קוביות ותופים עגולים של לבני חמר מקומיות המסודרות כמו סיבי בד באור הבוקר האלכסוני.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך מהמדינה (15 דק׳ הליכה מ-Bab Doukkala): אור הבוקר האלכסוני מדגיש את עומק תבליטי הלבנים.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x צמודה לקיר הלבנים המעוגל של Studio KO לתפיסת הטקסטורה הגיאומטרית.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> 12 דק׳ הליכה דרומה לתוך שדרת האר-דקו של Gueliz</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Musee+Yves+Saint+Laurent+Marrakech" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d4-s2">
+      <div class="stop-header">
+        <div class="stop-name">#14. Gueliz Modernist Spine, אכסדרת התיאטרון המלכותי והאולם המונומנטלי של תחנת הרכבת Marrakesh Railway Station (ONCF)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Gare de Marrakech ONCF</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Gare de Marrakech ONCF', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 10:00 - 12:45 (165m) (165 דק׳ (סיור אדריכלי ליניארי ברובע המודרני Gueliz)) | 🔥 חובה - אדריכלות מונומנטלית בקנה מידה עצום (קשתות של 25 מטר גובה) ב-0 MAD</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> [חוץ + פנים אולם התחנה העצום] חינם לחלוטין (0 MAD)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> [תמהיל: 100% חלל אטריום עצום ואכסדרות עמודים ב-0 MAD]: כניסה חופשית להיכל הזכוכית, השיש והקשתות של תחנת הרכבת ONCF + הליכה לאורך שדרת Mohammed V והתיאטרון המלכותי של Charles Boccara.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: תחנת הרכבת של מרקש וצמוד אליה התיאטרון המלכותי (בעיצוב האדריכל Charles Boccara) בנויים כמקדשים מונומנטליים עם קשתות ענק בנות 25 מטר, כיפות זכוכית פתוחות ועמודי טרקוטה.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: שדרת Mohammed V ב-Gueliz תוכננה ב-1913 ע״י Henri Prost עם קוד צבע אחיד של ורוד-אוכרה.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x סימטרית בתוך אולם הקשתות והזכוכית של תחנת הרכבת ועדשה 1x בין עמודי התיאטרון המלכותי.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> חזרה מזרחה לאורך Avenue Mohammed V אל ביצורי החומה המערבית (Bab Doukkala & Bab Nkob)</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Gare+de+Marrakech+ONCF" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d4-s3">
+      <div class="stop-header">
+        <div class="stop-name">#15. ביצורי החומה המערבית (Bab Doukkala 1126 & Bab Nkob), תעלות ה-Khettara של Arsat Moulay Abdeslam ורחבת הכותוביה בשקיעה</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Bab Doukkala Marrakesh</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Bab Doukkala Marrakesh', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 13:15 - 18:15 (רצף אדריכלי פתוח ב-0 MAD לאורך חומות המערב ללא מוזיאון הכלים Dar El Bacha וללא הליכת האבק ל-Agdal) (150 דק׳) | 🔥 ציר ביצורים אלמורבידיים אדיר מהמאה ה-12 ב-0 MAD שמוביל ברגל ישירות אל צריח הכותוביה בשקיעה</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> [חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על 60 MAD לחדרי הוויטרינות של Dar El Bacha ועל הליכת האבק ל-Agdal)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> [חוץ בלבד - 100% ביצורי חומה וצירים הידראוליים ב-0 MAD]: הליכה לאורך מגדלי השמירה המכופפים של שער Bab Doukkala (1126), חזית מסגד Bab Doukkala מהמאה ה-16, תעלות המים של Arsat Moulay Abdeslam מ-1730 ושער Bab Nkob ישירות אל רחבת העמודים של ה-Koutoubia באור הזהב.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: Bab Doukkala (1126) הוא אחד השערים האלמורבידיים המקוריים הבודדים ששרדו במרקש עם מעבר מבוצר כפול בן 900 שנה, שמחבר ברצף רגלי מישורי לאורך חומות האדמה האדומות המוארות בשמש אחה״צ עד למרגלות הכותוביה.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: ציר מישורי ורציף שמחזיר אותך ללב המדינה לקראת ערב מוקדם ושינה לפני טיסת הבוקר.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 1x לאורך קו החומות האדומות מ-Bab Nkob כשצריח הכותוביה מתנשא בקצה הציר.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> ערב אחרון במדינה -> שינה מוקדמת לקראת בוקר יום שני (06:35 יציאה לשדה)</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Bab+Doukkala+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+    <article class="stop-card" id="card-d4-s4">
+      <div class="stop-header">
+        <div class="stop-name">#16. בוקר יום שני 30/11 (06:35): אוטובוס L19 מהכותוביה -> טרמינל העץ הגיאומטרי של RAK (07:00) -> טיסה לדבלין (09:45)</div>
+        <span class="stop-tier tier-must">★ חובה</span>
+      </div>
+      <div class="map-copy-bar">
+        <span class="map-name-text">Marrakesh Menara Airport RAK</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Marrakesh Menara Airport RAK', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> שני 30/11: 06:35 יציאה -> 07:00 בטרמינל RAK -> 09:45 המראה לדבלין (13:35 נחיתה) (15 דק׳ נסיעה + שעתיים ו-45 דק׳ בטרמינל) | 🔥 חובה לוגיסטית ואדריכלית: להיות בטרמינל ב-07:00 עם דף הנייר המודפס ולהרים מבט אל חזית המעוינים האייקונית של השדה!</div>
+      <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> 0 MAD (כבר שולם בכרטיס ההלוך-חזור של L19 מיום חמישי! או 50-70 MAD במונית)</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> פנים + חוץ הטרמינל: שיקוף בכניסה -> חותמת Document Check בדלפק Ryanair על הנייר -> בידוק -> ביקורת דרכונים.</div>
+      <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: טרמינל שדה התעופה מרקש-מנרה (בעיצוב E2A Architecture) נחשב לאחד משדות התעופה היפים בעולם, עם שלד של 24 מעויני בטון ופלדה עצומים המחופים תחרת ערבסקות שיוצרת משחקי אור וצל על הרצפה.</div>
+      <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> זכור להוציא את שארית המטבעות בדירהם לפני העלייה למטוס.</div>
+      <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x בכניסה החיצונית ובאולם ההמראות מתחת לתקרת המעוינים המוארת בשמש הבוקר.</div>
+      <div class="transit-tip">🚗 <strong>נסיעה/מעבר:</strong> טיסה ישירה מ-RAK לדבלין (09:45 -> 13:35)</div>
+      <div class="stop-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Marrakesh+Menara+Airport+RAK" target="_blank" class="link-pill" rel="noopener">📍 פתח ב-Google Maps</a>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+const ITINERARY_DATA = {"days": [{"day": "1", "title": "יום 1 (חמישי 26/11, 11:30 - 21:30): נחיתה ב-RAK -> מסגד Koutoubia -> מדרסת Ben Youssef -> גגות המדינה -> שקיעה ב-Jemaa el-Fna", "title_en": "Day 1 (Thu 26/11, 11:30 - 21:30): Land at RAK -> Koutoubia Mosque -> Ben Youssef Madrasa -> Medina Rooftops -> Jemaa el-Fna Blue Hour", "subtitle": "אוטובוס אקספרס L19 מהשדה (12 דק׳, 50 MAD הלוך-חזור) -> צ׳ק-אין בריאד -> הציר הגיאומטרי של צפון המדינה", "subtitle_en": "ALSA Bus L19 from RAK (12m, 50 MAD return ticket) -> Riad check-in -> North Medina Geometric Courtyard Spine", "color": "#059669", "stops": [{"id": "d1-s1", "num": 1, "isTier1": true, "tier": "Tier 1 Anchor | 19/20 (A:5 B:5 C:5 D:4)", "name": "Koutoubia Mosque & משטח העמודים של המסגד הראשון (1147, צריח בגובה 77m)", "name_en": "Koutoubia Mosque, 77m Almohad Minaret & Footprint of the First 1147 Mosque", "map_name": "Koutoubia Mosque Marrakesh", "lat": 31.6248, "lng": -7.9933, "time": "12:45 - 13:30 (45m)", "time_en": "12:45 - 13:30 (45m)", "cost_he": "חינם לחלוטין (0 MAD לרחבה, לעמודים העתיקים ולגני Lalla Hasna)", "cost_en": "100% Free (0 MAD for the archaeological plaza & Lalla Hasna palm gardens)", "dur_he": "45 דק׳", "dur_en": "45 mins", "skip_he": "🔥 חובה - המצפן האדריכלי של מרקש (אסור לבנות בעיר שום בניין גבוה מעץ דקל מלבדו)", "skip_en": "🔥 MUST-SEE - The architectural compass of Marrakesh", "isMust": true, "in_he": "חוץ בלבד (כניסה למסגד למוסלמים בלבד): הקף את הצריח אל הרחבה הצפון-מערבית שבה חשופים בסיסי העמודים של המסגד הראשון שנבנה בזווית שגויה.", "in_en": "Outside Plaza & Gardens: Walk around to the northwest archaeological plaza where the stone column bases of the misaligned first 1147 mosque stand exposed.", "wow_he": "למה זה וואו: צריח אבן החול האדמדם מ-1158 בגובה 77 מטר שהפך לאב-הטיפוס של החיראלדה בסביליה ומגדל חסן ברבאט, מוקף שדרות דקלים ובריכות השתקפות.", "wow_en": "Why It Is WOW: The 77m red sandstone Almohad masterpiece that served as the direct architectural prototype for Seville’s Giralda and Rabat’s Hassan Tower.", "enroute_he": "על הדרך מהשדה: אוטובוס L19 מוריד אותך ממש בצל הצריח של הכותוביה בתוך 12 דקות מהטרמינל.", "enroute_en": "En-Route from RAK: Bus L19 drops you right at the foot of the Koutoubia minaret just 12 minutes after leaving the airport.", "wx_he": "☀️ 23°C שמשי ונעים.", "wx_en": "☀️ 23°C crisp sunshine.", "photo_tip": "עדשה 1x מבין בסיסי העמודים העתיקים בצד הצפון-מערבי כלפי הצריח.", "photo_tip_en": "1x lens from the ruined stone pillar grid on the northwest terrace looking up at the minaret.", "move": "15 דק׳ הליכה צפונה דרך סמטאות הסוק המקורות אל מדרסת בן יוסף", "move_en": "15m walk north through the slatted-wood souk alleys to Ben Youssef Madrasa"}, {"id": "d1-s2", "num": 2, "isTier1": true, "tier": "Tier 1 Anchor | 20/20 (A:5 B:5 C:5 D:5)", "name": "Ben Youssef Madrasa & Almoravid Koubba (שיא הגיאומטריה האסלאמית במרקש - 1565)", "name_en": "Ben Youssef Madrasa & 1117 Almoravid Koubba (Peak Islamic Geometric Symmetry)", "map_name": "Ben Youssef Madrasa Marrakesh", "lat": 31.6318, "lng": -7.9869, "time": "13:50 - 15:10 (80m)", "time_en": "13:50 - 15:10 (80m)", "cost_he": "50 MAD (~4.60€)", "cost_en": "50 MAD (~€4.60)", "dur_he": "80 דק׳", "dur_en": "80 mins", "skip_he": "🔥 חובה מוחלטת - החלל הסימטרי המושלם ביותר במרוקו", "skip_en": "🔥 ABSOLUTE MUST-SEE - The single greatest geometric courtyard in Morocco", "isMust": true, "in_he": "פנים + קומה שנייה (מוצדק ב-100% ב-4.60€): כניסה לחצר המרכזית עם בריכת השיש השחורה ועלייה ל-130 חדרי הסטודנטים המקיפים את החצר מלמעלה.", "in_en": "Inside Courtyard & Upper Galleries (100% Worth €4.60): Explore the central marble reflecting pool and climb to the second-floor carved cedar windows.", "wow_he": "למה זה וואו: מכללה אסלאמית מהמאה ה-16 שבה כל סנטימטר מכוסה בפסיפס זליז׳ גיאומטרי, קירות סטוקו מגולפים וכיפות עץ ארז מהרי האטלס המשתקפים בבריכת שיש.", "wow_en": "Why It Is WOW: A 16th-century Quranic college where intricate zellij mosaic, honeycomb stucco muqarnas, and carved Atlas cedarwood mirror perfectly in a central marble basin.", "enroute_he": "על הדרך: ממש מחוץ לשער המדרסה נמצאת ה-Koubba Almoravid מ-1117 — המבנה העתיק ביותר ששרד במרקש, השקוע 7 מטרים מתחת למפלס הרחוב של היום.", "enroute_en": "En-Route: Right outside the Madrasa sits the 1117 Almoravid Koubba, excavated 7 meters below modern street level.", "wx_he": "☀️ 24°C: אור צהריים מאיר את קירות הסטוקו הלבנים בחצר הפתוחה.", "wx_en": "☀️ 24°C: Overhead sun illuminates the carved stucco walls of the open courtyard.", "photo_tip": "עדשה 0.5x נמוכה מקצה בריכת המים לקבלת השתקפות סימטרית מלאה, ועוד תמונה מחלון העץ בקומה השנייה.", "photo_tip_en": "Low 0.5x ultra-wide at the edge of the marble pool for a mirror reflection, plus a 1x shot framed through the upstairs cedar window.", "move": "3 דק׳ הליכה דרומה לתוך ציר חאנות הסוחרים וקרני האור של הסוק", "move_en": "3m walk south into the historic Foundouks and sunbeam-slatted Souks"}, {"id": "d1-s3", "num": 3, "isTier1": false, "tier": "Tier 2 Spine | 18/20 (G:4 E:5 V:4 T:3 L:2)", "name": "ציר חאנות הסוחרים וקרני האור בסוק (Foundouk El Amri, סוק הנפחים Souk Haddadine ומזרקת Mouassine מ-1570)", "name_en": "Historic Caravanserai Courtyards & Slatted Sunbeam Souks (Foundouk El Amri, Souk Haddadine & 1570 Mouassine Fountain)", "map_name": "Fontaine Mouassine Marrakesh", "lat": 31.6295, "lng": -7.9885, "time": "15:15 - 16:45 (90m)", "time_en": "15:15 - 16:45 (90m)", "cost_he": "[חוץ + חצרות פתוחות] חינם לחלוטין (0 MAD — מדלגים על 60 MAD למוזיאון הצילום ועל 80 MAD ל-Jardin Secret)", "cost_en": "[Open Courtyards & Alleys] 100% Free (0 MAD — skip 60 MAD Photo Museum & 80 MAD Jardin Secret)", "dur_he": "90 דק׳", "dur_en": "90 mins", "skip_he": "🔥 משחקי אור וצל תלת-ממדיים אמיתיים בסמטאות המקורות ובחצרות החאנים ב-0 MAD (במקום תמונות ממוסגרות על קיר)", "skip_en": "🔥 Real 3D chiaroscuro light beams through slatted reed roofs & multi-story caravanserai courtyards at 0 MAD", "isMust": true, "in_he": "[תמהיל: 100% חלל סמטאות מקורות וחצרות חאן פתוחות ב-0 MAD]: הליכה רציפה ממדרסת בן יוסף דרך חצר הקומות של Foundouk El Amri, תקרות הקנים של Souk Haddadine ו-Souk des Teinturiers ועד קשתות העץ המגולפות של מזרקת Mouassine מ-1570.", "in_en": "[100% Open Spatial Architecture at 0 MAD]: Continuous walk from Ben Youssef through the two-story Foundouk El Amri courtyard, the sunbeam-sliced reed roofs of Souk Haddadine, and the 1570 carved cedar Mouassine Fountain.", "wow_he": "למה זה וואו: קרני שמש אלכסוניות של אחה״צ חודרות דרך תקרות הקנים הקלועות ויוצרות פסי אור וצל גיאומטריים עזים לאורך הסמטאות, ללא שום כרטיס כניסה וללא ויטרינות.", "wow_en": "Why It Is WOW: Diagonal afternoon sunbeams slice through woven reed canopies to cast dramatic geometric light-and-shadow stripes across the earthen alleys and historic merchant courtyards.", "enroute_he": "על הדרך: ציר ליניארי לחלוטין מצפון המדינה דרומה אל כיכר ג׳מע אל-פנא.", "enroute_en": "En-Route: Pure north-to-south linear spine connecting Ben Youssef directly to Jemaa el-Fna.", "wx_he": "☀️ 23°C מוצל ונעים מתחת לתקרות הקנים.", "wx_en": "☀️ 23°C shaded under the slatted canopies.", "photo_tip": "עדשה 1x לאורך סמטת Souk Haddadine כשפסי האור האלכסוניים חוצים את החלל החשוך.", "photo_tip_en": "1x lens down Souk Haddadine capturing diagonal sunbeams cutting through the shaded alley.", "move": "5 דק׳ הליכה דרומה אל כיכר Jemaa el-Fna לשקיעה", "move_en": "5m walk south to Jemaa el-Fna for sunset"}, {"id": "d1-s4", "num": 4, "isTier1": true, "tier": "Tier 1 Anchor | 19/20 (G:4 E:5 V:5 T:3 L:2)", "name": "שקיעה ושעה כחולה מעל כיכר Jemaa el-Fna וצריח ה-Koutoubia המואר", "name_en": "Jemaa el-Fna Sunset & Blue Hour Panorama Overlooking the Illuminated Koutoubia Minaret", "map_name": "Jemaa el-Fnaa Marrakesh", "lat": 31.6258, "lng": -7.9891, "time": "16:50 - 20:30 (שקיעה 18:15 + שעה כחולה בכיכר)", "time_en": "16:50 - 20:30 (Sunset at 18:15 + Blue Hour over the square)", "cost_he": "[חוץ + מרפסת גג] חינם בכיכר (0 MAD; כוס תה ב-15 MAD במרפסת גג לתצפית עילית)", "cost_en": "[Outside + Rooftop Balcony] Free plaza (0 MAD; 15 MAD mint tea for upper terrace panorama)", "dur_he": "160 דק׳", "dur_en": "160 mins", "skip_he": "🔥 חובה מוחלטת - מחזה השעה הכחולה של ג׳מע אל-פנא מלמעלה", "skip_en": "🔥 ABSOLUTE MUST-SEE - The Blue Hour smoke & lantern spectacle from above", "isMust": true, "in_he": "[חוץ + מרפסת גג פתוחה]: תצפית עילית ממרפסת גג במזרח הכיכר (למשל L’Adresse / Café de France / Glacier ב-17:45-18:45) ושיטוט ערב ברחבה העצומה.", "in_en": "[Outside + Open Rooftop Balcony]: High balcony perspective over Jemaa el-Fna at 17:45-18:45 Blue Hour followed by an evening walk across the square.", "wow_he": "למה זה וואו: בדיוק ב-18:15 כשהשמש שוקעת מאחורי צריח הכותוביה, מאות עששיות ועמודי עשן עולים מכיכר ג׳מע אל-פנא תחת שמיים כחולים עמוקים.", "wow_en": "Why It Is WOW: At 18:15 Blue Hour, hundreds of glowing lanterns and rising smoke plumes transform the vast plaza beneath the silhouetted Koutoubia minaret.", "enroute_he": "על הדרך: יציאה ישירה מ-Rue Mouassine אל הקצה הצפוני של הכיכר.", "enroute_en": "En-Route: Step directly out of Rue Mouassine onto the northern edge of the square.", "wx_he": "🌅 19°C בשקיעה (18:15).", "wx_en": "🌅 19°C at 18:15 sunset.", "photo_tip": "עדשה 1x ב-Night Mode ממרפסת גבוהה בצד המזרחי של הכיכר כשצריח ה-Koutoubia מצולם בצללית מול השקיעה.", "photo_tip_en": "1x Night Mode from an eastern rooftop balcony framing the glowing plaza smoke with the Koutoubia silhouette behind.", "move": "הליכה קצרה ללינה בריאד", "move_en": "Short walk back to your riad"}]}, {"day": "2", "title": "יום 2 (שישי 27/11, 08:00 - 20:30): ארמונות הדרום (Bahia & El Badi) -> המלאח היהודי -> שער Bab Agnaou וחומות הקסבה -> שקיעה ב-Menara", "title_en": "Day 2 (Fri 27/11, 08:00 - 20:30): South Palaces (Bahia & El Badi) -> Jewish Mellah -> Bab Agnaou & Kasbah Ramparts -> Menara Sunset", "subtitle": "התייצבות ב-08:00 בבוקר בשער ארמון Bahia (לפני קבוצות התיירים!) -> רצף צמוד של 5 אתרי ענק בדרום המדינה -> שקיעה בבריכת Menara", "subtitle_en": "Arrive 08:00 sharp at Bahia Palace gate (zero crowds!) -> Walkable cluster of 5 southern monuments -> Sunset reflection at Menara Gardens", "color": "#d97706", "stops": [{"id": "d2-s1", "num": 5, "isTier1": true, "tier": "Tier 1 Anchor | 20/20 (A:5 B:5 C:5 D:5)", "name": "Bahia Palace (ארמון הווזיר הגדול בא-אחמד מ-1894 - כניסה ב-08:00 לחצרות ריקות!)", "name_en": "Bahia Palace (1894 Grand Vizier’s 150-Room Zellij & Painted Cedar Palace at 08:00 Opening)", "map_name": "Bahia Palace Marrakesh", "lat": 31.6216, "lng": -7.983, "time": "08:00 - 09:20 (80m)", "time_en": "08:00 - 09:20 (80m)", "cost_he": "100 MAD (~9.20€)", "cost_en": "100 MAD (~€9.20)", "dur_he": "80 דק׳", "dur_en": "80 mins", "skip_he": "🔥 חובה ב-08:00 בבוקר בדיוק (ב-10:30 המקום מתמלא קבוצות)", "skip_en": "🔥 MUST-SEE at 08:00 sharp before tour groups arrive", "isMust": true, "in_he": "פנים + חצרות (מוצדק ב-100%): עוברים בין חצר הריאד הקטן, תקרות עץ הארז הצבועות (Zouak) והחצר הגדולה המרוצפת שיש ופסיפס זליז׳ ברוחב 50 מטר.", "in_en": "Inside Courtyards & Halls (100% Worth €9.20): Walk the Petit Riad, painted Zouak cedar ceilings, and the vast 50m marble Cour d’Honneur.", "wow_he": "למה זה וואו: 80 דונם של חצרות שיש, מזרקות, ויטראז׳ים צבעוניים ותקרות עץ ארז מגולפות וצבועות ביד חופשית שבנו טובי האומנים מפאס במשך 14 שנה.", "wow_en": "Why It Is WOW: A sprawling 8-hectare labyrinth of geometric marble courtyards, stained glass, and hand-painted cedar ceilings crafted over 14 years.", "enroute_he": "על הדרך: הליכה של 10 דק׳ מהריאד באור הבוקר השקט.", "enroute_en": "En-Route: 10-minute morning walk through quiet Medina streets.", "wx_he": "☀️ 17°C קריר ב-08:00 בבוקר.", "wx_en": "☀️ Crisp 17°C at 08:00 opening.", "photo_tip": "עדשה 0.5x במרכז החצר הגדולה הריקה מאדם ב-08:15 בבוקר, ועוד זווית כלפי מעלה לתקרות ה-Zouak.", "photo_tip_en": "0.5x across the empty Cour d’Honneur marble tiles at 08:15 AM, plus straight-up shots of the painted wooden ceilings.", "move": "4 דק׳ הליכה אל ארמון El Badi והמלאח", "move_en": "4m walk to El Badi Palace & the Mellah"}, {"id": "d2-s2", "num": 6, "isTier1": true, "tier": "Tier 1 Anchor | 19/20 (A:5 B:5 C:5 D:4)", "name": "El Badi Palace & המלאח היהודי (ארמון האדמה הנגוחה השקוע מ-1578, בית הכנסת Slat Al Azama וכיכר הפחחים)", "name_en": "El Badi Sunken Palace Ruins (1578), Jewish Mellah, Slat Al Azama Courtyard & Place des Ferblantiers", "map_name": "El Badi Palace Marrakesh", "lat": 31.6184, "lng": -7.9859, "time": "09:25 - 11:30 (125m)", "time_en": "09:25 - 11:30 (125m)", "cost_he": "100 MAD ל-El Badi + 20 MAD לבית הכנסת הכחול Slat Al Azama (1492)", "cost_en": "100 MAD for El Badi + 20 MAD for the 1492 blue Slat Al Azama courtyard", "dur_he": "125 דק׳", "dur_en": "125 mins", "skip_he": "🔥 חובה - קנה מידה ברוטליסטי אדיר מ-1578 וסיפור יהדות מרוקו", "skip_en": "🔥 MUST-SEE - Colossal 1578 sunken architecture & 1492 Mellah heritage", "isMust": true, "in_he": "פנים + חוץ: הולכים לאורך בריכת הענק השקועה (90 מטר אורך!) והגנים התת-קרקעיים של El Badi, ועוברים למלאח היהודי מ-1558 ולחצר הכחולה-לבנה של בית הכנסת Slat Al Azama (מגורשי ספרד מ-1492).", "in_en": "Inside Ruined Esplanade + Mellah Walk: Walk the 90m sunken reflecting pool and subterranean orange groves of El Badi, then step into the 1558 Jewish Mellah and the blue-and-white courtyard of the 1492 Slat Al Azama Synagogue.", "wow_he": "למה זה וואו: חצר ענק שקועה בגודל אצטדיון כדורגל המוקפת חומות אדמה נגוחה (Pisé) אדומות וגבוהות שעליהן עשרות קני חסידות, עם בריכות מים ופרדסי תפוזים השקועים 4 מטרים מתחת לרצפה.", "wow_en": "Why It Is WOW: A stadium-sized sunken courtyard framed by towering red rammed-earth walls crowned with stork nests, surrounding a 90m reflecting pool and sunken citrus orchards.", "enroute_he": "על הדרך: עוברים ב-Place des Ferblantiers (כיכר אומני פנסי המתכת המחוררים).", "enroute_en": "En-Route: Cross Place des Ferblantiers lined with geometric pierced-brass lantern workshops.", "wx_he": "☀️ 21°C.", "wx_en": "☀️ 21°C.", "photo_tip": "עדשה 0.5x מקצה הבריכה המרכזית של El Badi ועדשה 1x מהטרסה העליונה מעל הפרדסים השקועים.", "photo_tip_en": "0.5x along the 90m sunken pool axis and 1x from the upper rampart terrace.", "move": "6 דק׳ הליכה אל שער האבן המלכותי Bab Agnaou וציר חומות הקסבה", "move_en": "6m walk to Bab Agnaou Carved Stone Gate & Kasbah Ramparts"}, {"id": "d2-s3", "num": 7, "isTier1": false, "tier": "Tier 2 Spine | 18/20 (G:4 E:4 V:5 T:3 L:2)", "name": "שער האבן האלמוהאדי Bab Agnaou (1188), חזית מסגד הקסבה (צריח הטורקיז) וציר חומות הקסבה המלכותית", "name_en": "Bab Agnaou Carved Stone Gate (1188), Kasbah Mosque Turquoise Minaret Exterior & Royal Ramparts Spine", "map_name": "Bab Agnaou Marrakesh", "lat": 31.6176, "lng": -7.9906, "time": "12:00 - 15:00 (מסלול רציף דרך חומות הקסבה ושער Bab Jdid ללא חור בלו״ז)", "time_en": "12:00 - 15:00 (Continuous architectural walk along the Kasbah ramparts & Bab Jdid with zero schedule gap)", "cost_he": "[חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על תור העמידה של שעה בקברים הסעדיים ב-100 MAD בשביל הצצה של 30 שניות מפתח דלת)", "cost_en": "[Outside Only] 100% Free (0 MAD — skip the 100 MAD / 60-min single-file doorway queue at Saadian Tombs)", "dur_he": "180 דק׳ (כולל הליכת החומות המבוצרות מ-Bab Agnaou דרך מסגד הקסבה ו-Bab Robb אל שדרת Hivernage)", "dur_en": "180 mins (including the fortified rampart walk from Bab Agnaou past Kasbah Mosque and Bab Robb toward Hivernage)", "skip_he": "🔥 100% אדריכלות מונומנטלית פתוחה ב-0 MAD ובלי לעמוד שעה בתור בשביל להציץ מחבל בפתח חדר", "skip_en": "🔥 100% monumental open-air Almohad stone architecture at 0 MAD with zero doorway queue", "isMust": true, "in_he": "[חוץ בלבד - 100% חזיתות אבן וחומות]: צילום שער האבן המגולף Bab Agnaou (1188), כיכר מסגד הקסבה (Mosquée Moulay El Yazid) עם פסיפס הטורקיז, והליכה לאורך חומות האדמה האדומות המבוצרות דרך שער Bab Robb ו-Bab Jdid.", "in_en": "[Outside Only - 100% Monumental Gateways & Ramparts]: Frame the carved 1188 Bab Agnaou gate, the turquoise-tiled Kasbah Mosque plaza, and walk the towering red ramparts past Bab Robb and Bab Jdid.", "wow_he": "למה זה וואו: Bab Agnaou הוא שער האבן המלכותי מ-1188 החצוב באבן חול כחלחלה-אפורה עם 4 קשתות פרסה קונצנטריות וכתובת קוראנית גיאומטרית, ומיד מאחוריו מתנשא צריח הפסיפס של מסגד הקסבה.", "wow_en": "Why It Is WOW: Bab Agnaou (1188) is carved from blue-grey Gueliz stone with four concentric foliated arches, framing the turquoise-and-white ceramic minaret of the Kasbah Mosque right behind it.", "enroute_he": "על הדרך אל Menara (15:00-15:45): צועדים מ-Bab Jdid לאורך ציר הדקלים המלכותי של Hivernage ו-Avenue de la Ménara ישירות אל מאגר המים.", "enroute_en": "En-Route to Menara (15:00-15:45): Walk from Bab Jdid down the palm-lined royal axis of Avenue de la Ménara straight to the reflecting basin.", "wx_he": "☀️ 24°C.", "wx_en": "☀️ 24°C.", "photo_tip": "עדשה 1x אלכסונית על הטבעות החצובות של Bab Agnaou.", "photo_tip_en": "1x diagonal shot highlighting the deep carved stone relief of Bab Agnaou.", "move": "הליכה רציפה לאורך חומות Bab Jdid ושדרת הדקלים אל מאגר Menara (הגעה ב-15:45 לאור הזהב)", "move_en": "Continuous walk along Bab Jdid ramparts & Avenue de la Ménara to Menara Basin (arrive 15:45 for Golden Hour)"}, {"id": "d2-s4", "num": 8, "isTier1": true, "tier": "Tier 1 Anchor | 19/20 (A:5 B:4 C:5 D:5)", "name": "Menara Gardens & Pavilion (השתקפות ביתן הפירמידה הירוק מהמאה ה-19 והרי האטלס בשקיעה)", "name_en": "Menara Gardens Reservoir & 1869 Green-Tiled Pavilion Reflecting the High Atlas at Sunset", "map_name": "Menara Gardens Marrakesh", "lat": 31.6133, "lng": -8.0219, "time": "15:45 - 18:30 (שקיעה 18:15)", "time_en": "15:45 - 18:30 (Sunset at 18:15)", "cost_he": "חינם לחלוטין לפארק ולמאגר המים העצום (0 MAD)", "cost_en": "100% Free for the olive groves and giant reflecting basin (0 MAD)", "dur_he": "120 דק׳", "dur_en": "120 mins", "skip_he": "🔥 חובה בשעת השקיעה - הפריים הקלאסי של מרקש מול הרי האטלס", "skip_en": "🔥 MUST-SEE at Sunset - The signature postcard reflection of Marrakesh & the Atlas peaks", "isMust": true, "in_he": "חוץ בלבד (הקפת בריכת האגירה מהמאה ה-12): הולכים לאורך שפת המאגר הצפוני כך שהשמש השוקעת מאירה מהצד את הביתן ואת פסגות הרי האטלס מאחוריו.", "in_en": "Outside Reservoir Walk: Stand along the northern embankment of the 200m-long 12th-century water basin looking south toward the pavilion and the High Atlas wall.", "wow_he": "למה זה וואו: מאגר מים הידראולי עצום מהמאה ה-12 שממנו משתקפים יחד ביתן ה-Saadian/Alaouite מ-1869 עם גג הפירמידה הירוק ורכס הרי האטלס המושלג.", "wow_en": "Why It Is WOW: A colossal 12th-century hydraulic basin acting as a giant mirror for the 1869 green-pyramid pavilion and the 4,000m snow-dusted High Atlas behind it.", "enroute_he": "על הדרך חזרה: שדרת Avenue de la Ménara מובילה בקו ישר בחזרה אל מואזין ה-Koutoubia המואר.", "enroute_en": "En-Route back: Avenue de la Ménara leads in a straight visual axis directly back toward the illuminated Koutoubia minaret.", "wx_he": "🌅 20°C בשקיעה: אור ורוד-זהוב (Alpenglow) על הפסגות.", "wx_en": "🌅 20°C at sunset: Warm alpenglow lighting up the snowfields on Mount Toubkal.", "photo_tip": "עדשה 2x משפת הבריכה הצפונית שמכווצת את פסגות האטלס קרוב לגג הירוק של הביתן.", "photo_tip_en": "2x telephoto from the north edge of the pool compressing the towering Atlas peaks right behind the green pyramid roof.", "move": "חזרה למדינה לערב שני", "move_en": "Return to the Medina for Friday evening"}]}, {"day": "3", "title": "יום 3 (שבת 28/11, 08:15 - 19:30): הלופ המשולב: הרי האטלס (Imlil & כפר Armed ב-1,900m) -> רמת Kik -> שקיעה במדבר Agafay", "title_en": "Day 3 (Sat 28/11, 08:15 - 19:30): Combined Mountain-to-Desert Loop: High Atlas (Imlil & Armed 1,900m) -> Kik Plateau -> Agafay Sunset", "subtitle": "איסוף/יציאה ב-08:15 -> קניון Asni -> טיפוס רגלי מהיר מ-Imlil (1,740m) לכפר הברברי המדורג Armed (1,900m) -> מעבר Kik -> שקיעה ב-Agafay (16:00-18:30)", "subtitle_en": "Depart 08:15 -> Asni Gorge -> Fast mountain hike from Imlil (1,740m) to stepped Armed village (1,900m) -> Kik Plateau -> Agafay Stone Desert Sunset (16:00-18:30)", "color": "#0284c7", "stops": [{"id": "d3-s1", "num": 9, "isTier1": false, "tier": "Tier 2 Spine | 17/20 (A:4 B:4 C:5 D:4)", "name": "Tahanaout & קניון נהר ה-Rherhaia (עמק Asni וכפרי האדמה האדומה התלויים)", "name_en": "Tahanaout Red-Earth Cliff Villages & Asni / Rherhaia River Gorge", "map_name": "Asni High Atlas Morocco", "lat": 31.2486, "lng": -7.9814, "time": "09:15 - 09:50 (35m)", "time_en": "09:15 - 09:50 (35m)", "cost_he": "חינם (0 MAD)", "cost_en": "Free (0 MAD)", "dur_he": "35 דק׳ (עצירות תצפית בעלייה לאטלס)", "dur_en": "35 mins (scenic canyon viewpoints ascending into the Atlas)", "skip_he": "⚡ על כביש העלייה הישיר אל Imlil", "skip_en": "⚡ Directly on the mountain ascent road to Imlil", "isMust": false, "in_he": "חוץ: תצפית מעל ערוץ הנהר וכפרי הבוץ והאבן הברבריים הבנויים בקומות על צלע ההר.", "in_en": "Outside Canyon Pullouts: View the stacked Berber pisé and stone villages clinging to the red-ochre canyon walls.", "wow_he": "למה זה וואו: כפרים ברבריים שנראים כאילו צמחו מתוך סלע האדמה האדומה עצמו בתוך קניון הרים צר מתחת לפסגות של 4,000 מטר.", "wow_en": "Why It Is WOW: Terraced earthen Amazigh villages blending seamlessly into stratified red, purple, and ochre mountain walls.", "enroute_he": "על הדרך: ביום שבת מתקיים ב-Asni השוק הברברי השבועי של אנשי ההרים.", "enroute_en": "En-Route: Saturday is the traditional weekly Amazigh mountain market day in Asni.", "wx_he": "☀️ 16°C בהרים: אוויר הרים צלול.", "wx_en": "☀️ 16°C crisp mountain air.", "photo_tip": "עדשה 1x מנקודת התצפית מעל Tahanaout שמראה את קוביות הבתים האדומות על המצוק.", "photo_tip_en": "1x lens framing the cubic earthen houses stacked up the canyon slope.", "move": "25 דק׳ עלייה אל סוף הכביש ב-Imlil (1,740m)", "move_en": "25m climb to the road-end trailhead at Imlil (1,740m)"}, {"id": "d3-s2", "num": 10, "isTier1": true, "tier": "Tier 1 Anchor | 20/20 (A:5 B:5 C:5 D:5)", "name": "Imlil (1,740m) & טיפוס רגלי לכפר הברברי המדורג Armed (1,900m) ומפלי Imlil מול פסגת Toubkal (4,167m)", "name_en": "Imlil (1,740m) & Mountain Hike to Stepped Armed Village (1,900m) Facing Mount Toubkal (4,167m)", "map_name": "Armed Imlil High Atlas Morocco", "lat": 31.1272, "lng": -7.9168, "time": "10:15 - 13:30 (195m)", "time_en": "10:15 - 13:30 (195m)", "cost_he": "חינם לשביל ההרים (ניתן לשלב עם סיור יומי מ-GetYourGuide ב-~25€ או Grand Taxi מאורגן)", "cost_en": "Free mountain trail (or ~€25 organized Atlas + Agafay day loop / Grand Taxi)", "dur_he": "3 ורבע שעות של הליכה הררית קצבית בעמק Mizane", "dur_en": "3.25 hours of fast-paced alpine valley hiking", "skip_he": "🔥 חובה מוחלטת - הנוף ההררי העוצמתי ביותר בצפון אפריקה", "skip_en": "🔥 ABSOLUTE MUST-SEE - The highest & most dramatic mountain amphitheater in North Africa", "isMust": true, "in_he": "חוץ (מסלול טיפוס מעגלי): עולים מ-Imlil דרך חורשות אגוז המלך וטרסות ההשקיה אל הכפר המדורג Armed (הכפר הגבוה בעמק ב-1,900m) ויורדים דרך מפלי Imlil.", "in_en": "Outside Mountain Loop Hike: Ascend the mule path through walnut groves and stone terraces to the fortress-like village of Armed (1,900m) facing snow-capped Jbel Toubkal (4,167m), descending via Imlil Waterfalls.", "wow_he": "למה זה וואו: כפר אבן ברברי הבנוי במדרגות תלולות על מורנה קרחונית ענקית בגובה 1,900 מטר, כשממש מעליו סותמת את האופק פסגת ג׳בל טובקאל (4,167m — הפסגה הגבוהה בצפון אפריקה).", "wow_en": "Why It Is WOW: A stepped stone Amazigh village perched atop a giant glacial moraine at 1,900m, directly confronting the snow-crowned 4,167m pyramid of Jbel Toubkal.", "enroute_he": "על הדרך: שים לב לקסבה של Kasbah du Toubkal התלויה על שפיץ סלע בראש העמק.", "enroute_en": "En-Route: Pass beneath the eagle-nest ramparts of Kasbah du Toubkal crowning the central crag.", "wx_he": "🧥 12°-15°C בגובה 1,900m: שמש חזקה אך אוויר קריר; נעלי הליכה טובות ושכבת פליז קלה.", "wx_en": "🧥 12°-15°C at 1,900m: Strong high-altitude sun with cool mountain air.", "photo_tip": "עדשה 1x מהטרסה העליונה של כפר Armed שממסגרת את בתי האבן השטוחים יחד עם הפסגה המושלגת של Toubkal.", "photo_tip_en": "1x lens from upper Armed village framing the flat-roofed stone houses against the snow-covered Toubkal massif.", "move": "חצייה מערבה ברכב על כביש הרכס הגבוה של Kik Plateau (13:30 - 15:30)", "move_en": "Drive west across the high-altitude Kik Plateau ridge road toward Lalla Takerkoust & Agafay"}, {"id": "d3-s3", "num": 11, "isTier1": false, "tier": "Tier 2 Spine | 18/20 (A:5 B:4 C:5 D:4)", "name": "Kik Plateau (רמת הגיר בגובה 1,800m) ותצפית סכר ואגם Lalla Takerkoust", "name_en": "Kik Plateau High-Altitude Limestone Ridge (1,800m) & Lalla Takerkoust Lake Panorama", "map_name": "Plateau du Kik Morocco", "lat": 31.2615, "lng": -8.0825, "time": "14:15 - 15:30 (75m)", "time_en": "14:15 - 15:30 (75m)", "cost_he": "חינם (0 MAD)", "cost_en": "Free (0 MAD)", "dur_he": "75 דק׳ (נסיעת רכס פנורמית + עצירות תצפית)", "dur_en": "75 mins (panoramic ridge crossing & cliff pullouts)", "skip_he": "🔥 החוליה המקשרת הגאונית שמחברת את האטלס למדבר אגפאי בלי לחזור למרקש באמצע!", "skip_en": "🔥 The scenic mountain bridge connecting Imlil directly to Agafay without backtracking to Marrakesh!", "isMust": true, "in_he": "חוץ: עצירה בשפת המצוק של רמת Kik בגובה 1,800 מטר מעל אגם הטורקיז של סכר Lalla Takerkoust (מ-1935).", "in_en": "Outside Cliff Overlooks: Stop along the 1,800m escarpment edge looking straight down at the 7km turquoise ribbon of Lake Lalla Takerkoust.", "wow_he": "למה זה וואו: רמת סלע קרסטית חשופה בגובה 1,800 מטר עם נוף 360 מעלות אל קיר הרי האטלס מצד אחד ואל האגם הכחול והמדבר מצד שני.", "wow_en": "Why It Is WOW: A vast lunar limestone tableland suspended at 1,800m between the snow-capped High Atlas and the turquoise waters of Lalla Takerkoust.", "enroute_he": "על הדרך: ירידה בפיתולי המצוק אל שער הכניסה הדרומי של מדבר אגפאי בדיוק ב-15:50 לקראת השקיעה.", "enroute_en": "En-Route: Descend the dramatic switchbacks directly into the southern canyons of Agafay Stone Desert at 15:50.", "wx_he": "☀️ 18°C.", "wx_en": "☀️ 18°C.", "photo_tip": "עדשה 0.5x משפת המצוק מעל האגם הכחול.", "photo_tip_en": "0.5x ultra-wide from the escarpment rim above the turquoise reservoir.", "move": "20 דק׳ כניסה אל לב גבעות החרסית של מדבר Agafay לשקיעה", "move_en": "20m drive into the heart of the Agafay canyon ridges for sunset"}, {"id": "d3-s4", "num": 12, "isTier1": true, "tier": "Tier 1 Anchor | 20/20 (A:5 B:5 C:5 D:5)", "name": "Agafay Stone Desert at Sunset & Blue Hour (גבעות החרסית הירחיות באור השקיעה מול הרי האטלס)", "name_en": "Agafay Stone Desert at Sunset & Blue Hour (Lunar Clay Dunes Carved by Low Sunset Shadows)", "map_name": "Agafay Desert Morocco", "lat": 31.4258, "lng": -8.1742, "time": "16:00 - 18:45 (שקיעה ב-18:15 + שעה כחולה במדבר)", "time_en": "16:00 - 18:45 (Sunset at 18:15 + Desert Blue Hour)", "cost_he": "חינם בשבילי המצוקים הפתוחים", "cost_en": "Free across the open desert ridge trails", "dur_he": "165 דק׳ (הליכה על רכסי החרסית ב-16:00-18:30)", "dur_en": "165 mins (ridge walk across the sculpted clay badlands from 16:00 to 18:30)", "skip_he": "🔥 חובה מוחלטת בשקיעה - הנוף הירחי הדרמטי ביותר במרחק 40 דק׳ ממרקש", "skip_en": "🔥 ABSOLUTE MUST-SEE at Sunset - Surreal lunar badlands glowing gold and violet against the Atlas wall", "isMust": true, "in_he": "חוץ בלבד: צעידה על קווי הרכס החדים של גבעות האבן והחרסית בשעה וחצי שלפני השקיעה ובשעה הכחולה.", "in_en": "Outside Ridge Walk: Hike along the razor-sharp clay and limestone ridges as the setting sun casts deep geometric shadows across the desert.", "wow_he": "למה זה וואו: בין 16:30 ל-18:30 קרני השמש הנמוכות צובעות מאות גבעות חרסית גליות בזהב, נחושת וסגול, כשמאחוריהן מתנשא קיר הרי האטלס המושלג.", "wow_en": "Why It Is WOW: Between 16:30 and 18:30, low angled light transforms hundreds of undulating stone hills into waves of liquid gold and deep shadow backed by the snow-covered High Atlas.", "enroute_he": "על הדרך חזרה למרקש (40 דק׳ נסיעה אחרי השקיעה): הגעה חזרה לריאד ב-19:30.", "enroute_en": "En-Route back to Marrakesh (40m drive after Blue Hour): Return to your riad by 19:30.", "wx_he": "🌅 20°C ב-16:00 שיורדים ל-13°C ב-18:30: לבש ג׳קט רוח עם שקיעת השמש.", "wx_en": "🌅 20°C at 16:00 dropping to 13°C after sunset: Put on your wind jacket at dusk.", "photo_tip": "עדשה 2x לאורך קווי הרכס החדים כשהחצי המואר של הגבעה בזהב והחצי המוצל בשחור-כחול.", "photo_tip_en": "2x telephoto compressing the S-curve ridge lines split between golden sunlight and deep shadow.", "move": "40 דק׳ נסיעה חזרה למרקש", "move_en": "40m drive back to Marrakesh"}]}, {"day": "4", "title": "יום 4 (ראשון 29/11) + בוקר שני (30/11): חזית הלבנים Studio KO (0€) -> Gueliz & תחנת ONCF -> ציר החומות המערביות והכותוביה -> טיסה 09:45", "title_en": "Day 4 (Sun 29/11) + Mon Morning (30/11): Studio KO Brick Facade (€0) -> Gueliz & ONCF Hall -> Western Ramparts & Koutoubia -> 09:45 Flight", "subtitle": "ראשון 09:15: חזית לבני הטרקוטה של Studio KO מבחוץ (0 MAD) + שדרת Gueliz ואולם תחנת הרכבת + ציר החומות המערביות ושער Bab Doukkala (0 MAD) -> שני 06:35 אוטובוס L19 לשדה RAK", "subtitle_en": "Sun 09:15: Studio KO Terracotta Facade outside (0 MAD) + Gueliz Art Deco & ONCF Concourse + Bab Doukkala & Western Ramparts Spine (0 MAD) -> Mon 06:35 Bus L19 to RAK", "color": "#db2777", "stops": [{"id": "d4-s1", "num": 13, "isTier1": false, "tier": "Tier 2 Spine | 17/20 (G:4 E:4 V:5 T:2 L:2)", "name": "חזית הלבנים הברוטליסטית של Studio KO ב-Rue Yves Saint Laurent [תצפית חוץ בלבד ב-0 MAD]", "name_en": "Studio KO Terracotta Brick Brutalist Facade at Rue Yves Saint Laurent [Outside Only at 0 MAD]", "map_name": "Musee Yves Saint Laurent Marrakech", "lat": 31.6416, "lng": -8.0033, "time": "09:15 - 09:45 (30m תצפית אדריכלית מהרחוב הפתוח)", "time_en": "09:15 - 09:45 (30m exterior architectural stop from the pedestrian street)", "cost_he": "[חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על 330 MAD / 30€ למוזיאון השמלות החשוך בפנים ולתור הסלפי ב-Jardin Majorelle)", "cost_en": "[Outside Only] 100% Free (0 MAD — skip the 330 MAD / €30 ticket for the dark dress exhibition & crowded Jardin Majorelle selfie queue)", "dur_he": "30 דק׳", "dur_en": "30 mins", "skip_he": "🔥 נהנים מ-100% מהאדריכלות הברוטליסטית של Studio KO מהרחוב ב-0€ וחוסכים 30€ ותורי תיירים צפופים", "skip_en": "🔥 Capture 100% of Studio KO’s terracotta brick geometry from the street at €0 while skipping the €30 tourist queue", "isMust": true, "in_he": "[חוץ בלבד ב-0 MAD]: צילום קירות התוף המעוגלים ותבליטי לבני הטרקוטה של Studio KO (2017) מהמדרכה הפתוחה ב-Rue Yves Saint Laurent (בלי לשלם 30€ לתצוגת שמלות וסקיצות אופנה בחדרים חשוכים או לתור בגן הקקטוסים הקטן של Majorelle).", "in_en": "[Outside Only at 0 MAD]: Photograph Studio KO’s 2017 curved terracotta-brick drum and fabric-like geometric brickwork right from the public walkway on Rue Yves Saint Laurent.", "wow_he": "למה זה וואו: כל העוצמה האדריכלית של בניין Studio KO נמצאת במעטפת החיצונית הפונה לרחוב: קוביות ותופים עגולים של לבני חמר מקומיות המסודרות כמו סיבי בד באור הבוקר האלכסוני.", "wow_en": "Why It Is WOW: The entire architectural achievement of Studio KO is its street-facing exterior envelope weaving local earth-colored bricks into geometric reliefs.", "enroute_he": "על הדרך מהמדינה (15 דק׳ הליכה מ-Bab Doukkala): אור הבוקר האלכסוני מדגיש את עומק תבליטי הלבנים.", "enroute_en": "En-Route from the Medina (15m walk from Bab Doukkala): Morning side-lighting carves deep shadows into the brick relief facade.", "wx_he": "☀️ 20°C בבוקר.", "wx_en": "☀️ 20°C morning sun.", "photo_tip": "עדשה 1x צמודה לקיר הלבנים המעוגל של Studio KO לתפיסת הטקסטורה הגיאומטרית.", "photo_tip_en": "1x oblique shot grazing the curved terracotta brickwork of Studio KO.", "move": "12 דק׳ הליכה דרומה לתוך שדרת האר-דקו של Gueliz", "move_en": "12m walk south into the Gueliz Art Deco quarter"}, {"id": "d4-s2", "num": 14, "isTier1": true, "tier": "Tier 1 Anchor | 19/20 (G:5 E:5 V:5 T:2 L:2)", "name": "Gueliz Modernist Spine, אכסדרת התיאטרון המלכותי והאולם המונומנטלי של תחנת הרכבת Marrakesh Railway Station (ONCF)", "name_en": "Gueliz 1930s Art Deco Spine, Royal Theatre Colonnade & Monumental Marrakesh ONCF Railway Station Hall", "map_name": "Gare de Marrakech ONCF", "lat": 31.6306, "lng": -8.0172, "time": "10:00 - 12:45 (165m)", "time_en": "10:00 - 12:45 (165m)", "cost_he": "[חוץ + פנים אולם התחנה העצום] חינם לחלוטין (0 MAD)", "cost_en": "[Outside + Soaring Station Concourse Interior] 100% Free (0 MAD)", "dur_he": "165 דק׳ (סיור אדריכלי ליניארי ברובע המודרני Gueliz)", "dur_en": "165 mins (linear architectural walk down Avenue Mohammed V to the Royal Theatre and ONCF Station)", "skip_he": "🔥 חובה - אדריכלות מונומנטלית בקנה מידה עצום (קשתות של 25 מטר גובה) ב-0 MAD", "skip_en": "🔥 MUST-SEE - Monumental 25m-high arches and glass domes outside the Medina walls at 0 MAD", "isMust": true, "in_he": "[תמהיל: 100% חלל אטריום עצום ואכסדרות עמודים ב-0 MAD]: כניסה חופשית להיכל הזכוכית, השיש והקשתות של תחנת הרכבת ONCF + הליכה לאורך שדרת Mohammed V והתיאטרון המלכותי של Charles Boccara.", "in_en": "[100% Monumental Concourse & Colonnades at 0 MAD]: Step inside the soaring glass-and-marble ONCF Station hall and walk Avenue Mohammed V past Charles Boccara’s Neo-Moorish Royal Theatre.", "wow_he": "למה זה וואו: תחנת הרכבת של מרקש וצמוד אליה התיאטרון המלכותי (בעיצוב האדריכל Charles Boccara) בנויים כמקדשים מונומנטליים עם קשתות ענק בנות 25 מטר, כיפות זכוכית פתוחות ועמודי טרקוטה.", "wow_en": "Why It Is WOW: Architect Charles Boccara’s monumental colonnades at the Royal Theatre and the neighbouring ONCF Railway Station feature 25m-high geometric arches and soaring sunlit glass domes.", "enroute_he": "על הדרך: שדרת Mohammed V ב-Gueliz תוכננה ב-1913 ע״י Henri Prost עם קוד צבע אחיד של ורוד-אוכרה.", "enroute_en": "En-Route: Walk Avenue Mohammed V where every 1930s Art Deco facade obeys Henri Prost’s signature salmon-ochre color code.", "wx_he": "☀️ 23°C.", "wx_en": "☀️ 23°C.", "photo_tip": "עדשה 0.5x סימטרית בתוך אולם הקשתות והזכוכית של תחנת הרכבת ועדשה 1x בין עמודי התיאטרון המלכותי.", "photo_tip_en": "Symmetrical 0.5x inside the soaring geometric station hall and 1x through the Royal Theatre colonnade.", "move": "חזרה מזרחה לאורך Avenue Mohammed V אל ביצורי החומה המערבית (Bab Doukkala & Bab Nkob)", "move_en": "Walk east along Avenue Mohammed V to the monumental Western Ramparts (Bab Doukkala & Bab Nkob)"}, {"id": "d4-s3", "num": 15, "isTier1": true, "tier": "Tier 1 Anchor | 18/20 (G:4 E:4 V:5 T:3 L:2)", "name": "ביצורי החומה המערבית (Bab Doukkala 1126 & Bab Nkob), תעלות ה-Khettara של Arsat Moulay Abdeslam ורחבת הכותוביה בשקיעה", "name_en": "Western Almoravid Ramparts (Bab Doukkala 1126 & Bab Nkob), Arsat Moulay Abdeslam Hydraulic Channels & Koutoubia Sunset Plaza", "map_name": "Bab Doukkala Marrakesh", "lat": 31.6301, "lng": -7.9936, "time": "13:15 - 18:15 (רצף אדריכלי פתוח ב-0 MAD לאורך חומות המערב ללא מוזיאון הכלים Dar El Bacha וללא הליכת האבק ל-Agdal)", "time_en": "13:15 - 18:15 (100% Free open-air western ramparts & hydraulic spine avoiding Dar El Bacha vitrines & Agdal dust)", "cost_he": "[חוץ בלבד] חינם לחלוטין (0 MAD — מדלגים על 60 MAD לחדרי הוויטרינות של Dar El Bacha ועל הליכת האבק ל-Agdal)", "cost_en": "[Outside Only] 100% Free (0 MAD — skip the 60 MAD Dar El Bacha artifact vitrines & dusty Agdal walk)", "dur_he": "150 דק׳", "dur_en": "150 mins", "skip_he": "🔥 ציר ביצורים אלמורבידיים אדיר מהמאה ה-12 ב-0 MAD שמוביל ברגל ישירות אל צריח הכותוביה בשקיעה", "skip_en": "🔥 Massive 12th-century rammed-earth bastions & historic hydraulic channels at 0 MAD leading straight to Koutoubia at sunset", "isMust": true, "in_he": "[חוץ בלבד - 100% ביצורי חומה וצירים הידראוליים ב-0 MAD]: הליכה לאורך מגדלי השמירה המכופפים של שער Bab Doukkala (1126), חזית מסגד Bab Doukkala מהמאה ה-16, תעלות המים של Arsat Moulay Abdeslam מ-1730 ושער Bab Nkob ישירות אל רחבת העמודים של ה-Koutoubia באור הזהב.", "in_en": "[Outside Only - 100% Monumental Bastions & Hydraulic Spine at 0 MAD]: Walk the massive bent-entrance bastions of Bab Doukkala (1126), the 16th-century Bab Doukkala Mosque exterior, the 1730 water channels of Arsat Moulay Abdeslam, and Bab Nkob straight to the Koutoubia colonnade at Golden Hour.", "wow_he": "למה זה וואו: Bab Doukkala (1126) הוא אחד השערים האלמורבידיים המקוריים הבודדים ששרדו במרקש עם מעבר מבוצר כפול בן 900 שנה, שמחבר ברצף רגלי מישורי לאורך חומות האדמה האדומות המוארות בשמש אחה״צ עד למרגלות הכותוביה.", "wow_en": "Why It Is WOW: Bab Doukkala (1126) preserves its original 900-year-old Almoravid flanking bastions, connecting along a dramatic red-earth rampart corridor bathed in west-facing afternoon sunlight straight to the foot of Koutoubia.", "enroute_he": "על הדרך: ציר מישורי ורציף שמחזיר אותך ללב המדינה לקראת ערב מוקדם ושינה לפני טיסת הבוקר.", "enroute_en": "En-Route: Flat, continuous walk bringing you right back to the heart of the Medina for an early night before Monday’s flight.", "wx_he": "🌅 22°C באור אחה\"צ ישיר על החומות המערביות הפונות לשמש.", "wx_en": "🌅 22°C direct Golden Hour light hitting the west-facing rampart walls.", "photo_tip": "עדשה 1x לאורך קו החומות האדומות מ-Bab Nkob כשצריח הכותוביה מתנשא בקצה הציר.", "photo_tip_en": "1x telephoto shot down the crenellated red-earth rampart line from Bab Nkob with the Koutoubia minaret rising at the end of the axis.", "move": "ערב אחרון במדינה -> שינה מוקדמת לקראת בוקר יום שני (06:35 יציאה לשדה)", "move_en": "Final evening in the Medina -> sleep for Monday morning departure (06:35 airport bus)"}, {"id": "d4-s4", "num": 16, "isTier1": true, "tier": "Tier 1 Anchor | 19/20 (A:5 B:5 C:5 D:4)", "name": "בוקר יום שני 30/11 (06:35): אוטובוס L19 מהכותוביה -> טרמינל העץ הגיאומטרי של RAK (07:00) -> טיסה לדבלין (09:45)", "name_en": "Mon 30/11 Morning (06:35 AM): Bus L19 from Koutoubia -> RAK Geometric Lattice Terminal (07:00) -> Flight to Dublin (09:45)", "map_name": "Marrakesh Menara Airport RAK", "lat": 31.6069, "lng": -8.0363, "time": "שני 30/11: 06:35 יציאה -> 07:00 בטרמינל RAK -> 09:45 המראה לדבלין (13:35 נחיתה)", "time_en": "Mon 30/11: 06:35 depart -> 07:00 at RAK terminal -> 09:45 flight to Dublin (13:35 arrival)", "cost_he": "0 MAD (כבר שולם בכרטיס ההלוך-חזור של L19 מיום חמישי! או 50-70 MAD במונית)", "cost_en": "0 MAD (covered by your Thu L19 return ticket receipt! Or 50-70 MAD Petit Taxi)", "dur_he": "15 דק׳ נסיעה + שעתיים ו-45 דק׳ בטרמינל", "dur_en": "15m ride + 2h 45m buffer at RAK terminal", "skip_he": "🔥 חובה לוגיסטית ואדריכלית: להיות בטרמינל ב-07:00 עם דף הנייר המודפס ולהרים מבט אל חזית המעוינים האייקונית של השדה!", "skip_en": "🔥 MANDATORY: Arrive at 07:00 AM with your printed paper boarding pass and admire RAK’s famous geometric facade!", "isMust": true, "in_he": "פנים + חוץ הטרמינל: שיקוף בכניסה -> חותמת Document Check בדלפק Ryanair על הנייר -> בידוק -> ביקורת דרכונים.", "in_en": "Inside + Outside Terminal: Entry scanner -> Ryanair desk stamp on printed boarding pass -> Security -> Passport exit stamp.", "wow_he": "למה זה וואו: טרמינל שדה התעופה מרקש-מנרה (בעיצוב E2A Architecture) נחשב לאחד משדות התעופה היפים בעולם, עם שלד של 24 מעויני בטון ופלדה עצומים המחופים תחרת ערבסקות שיוצרת משחקי אור וצל על הרצפה.", "wow_en": "Why It Is WOW: Designed by E2A Architecture, Marrakesh Menara Airport is a contemporary Islamic architectural icon built from 24 giant concrete-and-steel rhombuses wrapped in solar mashrabiya screens.", "enroute_he": "זכור להוציא את שארית המטבעות בדירהם לפני העלייה למטוס.", "enroute_en": "Spend any remaining Moroccan Dirham coins before boarding.", "wx_he": "✈️ 09:45 המראה מ-RAK -> 13:35 נחיתה בדבלין (DUB).", "wx_en": "✈️ 09:45 depart RAK -> 13:35 land in Dublin (DUB).", "photo_tip": "עדשה 0.5x בכניסה החיצונית ובאולם ההמראות מתחת לתקרת המעוינים המוארת בשמש הבוקר.", "photo_tip_en": "0.5x ultra-wide looking up through the geometric diamond lattice canopy as morning sun casts patterns across the floor.", "move": "טיסה ישירה מ-RAK לדבלין (09:45 -> 13:35)", "move_en": "Direct Ryanair flight RAK to Dublin (09:45 -> 13:35)"}]}]};
+
+function switchTab(dayNum, btnEl) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btnEl.classList.add('active');
+  const target = document.getElementById('tab-day-' + dayNum);
+  if (target) target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function copyTextSafe(text, onDone) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(onDone).catch(() => fallbackCopy(text, onDone));
+  } else {
+    fallbackCopy(text, onDone);
+  }
+}
+
+function fallbackCopy(text, onDone) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    if (onDone) onDone();
+  } catch (e) {
+    alert('לא ניתן להעתיק אוטומטית');
+  }
+  document.body.removeChild(ta);
+}
+
+function copySingleMap(mapName, btnEl) {
+  const text = mapName + '\n\n\n';
+  copyTextSafe(text, () => {
+    const orig = btnEl.textContent;
+    btnEl.textContent = '✅ הועתק!';
+    setTimeout(() => { btnEl.textContent = orig; }, 1500);
+  });
+}
+
+function buildWhatsAppDay(dayObj, level) {
+  if (level === 1) {
+    return dayObj.stops.map(s => s.map_name).join('\n\n\n');
+  }
+  let lines = [];
+  lines.push('🌊 *' + dayObj.title + '*');
+  lines.push('📍 ' + dayObj.subtitle);
+  lines.push('');
+  dayObj.stops.forEach(s => {
+    lines.push('━━━━━━━━━━━━━━━━━━');
+    lines.push(s.map_name);
+    lines.push('');
+    lines.push('');
+    lines.push('#' + s.num + '. [' + s.time + '] ' + s.name);
+    lines.push('🎟️ עלות: ' + (s.cost_he || '') + ' | ⏳ שהייה: ' + (s.dur_he || ''));
+    lines.push('🏛️ פנים/חוץ: ' + (s.in_he || ''));
+    lines.push('🔍 למה זה וואו: ' + (s.wow_he || ''));
+    if (level === 3) {
+      lines.push('📝 על הדרך: ' + (s.enroute_he || ''));
+      lines.push('📸 זווית צילום: ' + (s.photo_tip || ''));
+      lines.push('🚗 נסיעה: ' + (s.move || ''));
+    }
+    lines.push('');
+  });
+  return lines.join('\n');
+}
+
+function copyDayWhatsApp(dayNum, level, btnEl) {
+  const dayObj = ITINERARY_DATA.days.find(d => String(d.day) === String(dayNum));
+  if (!dayObj) return;
+  const text = buildWhatsAppDay(dayObj, level);
+  copyTextSafe(text, () => {
+    const orig = btnEl.textContent;
+    btnEl.textContent = '✅ הועתק ללוח!';
+    setTimeout(() => { btnEl.textContent = orig; }, 2000);
+  });
+}
+
+function copyAllDaysWhatsApp() {
+  const allText = ITINERARY_DATA.days.map(d => buildWhatsAppDay(d, 2)).join('\n\n==============================\n\n');
+  copyTextSafe(allText, () => {
+    alert('כל ימי המסלול הועתקו ללוח בפורמט ווטסאפ (שמות באנגלית ל-Maps + שתי שורות רווח + תקציר מלא)!');
+  });
+}
+</script>
+</body>
+</html>
