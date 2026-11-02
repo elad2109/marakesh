@@ -377,10 +377,39 @@
       <span class="wa-title">📲 העתקה לווטסאפ / פתקים — יום 1</span>
       <div class="wa-btn-group">
         <button type="button" class="wa-btn" onclick="openWhatsAppDirect('1', 2)">📲 פתח יום 1 ב-WhatsApp</button>
-        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('1', 1, this)">📋 שמות ל-Maps (רווח כפול)</button>
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('1', 1, this)">📋 שמות ל-Maps (כולל הוסטל התחלה/סיום ולוגיסטיקה)</button>
         <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('1', 2, this)">📋 העתק תקציר מלא</button>
       </div>
     </div>
+    <!-- DAILY_START_AND_LOGISTICS_D1_START -->
+    <div class="anchor-logistics-block" id="start-logistics-d1" style="margin:10px 0 14px 0;padding:12px 14px;border-radius:10px;background:rgba(16,185,129,0.08);border:2px solid #10b981;">
+      <div style="font-weight:900;font-size:0.94rem;color:#10b981;margin-bottom:6px;">✈️ התחלת היום: שדה התעופה מרקש מנרה (RAK) -> אוטובוס אקספרס L19 לכותוביה -> צ׳ק-אין ב-Sindi Sud / ריאד במדינה <span style="font-size:0.8rem;color:var(--muted);font-weight:700;">(11:30 נחיתה -> 12:20 צ׳ק-אין בריאד)</span></div>
+      <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+        <span class="map-name-text">Marrakesh Menara Airport RAK</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Marrakesh Menara Airport RAK', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div style="font-size:0.83rem;line-height:1.45;color:var(--text);margin-bottom:8px;">נחיתה ב-11:30 בטרמינל RAK, נסיעה של 12 דק׳ באוטובוס האקספרס ALSA L19 (50 MAD הלוך-חזור — לשמור את הפתק ליום שני!) לתחנת הכותוביה, וצ׳ק-אין והנחת התיק ב-12:20-12:45 ב-Sindi Sud / הריאד במדינה. <a href="https://www.google.com/maps/search/?api=1&query=Marrakesh+Menara+Airport+RAK" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      <div style="border-top:1px dashed rgba(16,185,129,0.4);padding-top:8px;margin-top:6px;">
+        <div style="font-weight:900;font-size:0.88rem;color:#f59e0b;margin-bottom:4px;">⛽🛒🚌 נקודות לוגיסטיות מומלצות על הציר ליום 1 (דלק / סופר זול / תחנה מרכזית):</div>
+      <div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);">
+        <div style="font-weight:800;font-size:0.88rem;color:var(--text);margin-bottom:4px;">🚌 תחנת אוטובוס האקספרס מהשדה (ALSA קו L19): Koutoubia / Place Jemaa el-Fna <span style="color:var(--muted);font-weight:600;font-size:0.8rem;">(12:15 ירידה מהשדה (ותחנת החזרה בשני 06:35))</span></div>
+        <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+          <span class="map-name-text">Arret Bus L19 Koutoubia Marrakech</span>
+          <button type="button" class="btn-copy-map" onclick="copySingleMap('Arret Bus L19 Koutoubia Marrakech', this)">📋 העתק ל-Maps</button>
+        </div>
+        <div style="font-size:0.82rem;line-height:1.45;color:var(--text);">נקודת ההורדה של אוטובוס L19 מהשדה ונקודת העלייה חזרה לשדה ביום שני ב-06:35 בבוקר (צמודה לגני הכותוביה ולמוניות הבז׳). <a href="https://www.google.com/maps/search/?api=1&query=Arret+Bus+L19+Koutoubia+Marrakech" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      </div>
+      <div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);">
+        <div style="font-weight:800;font-size:0.88rem;color:var(--text);margin-bottom:4px;">🛒 סופר זול עם מחירים קבועים ואשראי (בלי מיקוח בסוק): Bim / Carrefour Market ליד כיכר הכותוביה / Bab Agnaou <span style="color:var(--muted);font-weight:600;font-size:0.8rem;">(12:35 / 20:15)</span></div>
+        <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+          <span class="map-name-text">Bim Supermarket Bab Agnaou Marrakech</span>
+          <button type="button" class="btn-copy-map" onclick="copySingleMap('Bim Supermarket Bab Agnaou Marrakech', this)">📋 העתק ל-Maps</button>
+        </div>
+        <div style="font-size:0.82rem;line-height:1.45;color:var(--text);">סניף דיסקאונט מסודר עם מחירים נקובים לקניית שישיות מים סגורים (5-6 MAD ל-1.5 ליטר לעומת 15-20 MAD בדוכני הכיכר) ונשנושים. <a href="https://www.google.com/maps/search/?api=1&query=Bim+Supermarket+Bab+Agnaou+Marrakech" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      </div>
+      </div>
+    </div>
+<!-- DAILY_START_AND_LOGISTICS_D1_END -->
     <article class="stop-card" id="card-d1-s1">
       <div class="stop-header">
         <div class="stop-name">#1. Koutoubia Mosque & משטח העמודים של המסגד הראשון (1147, צריח בגובה 77m)</div>
@@ -465,7 +494,17 @@
         <a href="https://www.google.com/maps/search/?api=1&query=Jemaa+el-Fnaa+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
-  </div>
+<!-- DAILY_END_ANCHOR_D1_START -->
+    <div class="anchor-end-block" id="end-anchor-d1" style="margin:14px 0 6px 0;padding:12px 14px;border-radius:10px;background:rgba(99,102,241,0.1);border:2px solid #6366f1;">
+      <div style="font-weight:900;font-size:0.94rem;color:#818cf8;margin-bottom:6px;">🛏️ סיום היום ולינה (לילות 1-4): Sindi Sud / ריאד במדינה של מרקש (250 מ׳ דרומית לג׳מע אל-פנא) <span style="font-size:0.8rem;color:var(--muted);font-weight:700;">(20:35 הגעה ושינה)</span></div>
+      <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+        <span class="map-name-text">Hotel Sindi Sud Marrakech Medina</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Hotel Sindi Sud Marrakech Medina', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div style="font-size:0.83rem;line-height:1.45;color:var(--text);">5 דקות הליכה (250 מ׳) ב-20:30 מכיכר ג׳מע אל-פנא אל Sindi Sud ברחוב Riad Zitoun Lakdim (שינה ב-20:35 לקראת פתיחת ארמון Bahia ב-09:00). <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Sindi+Sud+Marrakech+Medina" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+    </div>
+<!-- DAILY_END_ANCHOR_D1_END -->
+</div>
 </div>
 <div class="tab-content " id="tab-day-2">
   <div class="day-card">
@@ -475,10 +514,31 @@
       <span class="wa-title">📲 העתקה לווטסאפ / פתקים — יום 2</span>
       <div class="wa-btn-group">
         <button type="button" class="wa-btn" onclick="openWhatsAppDirect('2', 2)">📲 פתח יום 2 ב-WhatsApp</button>
-        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('2', 1, this)">📋 שמות ל-Maps (רווח כפול)</button>
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('2', 1, this)">📋 שמות ל-Maps (כולל הוסטל התחלה/סיום ולוגיסטיקה)</button>
         <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('2', 2, this)">📋 העתק תקציר מלא</button>
       </div>
     </div>
+    <!-- DAILY_START_AND_LOGISTICS_D2_START -->
+    <div class="anchor-logistics-block" id="start-logistics-d2" style="margin:10px 0 14px 0;padding:12px 14px;border-radius:10px;background:rgba(16,185,129,0.08);border:2px solid #10b981;">
+      <div style="font-weight:900;font-size:0.94rem;color:#10b981;margin-bottom:6px;">🛏️ התחלת היום בהוסטל/ריאד: Sindi Sud במדינה של מרקש (יציאה ב-08:50 לפתיחת ארמון Bahia ב-09:00) <span style="font-size:0.8rem;color:var(--muted);font-weight:700;">(08:50 יציאת בוקר ברגל)</span></div>
+      <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+        <span class="map-name-text">Hotel Sindi Sud Marrakech Medina</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Hotel Sindi Sud Marrakech Medina', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div style="font-size:0.83rem;line-height:1.45;color:var(--text);margin-bottom:8px;">יוצאים ב-08:50 בבוקר בהליכה של 8-10 דק׳ מ-Sindi Sud לאורך רחוב Riad Zitoun כדי להיכנס ב-09:00 ראשונים לחצרות הריקות של ארמון Bahia. <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Sindi+Sud+Marrakech+Medina" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      <div style="border-top:1px dashed rgba(16,185,129,0.4);padding-top:8px;margin-top:6px;">
+        <div style="font-weight:900;font-size:0.88rem;color:#f59e0b;margin-bottom:4px;">⛽🛒🚌 נקודות לוגיסטיות מומלצות על הציר ליום 2 (דלק / סופר זול / תחנה מרכזית):</div>
+      <div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);">
+        <div style="font-weight:800;font-size:0.88rem;color:var(--text);margin-bottom:4px;">🛒 סופר זול וגדול להצטיידות ליום הרי האטלס והמדבר: Carrefour Market Al Mazar / Avenue Mohammed VI (או Bim ב-Bab Agnaou) <span style="color:var(--muted);font-weight:600;font-size:0.8rem;">(15:15 / 18:30 (להצטיידות ליום הרי האטלס מחר!))</span></div>
+        <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+          <span class="map-name-text">Bim Supermarket Bab Agnaou Marrakech</span>
+          <button type="button" class="btn-copy-map" onclick="copySingleMap('Bim Supermarket Bab Agnaou Marrakech', this)">📋 העתק ל-Maps</button>
+        </div>
+        <div style="font-size:0.82rem;line-height:1.45;color:var(--text);">ממוקם על ציר המעבר משער Bab Agnaou לגני Menara (מקבל אשראי קונטקטלס). חובה להצטייד כאן במים, פירות יבשים וחטיפי אנרגיה לטיפוס מחר להרי האטלס ומדבר Agafay. <a href="https://www.google.com/maps/search/?api=1&query=Bim+Supermarket+Bab+Agnaou+Marrakech" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      </div>
+      </div>
+    </div>
+<!-- DAILY_START_AND_LOGISTICS_D2_END -->
     <article class="stop-card" id="card-d2-s1">
       <div class="stop-header">
         <div class="stop-name">#5. Bahia Palace (ארמון הווזיר הגדול בא-אחמד מ-1894 - כניסה ב-09:00 בפתיחת השער לחצרות ריקות!)</div>
@@ -511,7 +571,7 @@
       </div>
       <div class="info-row"><span class="info-label">⏳ זמנים ומשך שהייה:</span> 10:20 - 12:15 (115m) | 🔥 חובה - קנה מידה ברוטליסטי אדיר מ-1578 וסיפור יהדות מרוקו</div>
       <div class="info-row"><span class="info-label">🎟️ עלות והזמנה מראש:</span> 100 MAD ל-El Badi (פתוח 09:00-17:00) + 20 MAD לבית הכנסת הכחול Slat Al Azama מ-1492 (פתוח 09:00-17:00)</div>
-      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> פנים + חוץ: הולכים לאורך בריכת הענק השקועה (90 מטר אורך!) והגנים התת-קרקעיים של El Badi, ועוברים למלאח היהודי מ-1558 ולחצר הכחולה-לבנה של בית הכנסת Slat Al Azama (מגורשי ספרד מ-1492).</div>
+      <div class="info-row"><span class="info-label">🏛️ פנים מול חוץ:</span> פנים + חוץ (מוצדק ב-100% כי בריכת הענק השקועה מוקפת חומות סגורות ויש 0% תצפית מבחוץ): הולכים לאורך בריכת הענק השקועה (90 מטר אורך!) והגנים התת-קרקעיים של El Badi, ועוברים למלאח היהודי מ-1558 ולחצר הכחולה-לבנה של בית הכנסת Slat Al Azama (מגורשי ספרד מ-1492).</div>
       <div class="info-row"><span class="info-label">🔍 מה רואים ולמה זה וואו:</span> למה זה וואו: חצר ענק שקועה בגודל אצטדיון כדורגל המוקפת חומות אדמה נגוחה (Pisé) אדומות וגבוהות שעליהן עשרות קני חסידות, עם בריכות מים ופרדסי תפוזים השקועים 4 מטרים מתחת לרצפה.</div>
       <div class="info-row"><span class="info-label">🗺️ על הדרך:</span> על הדרך: עוברים ב-Place des Ferblantiers (כיכר אומני פנסי המתכת המחוררים).</div>
       <div class="photo-tip">📸 <strong>זווית צילום מומלצת:</strong> עדשה 0.5x מקצה הבריכה המרכזית של El Badi ועדשה 1x מהטרסה העליונה מעל הפרדסים השקועים.</div>
@@ -563,7 +623,17 @@
         <a href="https://www.google.com/maps/search/?api=1&query=Menara+Gardens+Marrakesh" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
-  </div>
+<!-- DAILY_END_ANCHOR_D2_START -->
+    <div class="anchor-end-block" id="end-anchor-d2" style="margin:14px 0 6px 0;padding:12px 14px;border-radius:10px;background:rgba(99,102,241,0.1);border:2px solid #6366f1;">
+      <div style="font-weight:900;font-size:0.94rem;color:#818cf8;margin-bottom:6px;">🛏️ סיום היום ולינה (לילה 2 מתוך 4): Sindi Sud במדינה של מרקש <span style="font-size:0.8rem;color:var(--muted);font-weight:700;">(20:30 הגעה ושינה)</span></div>
+      <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+        <span class="map-name-text">Hotel Sindi Sud Marrakech Medina</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Hotel Sindi Sud Marrakech Medina', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div style="font-size:0.83rem;line-height:1.45;color:var(--text);">חזרה מגני Menara ומכיכר ג׳מע אל-פנא אל Sindi Sud ב-20:30 לשינה לקראת יציאת הבוקר ב-08:15 להרי האטלס. <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Sindi+Sud+Marrakech+Medina" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+    </div>
+<!-- DAILY_END_ANCHOR_D2_END -->
+</div>
 </div>
 <div class="tab-content " id="tab-day-3">
   <div class="day-card">
@@ -573,10 +643,39 @@
       <span class="wa-title">📲 העתקה לווטסאפ / פתקים — יום 3</span>
       <div class="wa-btn-group">
         <button type="button" class="wa-btn" onclick="openWhatsAppDirect('3', 2)">📲 פתח יום 3 ב-WhatsApp</button>
-        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('3', 1, this)">📋 שמות ל-Maps (רווח כפול)</button>
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('3', 1, this)">📋 שמות ל-Maps (כולל הוסטל התחלה/סיום ולוגיסטיקה)</button>
         <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('3', 2, this)">📋 העתק תקציר מלא</button>
       </div>
     </div>
+    <!-- DAILY_START_AND_LOGISTICS_D3_START -->
+    <div class="anchor-logistics-block" id="start-logistics-d3" style="margin:10px 0 14px 0;padding:12px 14px;border-radius:10px;background:rgba(16,185,129,0.08);border:2px solid #10b981;">
+      <div style="font-weight:900;font-size:0.94rem;color:#10b981;margin-bottom:6px;">🛏️ התחלת היום בהוסטל/ריאד: Sindi Sud במדינה -> נקודת האיסוף (08:15) להרי האטלס ומדבר Agafay <span style="font-size:0.8rem;color:var(--muted);font-weight:700;">(08:15 יציאה מ-Sindi Sud לנקודת האיסוף)</span></div>
+      <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+        <span class="map-name-text">Hotel Sindi Sud Marrakech Medina</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Hotel Sindi Sud Marrakech Medina', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div style="font-size:0.83rem;line-height:1.45;color:var(--text);margin-bottom:8px;">יציאה ב-08:15 מ-Sindi Sud אל נקודת המפגש ליד רחבת הכותוביה / Hotel Ali (5 דק׳ הליכה, כי רכבים לא נכנסים לסמטאות המדינה) לנסיעה לעמק Asni, כפר Armed (1,900m), רמת Kik ומדבר Agafay. <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Sindi+Sud+Marrakech+Medina" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      <div style="border-top:1px dashed rgba(16,185,129,0.4);padding-top:8px;margin-top:6px;">
+        <div style="font-weight:900;font-size:0.88rem;color:#f59e0b;margin-bottom:4px;">⛽🛒🚌 נקודות לוגיסטיות מומלצות על הציר ליום 3 (דלק / סופר זול / תחנה מרכזית):</div>
+      <div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);">
+        <div style="font-weight:800;font-size:0.88rem;color:var(--text);margin-bottom:4px;">🚌 נקודת איסוף לטיולי האטלס / תחנת מוניות Grand Taxi ל-Asni ו-Imlil (Bab er-Robb / Hotel Ali) <span style="color:var(--muted);font-weight:600;font-size:0.8rem;">(08:25 איסוף / או תחנת מוניות Grand Taxi ל-Imlil)</span></div>
+        <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+          <span class="map-name-text">Hotel Ali Place Foucault Marrakech</span>
+          <button type="button" class="btn-copy-map" onclick="copySingleMap('Hotel Ali Place Foucault Marrakech', this)">📋 העתק ל-Maps</button>
+        </div>
+        <div style="font-size:0.82rem;line-height:1.45;color:var(--text);">נקודת האיסוף הרשמית של רכבי השטח בקצה המדינה (מול Hotel Ali / דואר Post Maroc), וכן תחנת המוניות הבין-עירוניות (Grand Taxis) ל-Imlil ב-35-40 MAD לכיוון. <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Ali+Place+Foucault+Marrakech" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      </div>
+      <div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);">
+        <div style="font-weight:800;font-size:0.88rem;color:var(--text);margin-bottom:4px;">⛽ תחנת דלק וסופרמרקט ביציאה הדרומית לאטלס ולאגפאי: Afriquia / Shell Route d'Amizmiz & Tahanaout <span style="color:var(--muted);font-weight:600;font-size:0.8rem;">(08:55 / 15:30 (אם שוכרים רכב ליום האטלס))</span></div>
+        <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+          <span class="map-name-text">Station Shell Route de Tahanaout Marrakech</span>
+          <button type="button" class="btn-copy-map" onclick="copySingleMap('Station Shell Route de Tahanaout Marrakech', this)">📋 העתק ל-Maps</button>
+        </div>
+        <div style="font-size:0.82rem;line-height:1.45;color:var(--text);">ביציאה ממרקש דרומה על כביש P2017/R203 להרי האטלס ולמדבר Agafay (דלק תקני ~13 MAD / 1.20€ לליטר ומינימרקט להצטיידות מים לפני העלייה להרים). <a href="https://www.google.com/maps/search/?api=1&query=Station+Shell+Route+de+Tahanaout+Marrakech" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      </div>
+      </div>
+    </div>
+<!-- DAILY_START_AND_LOGISTICS_D3_END -->
     <article class="stop-card" id="card-d3-s1">
       <div class="stop-header">
         <div class="stop-name">#9. Tahanaout & קניון נהר ה-Rherhaia (עמק Asni וכפרי האדמה האדומה התלויים)</div>
@@ -661,7 +760,17 @@
         <a href="https://www.google.com/maps/search/?api=1&query=Agafay+Desert+Morocco" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
-  </div>
+<!-- DAILY_END_ANCHOR_D3_START -->
+    <div class="anchor-end-block" id="end-anchor-d3" style="margin:14px 0 6px 0;padding:12px 14px;border-radius:10px;background:rgba(99,102,241,0.1);border:2px solid #6366f1;">
+      <div style="font-weight:900;font-size:0.94rem;color:#818cf8;margin-bottom:6px;">🛏️ סיום היום ולינה (לילה 3 מתוך 4): חזרה ממדבר Agafay אל Sindi Sud במדינה של מרקש <span style="font-size:0.8rem;color:var(--muted);font-weight:700;">(19:30 הגעה ממדבר Agafay | 20:35 שינה)</span></div>
+      <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+        <span class="map-name-text">Hotel Sindi Sud Marrakech Medina</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Hotel Sindi Sud Marrakech Medina', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div style="font-size:0.83rem;line-height:1.45;color:var(--text);">נסיעה של 45 דק׳ דלת-לדלת (18:45-19:30) אחרי השקיעה במדבר Agafay חזרה למרקש והליכה של 5 דק׳ ללינה ב-Sindi Sud. <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Sindi+Sud+Marrakech+Medina" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+    </div>
+<!-- DAILY_END_ANCHOR_D3_END -->
+</div>
 </div>
 <div class="tab-content " id="tab-day-4">
   <div class="day-card">
@@ -671,10 +780,39 @@
       <span class="wa-title">📲 העתקה לווטסאפ / פתקים — יום 4</span>
       <div class="wa-btn-group">
         <button type="button" class="wa-btn" onclick="openWhatsAppDirect('4', 2)">📲 פתח יום 4 ב-WhatsApp</button>
-        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('4', 1, this)">📋 שמות ל-Maps (רווח כפול)</button>
+        <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('4', 1, this)">📋 שמות ל-Maps (כולל הוסטל התחלה/סיום ולוגיסטיקה)</button>
         <button type="button" class="wa-btn wa-btn-sec" onclick="copyDayWhatsApp('4', 2, this)">📋 העתק תקציר מלא</button>
       </div>
     </div>
+    <!-- DAILY_START_AND_LOGISTICS_D4_START -->
+    <div class="anchor-logistics-block" id="start-logistics-d4" style="margin:10px 0 14px 0;padding:12px 14px;border-radius:10px;background:rgba(16,185,129,0.08);border:2px solid #10b981;">
+      <div style="font-weight:900;font-size:0.94rem;color:#10b981;margin-bottom:6px;">🛫 התחלת היום בהוסטל/ריאד: Sindi Sud במדינה (ראשון 09:00 לציר Gueliz והחומות | שני 06:20 צ׳ק-אוט לשדה RAK) <span style="font-size:0.8rem;color:var(--muted);font-weight:700;">(ראשון 09:00 יציאה | שני 06:20 צ׳ק-אוט לטיסה)</span></div>
+      <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+        <span class="map-name-text">Hotel Sindi Sud Marrakech Medina</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Hotel Sindi Sud Marrakech Medina', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div style="font-size:0.83rem;line-height:1.45;color:var(--text);margin-bottom:8px;">בבוקר ראשון 29/11 יוצאים ב-09:00 מ-Sindi Sud לציר Studio KO, Gueliz ותחנת הרכבת ONCF, חוזרים ב-20:00 לשינה מוקדמת ב-Sindi Sud, ובבוקר שני 30/11 ב-06:20 עושים צ׳ק-אוט וצועדים 6 דק׳ לאוטובוס L19 לשדה RAK. <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Sindi+Sud+Marrakech+Medina" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      <div style="border-top:1px dashed rgba(16,185,129,0.4);padding-top:8px;margin-top:6px;">
+        <div style="font-weight:900;font-size:0.88rem;color:#f59e0b;margin-bottom:4px;">⛽🛒🚌 נקודות לוגיסטיות מומלצות על הציר ליום 4 (דלק / סופר זול / תחנה מרכזית):</div>
+      <div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);">
+        <div style="font-weight:800;font-size:0.88rem;color:var(--text);margin-bottom:4px;">🛒 סופרמרקט גדול וזול לניצול דירהם וקניית תבלינים/שמן ארגן במחירי מקומיים: Carrefour Market Gueliz (Carré Eden) <span style="color:var(--muted);font-weight:600;font-size:0.8rem;">(ראשון 11:30 (בשדרת Gueliz על המסלול))</span></div>
+        <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+          <span class="map-name-text">Carrefour Market Carre Eden Gueliz Marrakech</span>
+          <button type="button" class="btn-copy-map" onclick="copySingleMap('Carrefour Market Carre Eden Gueliz Marrakech', this)">📋 העתק ל-Maps</button>
+        </div>
+        <div style="font-size:0.82rem;line-height:1.45;color:var(--text);">נמצא ממש על ציר ההליכה של תחנה #14 בשדרת Mohammed V ב-Gueliz (פתוח עד 22:00, מקבל Apple Pay ואשראי). המקום הטוב והזול ביותר לקנות מים, חטיפים לטיסה או תבלינים ב-1/4 ממחירי הסוק. <a href="https://www.google.com/maps/search/?api=1&query=Carrefour+Market+Carre+Eden+Gueliz+Marrakech" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      </div>
+      <div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);">
+        <div style="font-weight:800;font-size:0.88rem;color:var(--text);margin-bottom:4px;">🚆 תחנת הרכבת המרכזית Gare de Marrakech (ONCF) + תחנת אוטובוס השדה L19 בכותוביה (שני 06:35) <span style="color:var(--muted);font-weight:600;font-size:0.8rem;">(ראשון 12:00 (תחנה #14) | שני 06:35 אוטובוס L19)</span></div>
+        <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+          <span class="map-name-text">Arret Bus L19 Koutoubia Marrakech</span>
+          <button type="button" class="btn-copy-map" onclick="copySingleMap('Arret Bus L19 Koutoubia Marrakech', this)">📋 העתק ל-Maps</button>
+        </div>
+        <div style="font-size:0.82rem;line-height:1.45;color:var(--text);">תחנת הרכבת המונומנטלית של מרקש (תחנה #14 בראשון), ובבוקר שני ב-06:35 תחנת אוטובוס האקספרס L19 ברחבת הכותוביה (12 דק׳ נסיעה לטרמינל RAK עם פתק ההלוך-חזור, או מונית ב-50-70 MAD). <a href="https://www.google.com/maps/search/?api=1&query=Arret+Bus+L19+Koutoubia+Marrakech" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+      </div>
+      </div>
+    </div>
+<!-- DAILY_START_AND_LOGISTICS_D4_END -->
     <article class="stop-card" id="card-d4-s1">
       <div class="stop-header">
         <div class="stop-name">#13. חזית הלבנים הברוטליסטית של Studio KO ב-Rue Yves Saint Laurent [תצפית חוץ בלבד ב-0 MAD]</div>
@@ -759,7 +897,17 @@
         <a href="https://www.google.com/maps/search/?api=1&query=Marrakesh+Menara+Airport+RAK" target="_blank" class="link-pill" rel="noopener">📍 פתח באפליקציית Google Maps</a>
       </div>
     </article>
-  </div>
+<!-- DAILY_END_ANCHOR_D4_START -->
+    <div class="anchor-end-block" id="end-anchor-d4" style="margin:14px 0 6px 0;padding:12px 14px;border-radius:10px;background:rgba(99,102,241,0.1);border:2px solid #6366f1;">
+      <div style="font-weight:900;font-size:0.94rem;color:#818cf8;margin-bottom:6px;">✈️ סיום היום והטיול: לינת לילה 4 ב-Sindi Sud -> שני 07:00 טרמינל RAK (החתמת נייר Ryanair וטיסה ב-09:45 לדבלין) <span style="font-size:0.8rem;color:var(--muted);font-weight:700;">(ראשון 20:00 שינה ב-Sindi Sud | שני 07:00 בטרמינל RAK -> 09:45 טיסה)</span></div>
+      <div class="map-copy-bar" style="margin:4px 0 6px 0;">
+        <span class="map-name-text">Marrakesh Menara Airport RAK</span>
+        <button type="button" class="btn-copy-map" onclick="copySingleMap('Marrakesh Menara Airport RAK', this)">📋 העתק ל-Maps</button>
+      </div>
+      <div style="font-size:0.83rem;line-height:1.45;color:var(--text);">לינת לילה 4 ב-Sindi Sud (20:00-06:20), ובבוקר שני 30/11 הגעה ב-07:00 לטרמינל העץ הגיאומטרי של RAK להחתמת הנייר בדלפק Ryanair וטיסה ב-09:45 לדבלין. <a href="https://www.google.com/maps/search/?api=1&query=Marrakesh+Menara+Airport+RAK" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;margin-inline-start:6px;">📍 פתח ב-Google Maps</a></div>
+    </div>
+<!-- DAILY_END_ANCHOR_D4_END -->
+</div>
 </div>
 
 <script>
@@ -901,7 +1049,57 @@ const ITINERARY_DATA = {
           "move": "5 דק׳ הליכה (250m) ב-20:30 מכיכר ג׳מע אל-פנא חזרה ללינה ושינה ב-Sindi Sud / ריאד המוזמן במדינה (הגעה לשינה ב-20:35)",
           "move_en": "Short walk back to your riad"
         }
-      ]
+      ],
+      "start_anchor": {
+        "badge": "✈️",
+        "bg": "#0284c7",
+        "time": "11:30 נחיתה -> 12:20 צ׳ק-אין בריאד",
+        "title_he": "✈️ התחלת היום: שדה התעופה מרקש מנרה (RAK) -> אוטובוס אקספרס L19 לכותוביה -> צ׳ק-אין ב-Sindi Sud / ריאד במדינה",
+        "title_en": "✈️ Day Start: Marrakesh Menara Airport (RAK) -> ALSA Bus L19 to Koutoubia -> Check-In at Sindi Sud / Medina Riad",
+        "desc_he": "נחיתה ב-11:30 בטרמינל RAK, נסיעה של 12 דק׳ באוטובוס האקספרס ALSA L19 (50 MAD הלוך-חזור — לשמור את הפתק ליום שני!) לתחנת הכותוביה, וצ׳ק-אין והנחת התיק ב-12:20-12:45 ב-Sindi Sud / הריאד במדינה.",
+        "desc_en": "Land at 11:30 at RAK, ride ALSA Express Bus L19 (12m, 50 MAD return — keep ticket for Monday!) to Koutoubia, and check in / drop bag at 12:20-12:45 at Sindi Sud.",
+        "map_name": "Marrakesh Menara Airport RAK",
+        "lat": 31.6069,
+        "lng": -8.0363
+      },
+      "logistics_points": [
+        {
+          "badge": "🚌",
+          "bg": "#4f46e5",
+          "time": "12:15 ירידה מהשדה (ותחנת החזרה בשני 06:35)",
+          "title_he": "🚌 תחנת אוטובוס האקספרס מהשדה (ALSA קו L19): Koutoubia / Place Jemaa el-Fna",
+          "title_en": "🚌 Airport Express Bus L19 Stop: Koutoubia / Jemaa el-Fnaa",
+          "desc_he": "נקודת ההורדה של אוטובוס L19 מהשדה ונקודת העלייה חזרה לשדה ביום שני ב-06:35 בבוקר (צמודה לגני הכותוביה ולמוניות הבז׳).",
+          "desc_en": "Drop-off and Monday 06:35 AM pick-up stop for ALSA Airport Express Bus L19 right beside Koutoubia Gardens.",
+          "map_name": "Arret Bus L19 Koutoubia Marrakech",
+          "lat": 31.6242,
+          "lng": -7.9918
+        },
+        {
+          "badge": "🛒",
+          "bg": "#0891b2",
+          "time": "12:35 / 20:15",
+          "title_he": "🛒 סופר זול עם מחירים קבועים ואשראי (בלי מיקוח בסוק): Bim / Carrefour Market ליד כיכר הכותוביה / Bab Agnaou",
+          "title_en": "🛒 Cheap Fixed-Price Supermarket Near Jemaa el-Fnaa: Bim / Carrefour Market Marrakech",
+          "desc_he": "סניף דיסקאונט מסודר עם מחירים נקובים לקניית שישיות מים סגורים (5-6 MAD ל-1.5 ליטר לעומת 15-20 MAD בדוכני הכיכר) ונשנושים.",
+          "desc_en": "Fixed-price supermarket for sealed 1.5L water bottles (5-6 MAD vs 15-20 MAD at square stalls) and snacks.",
+          "map_name": "Bim Supermarket Bab Agnaou Marrakech",
+          "lat": 31.6192,
+          "lng": -7.9912
+        }
+      ],
+      "end_anchor": {
+        "badge": "🛏️",
+        "bg": "#059669",
+        "time": "20:35 הגעה ושינה",
+        "title_he": "🛏️ סיום היום ולינה (לילות 1-4): Sindi Sud / ריאד במדינה של מרקש (250 מ׳ דרומית לג׳מע אל-פנא)",
+        "title_en": "🛏️ Day End & Nights 1-4 Lodging: Sindi Sud / Medina Riad Marrakesh (250m south of Jemaa el-Fnaa)",
+        "desc_he": "5 דקות הליכה (250 מ׳) ב-20:30 מכיכר ג׳מע אל-פנא אל Sindi Sud ברחוב Riad Zitoun Lakdim (שינה ב-20:35 לקראת פתיחת ארמון Bahia ב-09:00).",
+        "desc_en": "5m walk (250m) at 20:30 from Jemaa el-Fnaa to Sindi Sud in Riad Zitoun Lakdim (sleep at 20:35 before 09:00 Bahia Palace opening).",
+        "map_name": "Hotel Sindi Sud Marrakech Medina",
+        "lat": 31.6226,
+        "lng": -7.9882
+      }
     },
     {
       "day": "2",
@@ -962,7 +1160,7 @@ const ITINERARY_DATA = {
           "skip_he": "🔥 חובה - קנה מידה ברוטליסטי אדיר מ-1578 וסיפור יהדות מרוקו",
           "skip_en": "🔥 MUST-SEE - Colossal 1578 sunken architecture & 1492 Mellah heritage",
           "isMust": true,
-          "in_he": "פנים + חוץ: הולכים לאורך בריכת הענק השקועה (90 מטר אורך!) והגנים התת-קרקעיים של El Badi, ועוברים למלאח היהודי מ-1558 ולחצר הכחולה-לבנה של בית הכנסת Slat Al Azama (מגורשי ספרד מ-1492).",
+          "in_he": "פנים + חוץ (מוצדק ב-100% כי בריכת הענק השקועה מוקפת חומות סגורות ויש 0% תצפית מבחוץ): הולכים לאורך בריכת הענק השקועה (90 מטר אורך!) והגנים התת-קרקעיים של El Badi, ועוברים למלאח היהודי מ-1558 ולחצר הכחולה-לבנה של בית הכנסת Slat Al Azama (מגורשי ספרד מ-1492).",
           "in_en": "Inside Ruined Esplanade + Mellah Walk: Walk the 90m sunken reflecting pool and subterranean orange groves of El Badi, then step into the 1558 Jewish Mellah and the blue-and-white courtyard of the 1492 Slat Al Azama Synagogue.",
           "wow_he": "למה זה וואו: חצר ענק שקועה בגודל אצטדיון כדורגל המוקפת חומות אדמה נגוחה (Pisé) אדומות וגבוהות שעליהן עשרות קני חסידות, עם בריכות מים ופרדסי תפוזים השקועים 4 מטרים מתחת לרצפה.",
           "wow_en": "Why It Is WOW: A stadium-sized sunken courtyard framed by towering red rammed-earth walls crowned with stork nests, surrounding a 90m reflecting pool and sunken citrus orchards.",
@@ -1039,7 +1237,46 @@ const ITINERARY_DATA = {
           "move": "25 דק׳ הליכה (או 8 דק׳ מונית ב-20 MAD) ב-18:00 מגני Menara חזרה לכיכר ג׳מע אל-פנא (ערב במדינה ב-18:25-20:30 -> חזרה ללינה ושינה ב-Sindi Sud / הריאד ב-20:35)",
           "move_en": "Return to the Medina for Friday evening"
         }
-      ]
+      ],
+      "start_anchor": {
+        "badge": "🛏️",
+        "bg": "#059669",
+        "time": "08:50 יציאת בוקר ברגל",
+        "title_he": "🛏️ התחלת היום בהוסטל/ריאד: Sindi Sud במדינה של מרקש (יציאה ב-08:50 לפתיחת ארמון Bahia ב-09:00)",
+        "title_en": "🛏️ Day Start at Riad/Hostel: Sindi Sud Marrakesh Medina (08:50 Departure for 09:00 Bahia Palace Opening)",
+        "desc_he": "יוצאים ב-08:50 בבוקר בהליכה של 8-10 דק׳ מ-Sindi Sud לאורך רחוב Riad Zitoun כדי להיכנס ב-09:00 ראשונים לחצרות הריקות של ארמון Bahia.",
+        "desc_en": "Walk out at 08:50 AM from Sindi Sud (8-10m walk along Rue Riad Zitoun) to enter Bahia Palace first at 09:00 AM.",
+        "map_name": "Hotel Sindi Sud Marrakech Medina",
+        "lat": 31.6226,
+        "lng": -7.9882
+      },
+      "logistics_points": [
+        {
+          "badge": "🛒",
+          "bg": "#0891b2",
+          "time": "15:15 / 18:30 (להצטיידות ליום הרי האטלס מחר!)",
+          "title_he": "🛒 סופר זול וגדול להצטיידות ליום הרי האטלס והמדבר: Carrefour Market Al Mazar / Avenue Mohammed VI (או Bim ב-Bab Agnaou)",
+          "title_en": "🛒 Cheap Supermarket to Stock Up for High Atlas & Agafay Day: Carrefour Market / Bim Bab Agnaou",
+          "desc_he": "ממוקם על ציר המעבר משער Bab Agnaou לגני Menara (מקבל אשראי קונטקטלס). חובה להצטייד כאן במים, פירות יבשים וחטיפי אנרגיה לטיפוס מחר להרי האטלס ומדבר Agafay.",
+          "desc_en": "Located between Bab Agnaou and Menara Gardens (contactless card accepted). Stock up on water & trail snacks for Saturday's High Atlas & Agafay loop.",
+          "map_name": "Bim Supermarket Bab Agnaou Marrakech",
+          "lat": 31.6192,
+          "lng": -7.9912
+        }
+      ],
+      "end_anchor": {
+        "badge": "🛏️",
+        "bg": "#059669",
+        "time": "20:30 הגעה ושינה",
+        "title_he": "🛏️ סיום היום ולינה (לילה 2 מתוך 4): Sindi Sud במדינה של מרקש",
+        "title_en": "🛏️ Day End & Night 2 Lodging: Sindi Sud Marrakesh Medina",
+        "desc_he": "חזרה מגני Menara ומכיכר ג׳מע אל-פנא אל Sindi Sud ב-20:30 לשינה לקראת יציאת הבוקר ב-08:15 להרי האטלס.",
+        "desc_en": "Return from Menara Gardens and Jemaa el-Fnaa to Sindi Sud at 20:30 before Saturday's 08:15 AM High Atlas departure.",
+        "map_name": "Hotel Sindi Sud Marrakech Medina",
+        "lat": 31.6226,
+        "lng": -7.9882,
+        "same_as_start": true
+      }
     },
     {
       "day": "3",
@@ -1177,7 +1414,58 @@ const ITINERARY_DATA = {
           "move": "45 דק׳ נסיעה דלת-לדלת (18:45-19:30) ממדבר Agafay חזרה למרקש -> הגעה ללינה ושינה ב-Sindi Sud / הריאד במדינה ב-19:30",
           "move_en": "40m drive back to Marrakesh"
         }
-      ]
+      ],
+      "start_anchor": {
+        "badge": "🛏️",
+        "bg": "#059669",
+        "time": "08:15 יציאה מ-Sindi Sud לנקודת האיסוף",
+        "title_he": "🛏️ התחלת היום בהוסטל/ריאד: Sindi Sud במדינה -> נקודת האיסוף (08:15) להרי האטלס ומדבר Agafay",
+        "title_en": "🛏️ Day Start at Riad/Hostel: Sindi Sud Medina -> 08:15 Pickup Point for High Atlas & Agafay Loop",
+        "desc_he": "יציאה ב-08:15 מ-Sindi Sud אל נקודת המפגש ליד רחבת הכותוביה / Hotel Ali (5 דק׳ הליכה, כי רכבים לא נכנסים לסמטאות המדינה) לנסיעה לעמק Asni, כפר Armed (1,900m), רמת Kik ומדבר Agafay.",
+        "desc_en": "Walk 5m from Sindi Sud at 08:15 to the vehicle pickup point by Koutoubia / Hotel Ali for the High Atlas (Imlil/Armed), Kik Plateau & Agafay sunset loop.",
+        "map_name": "Hotel Sindi Sud Marrakech Medina",
+        "lat": 31.6226,
+        "lng": -7.9882
+      },
+      "logistics_points": [
+        {
+          "badge": "🚌",
+          "bg": "#4f46e5",
+          "time": "08:25 איסוף / או תחנת מוניות Grand Taxi ל-Imlil",
+          "title_he": "🚌 נקודת איסוף לטיולי האטלס / תחנת מוניות Grand Taxi ל-Asni ו-Imlil (Bab er-Robb / Hotel Ali)",
+          "title_en": "🚌 High Atlas Tour Pickup / Grand Taxi Hub for Asni & Imlil (Hotel Ali / Bab er-Robb)",
+          "desc_he": "נקודת האיסוף הרשמית של רכבי השטח בקצה המדינה (מול Hotel Ali / דואר Post Maroc), וכן תחנת המוניות הבין-עירוניות (Grand Taxis) ל-Imlil ב-35-40 MAD לכיוון.",
+          "desc_en": "Main 4x4 tour pickup point at the edge of the Medina (Hotel Ali / Post Maroc) and Grand Taxi hub to Imlil (35-40 MAD each way).",
+          "map_name": "Hotel Ali Place Foucault Marrakech",
+          "lat": 31.6235,
+          "lng": -7.9912
+        },
+        {
+          "badge": "⛽",
+          "bg": "#d97706",
+          "time": "08:55 / 15:30 (אם שוכרים רכב ליום האטלס)",
+          "title_he": "⛽ תחנת דלק וסופרמרקט ביציאה הדרומית לאטלס ולאגפאי: Afriquia / Shell Route d'Amizmiz & Tahanaout",
+          "title_en": "⛽ Gas Station & Mini-Market on Southern Exit to High Atlas & Agafay: Shell / Afriquia Tahanaout Rd",
+          "desc_he": "ביציאה ממרקש דרומה על כביש P2017/R203 להרי האטלס ולמדבר Agafay (דלק תקני ~13 MAD / 1.20€ לליטר ומינימרקט להצטיידות מים לפני העלייה להרים).",
+          "desc_en": "On the southern exit toward Tahanaout/Imlil and Agafay (~13 MAD / €1.20/L fuel and mini-market before mountain climb).",
+          "map_name": "Station Shell Route de Tahanaout Marrakech",
+          "lat": 31.5685,
+          "lng": -7.9852
+        }
+      ],
+      "end_anchor": {
+        "badge": "🛏️",
+        "bg": "#059669",
+        "time": "19:30 הגעה ממדבר Agafay | 20:35 שינה",
+        "title_he": "🛏️ סיום היום ולינה (לילה 3 מתוך 4): חזרה ממדבר Agafay אל Sindi Sud במדינה של מרקש",
+        "title_en": "🛏️ Day End & Night 3 Lodging: Return from Agafay Desert to Sindi Sud Marrakesh Medina",
+        "desc_he": "נסיעה של 45 דק׳ דלת-לדלת (18:45-19:30) אחרי השקיעה במדבר Agafay חזרה למרקש והליכה של 5 דק׳ ללינה ב-Sindi Sud.",
+        "desc_en": "45m door-to-door drive (18:45-19:30) after Agafay sunset back to Marrakesh and 5m walk to Sindi Sud.",
+        "map_name": "Hotel Sindi Sud Marrakech Medina",
+        "lat": 31.6226,
+        "lng": -7.9882,
+        "same_as_start": true
+      }
     },
     {
       "day": "4",
@@ -1315,7 +1603,57 @@ const ITINERARY_DATA = {
           "move": "טיסה ישירה מ-RAK לדבלין (09:45 -> 13:35)",
           "move_en": "Direct Ryanair flight RAK to Dublin (09:45 -> 13:35)"
         }
-      ]
+      ],
+      "start_anchor": {
+        "badge": "🛫",
+        "bg": "#059669",
+        "time": "ראשון 09:00 יציאה | שני 06:20 צ׳ק-אוט לטיסה",
+        "title_he": "🛫 התחלת היום בהוסטל/ריאד: Sindi Sud במדינה (ראשון 09:00 לציר Gueliz והחומות | שני 06:20 צ׳ק-אוט לשדה RAK)",
+        "title_en": "🛫 Day Start at Riad/Hostel: Sindi Sud Medina (Sun 09:00 to Gueliz & Walls | Mon 06:20 Check-Out to RAK)",
+        "desc_he": "בבוקר ראשון 29/11 יוצאים ב-09:00 מ-Sindi Sud לציר Studio KO, Gueliz ותחנת הרכבת ONCF, חוזרים ב-20:00 לשינה מוקדמת ב-Sindi Sud, ובבוקר שני 30/11 ב-06:20 עושים צ׳ק-אוט וצועדים 6 דק׳ לאוטובוס L19 לשדה RAK.",
+        "desc_en": "Sun 29/11 depart 09:00 from Sindi Sud for Studio KO & Gueliz, sleep at 20:00 at Sindi Sud, and Mon 30/11 at 06:20 check out and walk 6m to Bus L19 for RAK.",
+        "map_name": "Hotel Sindi Sud Marrakech Medina",
+        "lat": 31.6226,
+        "lng": -7.9882
+      },
+      "logistics_points": [
+        {
+          "badge": "🛒",
+          "bg": "#0891b2",
+          "time": "ראשון 11:30 (בשדרת Gueliz על המסלול)",
+          "title_he": "🛒 סופרמרקט גדול וזול לניצול דירהם וקניית תבלינים/שמן ארגן במחירי מקומיים: Carrefour Market Gueliz (Carré Eden)",
+          "title_en": "🛒 Large Cheap Supermarket in Gueliz (Fixed Local Prices & Contactless Card): Carrefour Market Carré Eden Gueliz",
+          "desc_he": "נמצא ממש על ציר ההליכה של תחנה #14 בשדרת Mohammed V ב-Gueliz (פתוח עד 22:00, מקבל Apple Pay ואשראי). המקום הטוב והזול ביותר לקנות מים, חטיפים לטיסה או תבלינים ב-1/4 ממחירי הסוק.",
+          "desc_en": "Directly on Stop #14's walking spine on Avenue Mohammed V in Gueliz (open until 22:00, accepts Apple Pay). Best place for cheap flight snacks & local goods at 1/4 souk prices.",
+          "map_name": "Carrefour Market Carre Eden Gueliz Marrakech",
+          "lat": 31.6348,
+          "lng": -8.0125
+        },
+        {
+          "badge": "🚆",
+          "bg": "#4f46e5",
+          "time": "ראשון 12:00 (תחנה #14) | שני 06:35 אוטובוס L19",
+          "title_he": "🚆 תחנת הרכבת המרכזית Gare de Marrakech (ONCF) + תחנת אוטובוס השדה L19 בכותוביה (שני 06:35)",
+          "title_en": "🚆 Marrakesh Central Railway Station (ONCF) & Koutoubia Airport Bus L19 Stop (Mon 06:35)",
+          "desc_he": "תחנת הרכבת המונומנטלית של מרקש (תחנה #14 בראשון), ובבוקר שני ב-06:35 תחנת אוטובוס האקספרס L19 ברחבת הכותוביה (12 דק׳ נסיעה לטרמינל RAK עם פתק ההלוך-חזור, או מונית ב-50-70 MAD).",
+          "desc_en": "Monumental ONCF Railway Station (Stop #14 on Sunday), plus Monday 06:35 AM Airport Bus L19 stop at Koutoubia (12m to RAK using your return ticket).",
+          "map_name": "Arret Bus L19 Koutoubia Marrakech",
+          "lat": 31.6242,
+          "lng": -7.9918
+        }
+      ],
+      "end_anchor": {
+        "badge": "✈️",
+        "bg": "#0284c7",
+        "time": "ראשון 20:00 שינה ב-Sindi Sud | שני 07:00 בטרמינל RAK -> 09:45 טיסה",
+        "title_he": "✈️ סיום היום והטיול: לינת לילה 4 ב-Sindi Sud -> שני 07:00 טרמינל RAK (החתמת נייר Ryanair וטיסה ב-09:45 לדבלין)",
+        "title_en": "✈️ Day & Trip End: Night 4 at Sindi Sud -> Mon 07:00 RAK Terminal (Ryanair Paper Stamp & 09:45 Flight to Dublin)",
+        "desc_he": "לינת לילה 4 ב-Sindi Sud (20:00-06:20), ובבוקר שני 30/11 הגעה ב-07:00 לטרמינל העץ הגיאומטרי של RAK להחתמת הנייר בדלפק Ryanair וטיסה ב-09:45 לדבלין.",
+        "desc_en": "Night 4 sleep at Sindi Sud (20:00-06:20), then Mon 30/11 arrive at 07:00 at RAK terminal for Ryanair paper boarding pass stamp and 09:45 flight to Dublin.",
+        "map_name": "Marrakesh Menara Airport RAK",
+        "lat": 31.6069,
+        "lng": -8.0363
+      }
     }
   ]
 };
@@ -1407,12 +1745,34 @@ function copySingleMap(mapName, btnEl) {
 
 function buildWhatsAppDay(dayObj, level) {
   if (level === 1) {
-    return dayObj.stops.map(s => s.map_name).join('\n\n\n');
+    const names = [];
+    if (dayObj.start_anchor && dayObj.start_anchor.map_name) {
+      names.push(dayObj.start_anchor.map_name);
+    }
+    (dayObj.stops || []).forEach(s => {
+      if (s && s.map_name) names.push(s.map_name);
+    });
+    (dayObj.logistics_points || []).forEach(lp => {
+      if (lp && lp.map_name) names.push(lp.map_name);
+    });
+    if (dayObj.end_anchor && dayObj.end_anchor.map_name) {
+      names.push(dayObj.end_anchor.map_name);
+    }
+    return names.join('\n\n\n');
   }
   let lines = [];
   lines.push('🌊 *' + dayObj.title + '*');
   lines.push('📍 ' + dayObj.subtitle);
   lines.push('');
+  if (dayObj.start_anchor && dayObj.start_anchor.map_name) {
+    lines.push('━━━━━━━━━━━━━━━━━━');
+    lines.push(dayObj.start_anchor.map_name);
+    lines.push('');
+    lines.push('');
+    lines.push((dayObj.start_anchor.badge || '🛫') + ' *התחלת היום (הוסטל/שדה):* [' + (dayObj.start_anchor.time || '') + '] ' + (dayObj.start_anchor.title_he || ''));
+    if (dayObj.start_anchor.desc_he) lines.push('ℹ️ ' + dayObj.start_anchor.desc_he);
+    lines.push('');
+  }
   dayObj.stops.forEach(s => {
     lines.push('━━━━━━━━━━━━━━━━━━');
     lines.push(s.map_name);
@@ -1429,6 +1789,28 @@ function buildWhatsAppDay(dayObj, level) {
     }
     lines.push('');
   });
+  if (Array.isArray(dayObj.logistics_points) && dayObj.logistics_points.length > 0) {
+    lines.push('━━━━━━━━━━━━━━━━━━');
+    lines.push('⛽🛒🚌 *נקודות לוגיסטיות מומלצות על הציר (דלק / סופר זול / תחנה מרכזית):*');
+    lines.push('');
+    dayObj.logistics_points.forEach(lp => {
+      lines.push(lp.map_name);
+      lines.push('');
+      lines.push('');
+      lines.push((lp.badge || '📍') + ' [' + (lp.time || '') + '] ' + (lp.title_he || ''));
+      if (lp.desc_he) lines.push('💡 ' + lp.desc_he);
+      lines.push('');
+    });
+  }
+  if (dayObj.end_anchor && dayObj.end_anchor.map_name) {
+    lines.push('━━━━━━━━━━━━━━━━━━');
+    lines.push(dayObj.end_anchor.map_name);
+    lines.push('');
+    lines.push('');
+    lines.push((dayObj.end_anchor.badge || '🛏️') + ' *סיום היום ולינה (הוסטל/שדה):* [' + (dayObj.end_anchor.time || '') + '] ' + (dayObj.end_anchor.title_he || ''));
+    if (dayObj.end_anchor.desc_he) lines.push('ℹ️ ' + dayObj.end_anchor.desc_he);
+    lines.push('');
+  }
   return lines.join('\n');
 }
 
@@ -1472,7 +1854,9 @@ let currentTileMode = 'road';
 let googleRoadLayer = null;
 let googleSatLayer = null;
 let markersByDay = {};
+let polylinesByDay = {};
 let allMarkers = [];
+let allPolylines = [];
 let currentActiveDay = '1';
 let isMapExpanded = false;
 
@@ -1482,6 +1866,25 @@ const DAY_COLORS = {
   '3': '#0284c7',
   '4': '#db2777'
 };
+
+const DAY_START_END_ANCHORS = {};
+ITINERARY_DATA.days.forEach(d => {
+  DAY_START_END_ANCHORS[d.day] = {
+    start: d.start_anchor || null,
+    logistics: d.logistics_points || [],
+    end: d.end_anchor || null
+  };
+});
+
+function createAnchorPin(badge, bg) {
+  return L.divIcon({
+    html: `<div style="background:${bg || '#059669'};color:#ffffff;width:28px;height:28px;border-radius:6px;border:2px solid #a7f3d0;box-shadow:0 2px 6px rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;font-size:14px;">${badge || '🛏️'}</div>`,
+    className: 'custom-map-pin',
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+    popupAnchor: [0, -14]
+  });
+}
 
 function initMobileMap() {
   if (typeof L === 'undefined') {
@@ -1511,12 +1914,60 @@ function initMobileMap() {
 
   ITINERARY_DATA.days.forEach(d => {
     markersByDay[d.day] = [];
+    const dayCoords = [];
     const color = DAY_COLORS[d.day] || '#0284c7';
+    const sa = d.start_anchor;
+    const ea = d.end_anchor;
+    const lps = d.logistics_points || [];
+
+    if (sa && sa.lat && sa.lng) {
+      dayCoords.push([sa.lat, sa.lng]);
+      const saUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sa.map_name || (sa.lat + ',' + sa.lng));
+      const saQ = (sa.map_name || '').replace(/'/g, "\\'");
+      const startMarker = L.marker([sa.lat, sa.lng], {
+        icon: createAnchorPin(sa.badge || '🛫', sa.bg || '#059669')
+      }).bindPopup(`
+        <div style="direction:rtl;text-align:right;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-width:210px;font-size:12px;">
+          <strong style="color:#065f46;font-size:12.5px;">${sa.title_he}</strong><br>
+          <span style="color:#475569;">⏰ ${sa.time || ''}</span><br>
+          <div style="font-family:monospace;font-size:11px;background:#f1f5f9;padding:3px 6px;border-radius:4px;margin:4px 0;direction:ltr;color:#0f172a;">${sa.map_name}</div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+            <button type="button" onclick="copySingleMap('${saQ}', this)" style="background:#0284c7;color:#fff;border:none;border-radius:4px;padding:3px 7px;font-size:11px;font-weight:700;cursor:pointer;">📋 העתק ל-Maps</button>
+            <a href="${saUrl}" target="_blank" rel="noopener" style="color:#0284c7;font-weight:700;">📍 ניווט ב-Maps</a>
+          </div>
+        </div>
+      `);
+      markersByDay[d.day].push(startMarker);
+      allMarkers.push(startMarker);
+    }
+
+    lps.forEach(lp => {
+      if (!lp.lat || !lp.lng) return;
+      const lpUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(lp.map_name || (lp.lat + ',' + lp.lng));
+      const lpQ = (lp.map_name || '').replace(/'/g, "\\'");
+      const lpMarker = L.marker([lp.lat, lp.lng], {
+        icon: createAnchorPin(lp.badge || '⛽', lp.bg || '#d97706')
+      }).bindPopup(`
+        <div style="direction:rtl;text-align:right;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-width:215px;font-size:12px;">
+          <strong style="color:#b45309;font-size:12.5px;">${lp.title_he}</strong><br>
+          <span style="color:#475569;">⏰ ${lp.time || ''}</span><br>
+          <span style="color:#334155;font-size:11.5px;">${lp.desc_he || ''}</span><br>
+          <div style="font-family:monospace;font-size:11px;background:#f1f5f9;padding:3px 6px;border-radius:4px;margin:4px 0;direction:ltr;color:#0f172a;">${lp.map_name}</div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+            <button type="button" onclick="copySingleMap('${lpQ}', this)" style="background:#0284c7;color:#fff;border:none;border-radius:4px;padding:3px 7px;font-size:11px;font-weight:700;cursor:pointer;">📋 העתק ל-Maps</button>
+            <a href="${lpUrl}" target="_blank" rel="noopener" style="color:#0284c7;font-weight:700;">📍 ניווט ב-Maps</a>
+          </div>
+        </div>
+      `);
+      markersByDay[d.day].push(lpMarker);
+      allMarkers.push(lpMarker);
+    });
+
     d.stops.forEach(s => {
       if (!s.lat || !s.lng) return;
+      dayCoords.push([s.lat, s.lng]);
       const pin = createCustomPin(s.num, color, s.isTier1);
       const marker = L.marker([s.lat, s.lng], { icon: pin });
-      
       const popupHtml = `
         <div style="direction:rtl;text-align:right;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-width:180px;font-size:12px;">
           <strong style="color:${color};font-size:13px;">#${s.num}. ${s.name}</strong><br>
@@ -1536,7 +1987,63 @@ function initMobileMap() {
 
       markersByDay[d.day].push(marker);
       allMarkers.push(marker);
+
+      if (Array.isArray(s.subpoints) && s.subpoints.length > 0) {
+        s.subpoints.forEach(sp => {
+          if (!sp.lat || !sp.lng) return;
+          const spPin = L.divIcon({
+            html: `<div style="background:#0f172a;color:#fef08a;padding:1px 5px;border-radius:10px;border:1.5px solid ${color};box-shadow:0 1px 4px rgba(0,0,0,0.45);font-weight:800;font-size:10px;white-space:nowrap;">${sp.code}</div>`,
+            className: 'custom-map-subpin',
+            iconSize: [28, 18],
+            iconAnchor: [14, 9]
+          });
+          const spUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sp.map_name || (sp.lat + ',' + sp.lng));
+          const spMarker = L.marker([sp.lat, sp.lng], { icon: spPin }).bindPopup(`
+            <div style="direction:rtl;text-align:right;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-width:185px;font-size:12px;">
+              <strong style="color:${color};font-size:12.5px;">${sp.code}: ${sp.title_he}</strong><br>
+              <span style="color:#64748b;">⏳ ${sp.time || ''}</span><br>
+              <a href="${spUrl}" target="_blank" rel="noopener" style="color:#0284c7;font-weight:700;">📍 ניווט ב-Google Maps</a>
+            </div>
+          `);
+          markersByDay[d.day].push(spMarker);
+          allMarkers.push(spMarker);
+        });
+      }
     });
+
+    if (ea && ea.lat && ea.lng) {
+      dayCoords.push([ea.lat, ea.lng]);
+      if (!ea.same_as_start) {
+        const eaUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(ea.map_name || (ea.lat + ',' + ea.lng));
+        const eaQ = (ea.map_name || '').replace(/'/g, "\\'");
+        const endMarker = L.marker([ea.lat, ea.lng], {
+          icon: createAnchorPin(ea.badge || '🛏️', ea.bg || '#059669')
+        }).bindPopup(`
+          <div style="direction:rtl;text-align:right;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-width:210px;font-size:12px;">
+            <strong style="color:#065f46;font-size:12.5px;">${ea.title_he}</strong><br>
+            <span style="color:#475569;">⏰ ${ea.time || ''}</span><br>
+            <div style="font-family:monospace;font-size:11px;background:#f1f5f9;padding:3px 6px;border-radius:4px;margin:4px 0;direction:ltr;color:#0f172a;">${ea.map_name}</div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+              <button type="button" onclick="copySingleMap('${eaQ}', this)" style="background:#0284c7;color:#fff;border:none;border-radius:4px;padding:3px 7px;font-size:11px;font-weight:700;cursor:pointer;">📋 העתק ל-Maps</button>
+              <a href="${eaUrl}" target="_blank" rel="noopener" style="color:#0284c7;font-weight:700;">📍 ניווט ב-Maps</a>
+            </div>
+          </div>
+        `);
+        markersByDay[d.day].push(endMarker);
+        allMarkers.push(endMarker);
+      }
+    }
+
+    if (dayCoords.length > 1) {
+      const poly = L.polyline(dayCoords, {
+        color: color,
+        weight: 4,
+        opacity: 0.85,
+        dashArray: '6, 6'
+      });
+      polylinesByDay[d.day] = poly;
+      allPolylines.push(poly);
+    }
   });
 
   filterMapMarkers('1');
@@ -1574,16 +2081,19 @@ function createCustomPin(num, color, isTier1) {
 function filterMapMarkers(dayNum) {
   if (!map) return;
   currentActiveDay = String(dayNum);
-  
   const badge = document.getElementById('map-day-indicator');
   if (badge) {
     badge.textContent = 'יום ' + dayNum;
     badge.style.color = DAY_COLORS[dayNum] || '#0284c7';
   }
-
   allMarkers.forEach(m => map.removeLayer(m));
+  if (typeof allPolylines !== 'undefined') { allPolylines.forEach(p => map.removeLayer(p)); }
+  if (typeof kotorParkingMarkers !== 'undefined') { kotorParkingMarkers.forEach(m => map.removeLayer(m)); }
   const activeMarkers = markersByDay[currentActiveDay] || [];
   activeMarkers.forEach(m => map.addLayer(m));
+  if (typeof polylinesByDay !== 'undefined' && polylinesByDay[currentActiveDay]) {
+    map.addLayer(polylinesByDay[currentActiveDay]);
+  }
   fitDayBounds();
 }
 
